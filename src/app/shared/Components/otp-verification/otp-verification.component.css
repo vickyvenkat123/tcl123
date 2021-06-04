@@ -1,0 +1,147 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+/* .ng-touched{
+    color:red;
+    font-size: 14px;
+    } */
+    
+  input.ng-valid{
+  color:blue;
+  }
+.signIn {
+    display: block;
+    width: 80%; 
+    margin: 0 auto;
+    padding-top: 4%;
+}
+.signIn.forGotPassword button.sendOTP{
+    background-color: rgb(43,95,143);
+    padding: 10px 0;
+    min-width: 100%;
+    font-size: 16px;
+    margin-left: 4px;
+    border: none;
+}
+.signIn.forGotPassword .lorawanB{
+    position: relative;
+    padding-top: 40%;
+}
+.signIn.forGotPassword .goBackToLogin{
+    font-size: 20px;
+    color: rgb(43,95,143);
+    border :none;
+    text-align: center;
+    cursor: pointer;
+}
+.signIn h1 {
+    font-size: 1.2em;
+    letter-spacing: 6px;
+    padding: 6px 0;
+    color: #4863A0;
+}
+.signIn h3{
+    font-size : 20px;
+    color: rgb(146,146,149);
+}
+/* .signIn img.left-image {
+    width: 100%;
+    height: auto;
+} */
+ .signIn .imgDiv img{
+    width: 80%;
+    height: auto;
+}  
+.signIn .form-control{
+    border: solid 1px rgb(43,95,143);
+    padding: 25px 30px;
+    color: #333;
+    font-size: 12px;
+}
+.signIn .form-control:focus{
+    outline : none;
+    box-shadow: none;
+}
+/* .signIn label{
+    color : #6f7072;
+    font-size: 12px;
+} */
+/* .signIn .signIn-btn{
+    padding : 15px 30px;
+    background-color : #62a4f7;
+    border : none;
+    border-radius : 5px;
+    color : #fff;
+    font-weight : bold;
+    width: 100%;
+    
+} */
+.signIn a {
+    text-decoration : none;
+    color: #62a4f7;
+}
+/* .remember input[type="checkbox"] {
+    display: inline-block;
+    width: 25px;
+    vertical-align: middle;
+    border-radius: 0px;
+    height: 18px;
+    border: solid 1px  #4863A0;
+    margin-right: 10px;
+  } */
+/* .bottomIcons span{
+    width: 25%;
+    text-align: right;
+} */
+.signIn.forGotPassword .otp-input{
+    width: 55px !important;
+    font-size: 24px;
+    height: 40px;
+}
+
+@media (max-width: 767px){
+    .signIn {
+        width: 90%;
+    }
+.signIn .signIn-btn{
+    width: 100%;
+}
+.footer, .footer .right-text{
+    text-align : center;
+}
+ .signIn .loginInputs{
+    padding: 5px 0;
+} 
+.signIn .imgDiv img{
+    min-height: auto;
+    width: 100%;
+}  
+.signIn.forGotPassword button.sendOTP{
+    background-color: rgb(43,95,143);
+  
+    margin-left: 8px;
+    margin-bottom: 10px;
+    border: none;
+}
+.signIn.forGotPassword .lorawanB{
+    position: relative;
+    padding-top: 10%;
+}
+.signIn.forGotPassword .goBackToLogin{
+    font-size: 16px;
+    color: rgb(43,95,143);
+    border :none;
+}
+.signIn.forGotPassword .otp-input{
+    width: 59px;
+    height: 50px;
+    border-radius: 4px;
+    border: 1px solid rgb(43,95,143) !important;
+    text-align: center;
+    font-size: 32px;
+}
+
+}

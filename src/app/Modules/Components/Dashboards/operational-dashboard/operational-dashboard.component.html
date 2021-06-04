@@ -1,0 +1,286 @@
+<app-header></app-header>
+<app-left-navigation></app-left-navigation>
+<div fxLayout="row" fxLayoutAlign="space-between center" fxLayout.lt-sm="column" class="operationalHeading">
+    <div fxLayout="row">
+        <div fxFlex="">
+            <h1>Operational Dashboard</h1>
+        </div>
+    </div>
+    <div fxLayout="row">
+        <div fxFlex="">
+            <span class="opSite">Site</span>
+        </div>
+        <div fxFlex="">
+            <div class="" class="siteSearch" *ngIf="sites && sites.length > 0">
+                <ng-select [items]="filteredSites" placeholder="Select Site" appendTo="body" [multiple]="false"
+                    bindLabel="siteName" bindValue="siteId" [(ngModel)]="selectedSiteId" (search)="onSearch($event)"
+                    (clear)="onClear()" (close)="onClose()" (change)="onChange($event)">
+                    >
+                </ng-select>
+                
+            </div>
+        </div>
+
+    </div>
+</div>
+<div fxLayout="row" fxLayoutAlign="space-between center" fxLayout.lt-sm="column" class="operationalChartRow">
+        <div fxLayout="column">
+            <div fxLayout="row" class="dashrow-one">
+                <em>Safety Alerts</em>
+                <span class=""> {{employeeDashboardDto.totalRecords}} Total Employees </span>
+            </div>
+            <div fxLayout="column">
+                <div class="" *ngIf="alertDashboardDto && alertDashboardDto.totalZones > 0">
+                    <div id="chart-container">
+                        <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels"
+                            [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend"
+                            [chartType]="lineChartType" [plugins]="lineChartPlugins"
+                            (chartHover)="lineChartHovered($event)" (chartClick)="lineChartClicked($event)">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div fxLayout="column">
+            <div fxLayout="row" class="dashrow-one">
+                <em>Battery Status</em>
+                <span class=""> {{employeeDashboardDto.batteryPercentAlertValue}} Devices </span>
+            </div>
+            <div fxLayout="column">
+                <div class="" *ngIf="alertDashboardDto && alertDashboardDto.totalZones > 0">
+                    <div id="chart-container">
+                        <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="chartType"
+                            [options]="pieChartOptions" [colors]="batteryPieChartColors" [legend]="pieChartLegend">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div fxLayout="column">
+            <div fxLayout="row" class="dashrow-one">
+                <em>Overcrowding Alerts</em>
+                <span class=""> {{alertDashboardDto.totalZones}} Total Zones </span>
+            </div>
+            <div fxLayout="column">
+                <div class="" *ngIf="alertDashboardDto && alertDashboardDto.totalZones > 0">
+                    <div id="chart-container">
+                        <canvas baseChart [chartType]="chartType" [data]="chartData" [labels]="chartLabels"
+                            [options]="chartOptions" [colors]="pieChartColors">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+<div class="dataTabal">
+    <div *ngIf="showEmployeeList" class="">
+        <div class="dataTblHeadings">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="container">
+                            <div class="row">
+                                <div class="">
+                                    <button type="button" class="btn btn-info empList" (click)="showEmployees()">
+                                        <span>Employee List</span>
+                                    </button>
+                                </div>
+                                <div class="">
+                                    <button type="button" class="btn btn-info emplistBG" (click)="showZones()">Zone
+                                        List</button>
+
+                                </div>
+                                <div class="col-sm-6 input-wrapper">
+                                    <input type="text" class="form-control " [(ngModel)]="searchEmployeeId"
+                                        placeholder="Search Employee Id" (keyup.enter)="onEnter()">
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <!-- <div class="col-sm-2">
+                            <input type="text" class="form-control" [(ngModel)]="searchEmployeeId"
+                                placeholder="Search Employee Id" (keyup.enter)="onEnter()">
+                        </div> -->
+                    <div class="col-sm-3 pl-0" *ngIf="showPagination">
+                        <span *ngIf="enableFirstPager"><i style="cursor:pointer;" (click)="pagerClicked('first')"
+                                class="fa fa-step-backward" aria-hidden="true"></i></span>
+                        <span *ngIf="!enableFirstPager"><i style="pointer-events:none;color: grey;"
+                                class="fa fa-step-backward" aria-hidden="true"></i></span>
+
+
+                        <span><i *ngIf="enablePreviousPager" style="cursor:pointer;" (click)="pagerClicked('previous')"
+                                class="ml-3 fa fa-caret-left" aria-hidden="true"></i></span>
+                        <span><i *ngIf="!enablePreviousPager" style="pointer-events:none;color: grey;"
+                                class="ml-3 fa fa-caret-left" aria-hidden="true"></i></span>
+                        <span *ngIf="showFirstPager"><button type="button"
+                                [ngStyle]="{'background-color': selectedPageValue == firstPager? 'black': '#17a2b8'}"
+                                class="ml-3 d-inline btn btn-info"
+                                (click)="pagerNumClicked(firstPager, 1)">{{firstPager}}</button></span>
+                        <span *ngIf="showSecondPager"><button type="button"
+                                [ngStyle]="{'background-color': selectedPageValue == secondPager? 'black': '#17a2b8'}"
+                                class="ml-3 d-inline btn btn-info"
+                                (click)="pagerNumClicked(secondPager, 2)">{{secondPager}}</button></span>
+                        <span *ngIf="showThirdPager"><button type="button"
+                                [ngStyle]="{'background-color': selectedPageValue == thirdPager? 'black': '#17a2b8'}"
+                                class="ml-3 d-inline btn btn-info"
+                                (click)="pagerNumClicked(thirdPager, 3)">{{thirdPager}}</button></span>
+                        <span *ngIf="showFourthPager"><button type="button"
+                                [ngStyle]="{'background-color': selectedPageValue == fourthPager? 'black': '#17a2b8'}"
+                                class="ml-3 d-inline btn btn-info"
+                                (click)="pagerNumClicked(fourthPager, 4)">{{fourthPager}}</button></span>
+                        <span *ngIf="showFifthPager"><button type="button"
+                                [ngStyle]="{'background-color': selectedPageValue == fifthPager? 'black': '#17a2b8'}"
+                                class="ml-3 d-inline btn btn-info"
+                                (click)="pagerNumClicked(fifthPager, 5)">{{fifthPager}}</button></span>
+                        <span><i *ngIf="enableNextPager" style="cursor:pointer;" (click)="pagerClicked('next')"
+                                class="ml-3 fa fa-caret-right" aria-hidden="true"></i></span>
+                        <span><i *ngIf="!enableNextPager" style="pointer-events:none;color: grey;"
+                                class="ml-3 fa fa-caret-right" aria-hidden="true"></i></span>
+                        <span><i *ngIf="enableLastPager" style="cursor:pointer;" (click)="pagerClicked('last')"
+                                class="ml-3 fa fa-step-forward" aria-hidden="true"></i></span>
+                        <span><i *ngIf="!enableLastPager" style="pointer-events:none;color: grey;"
+                                class="ml-3 fa fa-step-forward" aria-hidden="true"></i></span>
+
+                    </div>
+                    <div class="col-sm-4">
+                        <div *ngIf="showEmployeeList && employeeDashboardDto">
+                            <div _ngcontent-eci-c199="" class="col-sm-12">
+                                <div _ngcontent-eci-c199="" class="container">
+                                    <div _ngcontent-eci-c199="" class="row">
+                                        <div _ngcontent-eci-c199="" class="col-sm-2 dataTopShow">
+                                            Show
+                                        </div>
+                                        <div _ngcontent-eci-c199="" class="col-sm-4">
+                                            <select class="form-control" [(ngModel)]="size"
+                                                (change)="onSizeChange($event)">
+                                                <option [value]="10">10</option>
+                                                <option [value]="25">25</option>
+                                                <option [value]="50">50</option>
+                                                <option [value]="100">100</option>
+                                            </select>
+                                        </div>
+                                        <div _ngcontent-eci-c199="" class="col-sm-3">
+                                            <span class="dataTopShow">93 Total</span>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <button type="button" class="ml-2 d-inline btn btn-info empList"
+                                                (click)="export()">Export</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ag-grid-angular #agGrid style="width: 100%; height: 100%; flex-grow: 1; padding: 10px;" id="myGrid"
+            class="ag-theme-alpine" [columnDefs]="columnDefs" [defaultColDef]="defaultColDef"
+            (gridReady)="onGridReady($event)" [rowData]="employeeDashboardDto.employeestatus"></ag-grid-angular>
+    </div>
+    <div *ngIf="showZoneList" class="">
+    <div class="dataTblHeadings">
+        <div class="">
+            <div class="row">
+                <div class="col-sm-3">
+                    <button type="button" class="btn btn-info mx-3 " (click)="showEmployees()">
+                        Employee
+                        List</button>
+                    <button type="button" class="btn btn-info empList" (click)="showZones()">
+                        <span>Zone List</span></button>
+                </div>
+                <div class="col-sm-4"> 
+                    <div class="row">
+                        <span class="mx-3 dataTopShow"> Select Hierarchy</span>
+                    <select class="form-control" style="width: 200px;" [(ngModel)]="selectedHieararchy">
+                        <option *ngFor="let hierarchy of hierarchyLevelMapDto.hierarchyLevelMapList"
+                            value="{{hierarchy.hierarchyLevelMapName}}">{{hierarchy.hierarchyLevelMapName}}
+                        </option>
+                    </select>
+                    </div>
+                    
+                </div>
+                <div class="col-sm-4"> <span class="dataTopShow"> Total Number Of Employees</span>
+                   <span class="dataTopShow"> {{totalNoOfEmployeesOfZone}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  
+    <div class="container-fluid px-0">
+        <div class="row">
+            <div class="col-6 zoneListDataTbl">
+                <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)"
+                    class="mat-elevation-z8">
+
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="Zone Name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header="zoneName">Zone Name </th>
+                        <td mat-cell *matCellDef="let element; let j = index" (mouseenter)="highlightZone(j)"  (click)="navigateToZoneDashboard(element.zoneId)">
+                          {{j+1  + "." + element.zoneName}} </td>
+                    </ng-container>
+
+                    <!-- Weight Column -->
+                    <ng-container matColumnDef="Count">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header="count"> Employee Count </th>
+                        <td mat-cell *matCellDef="let element"> {{element.count}} </td>
+                    </ng-container>
+
+                    <!-- Symbol Column -->
+                    <ng-container matColumnDef="Beacon Count">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header="beaconCount"> Beacon Count
+                        </th>
+
+                        <td mat-cell *matCellDef="let element">
+                            <a (click)="showBeaconList(element.zoneId)" style="cursor: pointer;"
+                                color="primary"><b>{{element.beaconCount}}</b></a>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                <span class="ml-5 row">{{employeeZoneDtos.length}} Total</span>
+            </div>
+            <div class="col-6" >
+                <div class="container">
+                    <!-- <img alt="Red dot" style="width:750px; height:350px;" /> -->
+                    <div class="col-md-12">
+                        <div class="panzoom-btns">
+                            <button id="btn-zoom-in-workspace"
+                                    class="zoom-out">Zoom Out
+                            </button>
+                            <button id="btn-zoom-null-workspace"
+                                    class="reset">Reset
+                            </button>
+                            <button id="btn-zoom-out-workspace"
+                                    class="zoom-in">Zoom In
+                            </button>
+                            
+                         </div>
+
+                        <div #canvasDiv class="col-md-12 col-sm-12">
+                            <div id="panzoom" #panzoomDiv>
+                                <img #canvasBGImage height=" {{canvasHeight}}"  width=" {{canvasWidth}}" />
+                                <canvas #canvas class=" canvas"  width="{{canvasWidth}}"  height="{{canvasHeight}}"></canvas>
+                                <canvas #canvasupper class="canvas"  width="{{canvasWidth}}"  height="{{canvasHeight}}" (mousemove)="mousemove($event)"></canvas>
+                            </div>
+                           
+                            <!-- <canvas #canvasupper class="canvas"  width="{{canvasWidth}}"  height="{{canvasHeight}}" (mousemove)="mousemove($event)" (click)="canvasOnClick($event)"></canvas> -->
+                        </div>
+                        <div class="col-md-12 col-sm-12" >
+                                <!-- <label class="spinner">
+                                    <app-spinner *ngIf="!isProcessingForMap"></app-spinner>
+                                </label>
+                                <label *ngIf="isProcessingForMap">Map Not Available To Display</label> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

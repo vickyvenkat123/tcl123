@@ -1,0 +1,156 @@
+<app-header></app-header>
+<div class="container-fluid">
+    <div class="row">
+
+
+        <div class="row topBread">{{customerName}}
+            <div *ngIf="editedCityData != null && (showCityList || showPlantList || showSiteList)" class="d-inline"> >
+                {{editedCityData.cityName}}</div>
+            <div *ngIf="editedPlantData != null && (showPlantList || showSiteList)" class="d-inline"> >
+                {{editedPlantData.plantName}}</div>
+            <div *ngIf="editedSiteData != null && showSiteList" class="d-inline"> > {{editedSiteData.siteName}}</div>
+            </div>
+            <div class="allData col-md-3">
+                <div class="inline leftNavigationIcons">
+                    <div class="ml-0 row leftIconsBox">
+                    <div class="leftNavIcons">
+                        <div class="addIconsBg">
+                                <i class="fa fa-users active" title="customer" aria-hidden="true" 
+                                (click)="showCustomerCitiesPlantsSites('customer')"></i>
+                        </div>
+                        <div class="addIconsBg"><i class="fa fa-building" title="customer" aria-hidden="true"
+                                (click)="showCustomerCitiesPlantsSites('cities')"></i></div>
+                        <div class="addIconsBg"><i class="fa fa-globe" title="customer" aria-hidden="true"
+                                (click)="showCustomerCitiesPlantsSites('plants')"></i></div>
+                        <div class="addIconsBg"><i class="fa fa-map-marker" title="Site" aria-hidden="true"
+                                (click)="showCustomerCitiesPlantsSites('sites')"></i></div>
+                    </div>
+                    </div>
+                </div>
+                <div class="displayDataDiv">
+                <div class="ml-3 row">
+                    <div *ngIf="showCustomer">Customers</div>
+                    <div *ngIf="showCityList">Cities</div>
+                    <div *ngIf="showPlantList">Plants</div>
+                    <div *ngIf="showSiteList">Sites</div>
+                </div>
+                <div class="">
+                    <!-- <div class="inline">
+                        <div class="row"><i class="fa fa-users" aria-hidden="true"
+                                (click)="showCustomerCitiesPlantsSites('customer')"></i></div>
+                        <div class="mt-3 row"><i class="fa fa-building" aria-hidden="true"
+                                (click)="showCustomerCitiesPlantsSites('cities')"></i></div>
+                        <div class="mt-3 row"><i class="fa fa-globe" aria-hidden="true"
+                                (click)="showCustomerCitiesPlantsSites('plants')"></i></div>
+                        <div class="mt-3 row"><i class="fa fa-map-marker" aria-hidden="true"
+                                (click)="showCustomerCitiesPlantsSites('sites')"></i></div>
+                    </div> -->
+                    <div class="d-inline">
+                        <div *ngIf="showCustomer" class="row">
+                            <div class="col-7 rightDataList">
+                                <div class="namesIcons">{{customerName}} 
+                                <span class="float-right" style="cursor: pointer;"><i class="fa fa-edit" aria-hidden="true"
+                                    (click)="editCustomer(customer)"></i></span>
+                            </div>
+                        </div>
+                            <div class="ml-3 col-9">
+                                <!-- <div class="row">Name : {{customer.customerName}}</div>
+                                <div class="row">Status : {{customer.active?"Active":"Inactive"}}</div>
+                                <div class="row">Address : {{customer.address.address1}}</div>
+                                <div class="row">State : {{customer.address.state}}</div>
+                                <div class="row">Postal Code : {{customer.address.postalCode}}</div> -->
+                                <!-- <app-customer *ngIf="customerDetails" [editCustomerFlag]="editCustomerFlag" [customer]="customerDetails" [templates]="templates">
+                                </app-customer> -->
+                            </div>
+                        </div>
+                        <div *ngIf="showCityList" class="row">
+                            <div class="col">
+                                    <div *ngFor="let city of cities">
+                                        <div class="cityNamesData">{{city.cityName}}
+                                            <span class="float-right" style="cursor: pointer;"><i class="fa fa-edit"
+                                                aria-hidden="true" (click)="editCity(city.cityId)"></i></span>
+                                    </div>
+                                    </div>
+                            </div>
+                        </div>
+                        <div *ngIf="showPlantList && plants.length > 0" class="ml-3 row">
+                            <div class="col">
+                                    <div *ngFor="let plant of plants">
+                                        <span>{{plant.plantName}}</span>
+                                        <span class="ml-3 float-right" style="cursor: pointer;"><i class="fa fa-edit"
+                                                aria-hidden="true" (click)="editPlant(plant.plantId)"></i></span>
+                                    </div>
+                                <div>
+                                    <div (click)="addPlant()"><i class="mr-3 fa fa-plus-circle" aria-hidden="true"></i>Add Plant
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="editedPlantData" class="ml-3 col-9">
+                                <!-- <div class="row">Name : {{editedPlantData.plantName}}</div>
+                                <div class="row">Status : {{editedPlantData.active?"Active":"Inactive"}}</div>
+                                <div class="row">Address : {{editedPlantData.address.address1}}</div>
+                                <div class="row">State : {{editedPlantData.address.state}}</div>
+                                <div class="row">Postal Code : {{editedPlantData.address.postalCode}}</div> -->
+                            </div>
+                        </div>
+                        <div *ngIf="showSiteList && sites.length > 0" class="ml-3 row">
+                            <div class="col-2">
+                                <div style="height: 260px;overflow:scroll">
+                                    <div *ngFor="let site of sites">
+                                        <span>{{site.siteName}}</span>
+                                        <span class="ml-3 float-right" style="cursor: pointer;"><i class="fa fa-edit"
+                                                aria-hidden="true" (click)="editSite(site.siteId)"></i></span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div (click)="addSite()"><i class="mr-3 fa fa-plus-circle" aria-hidden="true"></i>Add Site
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="editedSiteData" class="ml-3 col-9">
+                                <!-- <div class="row">Name : {{editedSiteData.siteName}}</div>
+                                <div class="row">Status : {{editedSiteData.active?"Active":"Inactive"}}</div>
+                                <div class="row">Address : {{editedSiteData.address.address1}}</div>
+                                <div class="row">State : {{editedSiteData.address.state}}</div>
+                                <div class="row">Postal Code : {{editedSiteData.address.postalCode}}</div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                </div>
+                <div class="row">
+                    <div (click)="addCity()"><i class="mr-2 pl-2 fa fa-plus-circle" aria-hidden="true"></i>Add City
+                    </div>
+                </div>
+                </div>
+
+   
+ 
+        <div class="col-lg-9 col-sm-12 "> 
+                <div class="row ">
+                    <div class="customerRightData">
+
+                <div *ngIf="editedCityData" class="mx-3">
+                    <!-- <div class="row">Name : {{editedCityData.cityName}}</div>
+                    <div class="row">Status : {{editedCityData.active?"Active":"Inactive"}}</div>
+                    <div class="row">Address : {{editedCityData.address.address1}}</div>
+                    <div class="row">State : {{editedCityData.address.state}}</div>
+                    <div class="row">Postal Code : {{editedCityData.address.postalCode}}</div> -->
+                    <app-city [city]="editedCityData" [cityConfig]="cityConfig" [editCity]="editCity"
+                        [newCity]="newCity"></app-city>
+                </div>
+            </div>
+
+        <!-- <div *ngIf="editedCityData" class="ml-3 rightDataList">
+            <div class="row">Name : {{editedCityData.cityName}}</div>
+            <div class="row">Status : {{editedCityData.active?"Active":"Inactive"}}</div>
+            <div class="row">Address : {{editedCityData.address.address1}}</div>
+            <div class="row">State : {{editedCityData.address.state}}</div>
+            <div class="row">Postal Code : {{editedCityData.address.postalCode}}</div>
+        </div> -->
+        </div>
+    </div>
+        <div>
+        </div>
+    </div>

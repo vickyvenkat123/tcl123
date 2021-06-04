@@ -1,0 +1,215 @@
+<app-header></app-header>
+<app-left-navigation></app-left-navigation>
+<div fxLayout="row" fxLayoutAlign="" fxLayout.xs="column" class="employee-tracking-header">
+    <div fxFlex="1 0 1 " fxLayout="row" fxLayoutAlign="">
+        <h1 style="font-size: 26px;">Employee Tracking</h1>
+    </div>
+    <div fxFlex="" fxLayoutAlign="" class="fxLayout.xs">
+        <span class="opSite">Site</span>
+        <div class="" class="siteSearch" *ngIf="sites && sites.length > 0">
+            <ng-select [items]="filteredSites" placeholder="Select Site" appendTo="body" [multiple]="false"
+                bindLabel="siteName" bindValue="siteId" [(ngModel)]="selectedSiteId" (search)="onSearch($event)"
+                (clear)="onClear()" (close)="onClose()" (change)="onChange($event)">
+                >
+            </ng-select>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <button type="button" class="btn btn-light active" (click)="onchanges('location')">Location</button>&nbsp;
+    <button type="button" class="btn btn-light" (click)="onchanges('Beacon')">Beacon</button>&nbsp;
+    <button type="button" class="btn btn-light" (click)="onchanges('map')">Map</button>&nbsp;
+
+    <!-- Location Tab  -->
+
+    <div class="row" *ngIf="tab=='location'">
+        <div class="col-md-3">
+            <div>Employee</div>
+            <select class="form-control">
+                <option *ngFor="let y of employee">
+                    {{y.employeeId}} | {{y.device != null?y.device.deviceId:"-"}}
+                </option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <div>Location Type</div>
+            <select class="form-control">
+                <option value="1">All</option>
+                <option value="2">Hazardous</option>
+                <option value="3">Non_Hazardous</option>
+                <option value="4">Assembly</option>
+                <option value="5">Static</option>
+                <option value="6">NonStatic</option>
+                <option value="7">Entry</option>
+                <option value="8">No_Entry</option>
+                <option value="9">Exit</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <div>Date Range</div>
+            <input class="form-control" [value]="dateTextInput" placeholder="Select a date" daterangepicker
+                name="daterangeInput" (selected)="selectedDate($event)" [options]="options"
+                (cancelDaterangepicker)="calendarCanceled($event)" (applyDaterangepicker)="calendarApplied($event)" />
+        </div>
+        <div class="col-md-3">
+            <div></div>
+            <div>
+                <button type="button" class="btn btn-primary">Search</button> &nbsp;&nbsp;
+                <button type="button" class="btn btn-primary">Reset</button>
+            </div>
+            <div>
+                <button type="button" class="btn btn-primary">Export</button> &nbsp;&nbsp;
+                <input type="text" class="form-control" placeholder="search"><i class="fa fa-search"></i>
+            </div>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Employee Name</th>
+                    <th scope="col">Device Id</th>
+                    <th scope="col">Serial No.</th>
+                    <th scope="col">Date Range</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+            </tbody>
+        </table>
+        <br />
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Beacon Id</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Site</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">In Time</th>
+                    <th scope="col">Out Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- Beacon Tab -->
+    <div class="row" *ngIf="tab=='Beacon'">
+        <div class="col-md-3">
+            <div>Beacon Type*</div>
+            <select class="form-control">
+                <option value="1">All</option>
+                <option value="2">Hazardous</option>
+                <option value="3">Non_Hazardous</option>
+                <option value="4">Assembly</option>
+                <option value="5">Static</option>
+                <option value="6">NonStatic</option>
+                <option value="7">Entry</option>
+                <option value="8">No_Entry</option>
+                <option value="9">Exit</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <div>BeaconId | Zone Name*</div>
+            <select class="form-control">
+                <option></option>
+                <option></option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <div>Date Range</div>
+            <input class="form-control" [value]="dateTextInput" placeholder="Select a date" daterangepicker
+                name="daterangeInput" (selected)="selectedDate($event)" [options]="options"
+                (cancelDaterangepicker)="calendarCanceled($event)" (applyDaterangepicker)="calendarApplied($event)" />
+        </div>
+        <div class="col-md-3">
+            <div></div>
+            <div>
+                <button type="button" class="btn btn-primary">Search</button> &nbsp;&nbsp;
+                <button type="button" class="btn btn-primary">Reset</button>
+            </div>
+            <div>
+                <button type="button" class="btn btn-primary">Export</button> &nbsp;&nbsp;
+                <input type="text" class="form-control" placeholder="search"><i class="fa fa-search"></i>
+            </div>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Beacon Type</th>
+                    <th scope="col">DateRange</th>
+                    <th scope="col">Totl Visited Employee</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+            </tbody>
+        </table>
+        <br />
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Employee</th>
+                    <th scope="col">Device ID</th>
+                    <th scope="col">Beacon ID | Zone Name</th>
+                    <th scope="col">Reporting TO</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">In Time</th>
+                    <th scope="col">Out Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Map Tab -->
+    <div class="row" *ngIf="tab=='map'">
+        <div class="col-md-2">
+            <div>Employee</div>
+            <select class="form-control">
+                <option *ngFor="let y of employee">
+                    {{y.employeeId}}
+                </option>
+            </select>
+            <br/>
+            <button type="button" class="btn btn-primary" [(ngModel)]="searchEmployeeId" (keyup.enter)="onEnter()">Search</button>
+            <div class="card">
+            <div>Employee Id</div>
+            <!-- <span>{{y.employeeId}}</span> -->
+            <div>Employee Name</div>
+            <!-- <span>{{}}</span> -->
+            <div>Date</div>
+        </div>
+        </div>
+    </div>
+</div>

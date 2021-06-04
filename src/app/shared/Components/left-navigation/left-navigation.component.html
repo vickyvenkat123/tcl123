@@ -1,0 +1,39 @@
+<div class="leftNav">
+    <ul>
+        <li (click)="showHideNavigation()">
+            <a routerLink="/operational-dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <img src="assets/svg/Group.svg" alt="Group">
+                Dashboards</a>
+        </li>
+        <li><a routerLink="/login" routerLinkActive="active">
+                <img src="assets/svg/bell.svg" alt="Bell" class="bell">Alerts</a></li>
+
+        <li><a routerLink="/forgotpassword" routerLinkActive="active">
+                <img src="assets/svg/Tracking.svg" alt="Tracking">Tracking</a></li>
+
+        <li><a href="#"><img src="assets/svg/Reports.svg" alt="Reports">Reports</a></li>
+        <li><a href="#"><img src="assets/svg/Safepass.svg" alt="Safepass">Safe Pass Management</a></li>
+        <li><a href="#"><img src="assets/svg/Beacon.svg" alt="Beacon">Beacon Management</a></li>
+        <li><a href="#"><img src="assets/svg/inventory.svg" alt="inventory">Inventery Operations</a></li>
+        <li><a href="#"><img src="assets/svg/Tracking.svg" alt="Tracking">Customer Configurations</a>
+        </li>
+        <li><a href="#"><img src="assets/svg/ngm.svg" alt="ngm">Nework Gateway Management</a>
+        </li>
+        <li><a href="#"><img src="assets/svg/Admin.svg" alt="Admin">Admin</a></li>
+    </ul>
+</div>
+
+<div class="NavShowHide" *ngIf="isShownNav">
+    <div><i (click)="showHideNavigation()" class="fa fa-times" aria-hidden="true"></i></div>
+    <div class="dashHeading">Dashboards</div>
+    <ul>
+        <li><a href="executive-dashboard">Executive Dashboard</a></li>
+        <li><a href="operational-dashboard">Operational DashBoard</a></li>
+        <li><a href="live-zone">Zone Dashboard</a></li>
+        <li><a href="card-utilization">Utilization Dashboard</a></li>
+        <li><a href="#">Key Performance Indicator</a></li>
+        <li><a href="gateway-dashboard">Network Gateway Dashboard</a></li>
+        <li><a href="employee-tracking">Employee Tracking</a></li>
+        <li><a href="kpi">KPI</a></li>
+    </ul>
+</div>

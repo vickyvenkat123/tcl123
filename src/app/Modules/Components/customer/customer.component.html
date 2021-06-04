@@ -1,0 +1,351 @@
+<div class="container-fluid">
+    <div class="row">View Customer</div>
+    <div class="row">
+        <div class="d-inline"><button type="button" class="btn btn-info" (click)="showGeneral()">General</button>
+        </div>
+        <div class="ml-5 d-inline"><button type="button" class="btn btn-info" (click)="showAddress()">Address</button>
+        </div>
+        <div class="ml-5 d-inline"><button type="button" class="btn btn-info" (click)="showConfig()">Config</button>
+        </div>
+        <div class="ml-5 d-inline"><button type="button" class="btn btn-info" (click)="showRole()">Role</button>
+        </div>
+        <div class="ml-5 d-inline"><button type="button" class="btn btn-info" (click)="showRule()">Rule</button>
+        </div>
+        <div class="ml-5 d-inline"><button type="button" class="btn btn-info" (click)="showColor()">Color</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div *ngIf="showGeneralDetails && customer && !editCustomerFlag" class="mt-3">
+            <div class="row">Customer Name <input type="text" [(ngModel)]="customer.customerName" readonly></div>
+            <div class="row"> Status <select [(ngModel)]="customer.active" disabled>
+                    <option [value]="true">Active</option>
+                    <option [value]="false">Inactive</option>
+                </select></div>
+            <div class="row">Description<input type="text" [(ngModel)]="customer.description" readonly></div>
+            <div class="row">Email Address<input type="text" [(ngModel)]="customer.emailId" readonly></div>
+            <div class="row">Contact Number<input type="text" [(ngModel)]="customer.phoneNumber" readonly></div>
+            <div class="mt-5 row float-right">
+                <button type="button" class="btn btn-info" (click)="showAddress()">Next</button>
+            </div>
+        </div>
+        <div *ngIf="showGeneralDetails && customer && editCustomerFlag" class="mt-3">
+            <div class="row">Customer Name <input type="text" [(ngModel)]="customer.customerName" readonly></div>
+            <div class="row"> Status <select [(ngModel)]="customer.active" disabled>
+                    <option [value]="true">Active</option>
+                    <option [value]="false">Inactive</option>
+                </select></div>
+            <div class="row">Description<input type="text" [(ngModel)]="customer.description"></div>
+            <div class="row">Email Address<input type="text" [(ngModel)]="customer.emailId"></div>
+            <div class="row">Contact Number<input type="text" [(ngModel)]="customer.phoneNumber"></div>
+            <div class="mt-5 row float-right">
+                <button type="button" class="btn btn-info" (click)="showAddress()">Next</button>
+            </div>
+        </div>
+        <div *ngIf="showAddressDetails && !editCustomerFlag" class="mt-3">
+            <div class="row">Address <input type="text" [(ngModel)]="customer.address.address1" readonly></div>
+            <div class="row">City <input type="text" [(ngModel)]="customer.address.city" readonly></div>
+            <div class="row">State <input type="text" [(ngModel)]="customer.address.state" readonly></div>
+            <div class="row">Country <input type="text" [(ngModel)]="customer.address.country" readonly></div>
+            <div class="row">Postal Code <input type="text" [(ngModel)]="customer.address.postalCode" readonly></div>
+            <div class="mt-5 row ">
+                <button type="button" class="d-inline btn btn-info" (click)="showGeneral()">Back</button>
+                <button type="button" class="ml-5 d-inline btn btn-info" (click)="showConfig()">Next</button>
+            </div>
+        </div>
+        <div *ngIf="showAddressDetails && editCustomerFlag" class="mt-3">
+            <div class="row">Address <input type="text" [(ngModel)]="customer.address.address1"></div>
+            <div class="row">City <input type="text" [(ngModel)]="customer.address.city"></div>
+            <div class="row">State <input type="text" [(ngModel)]="customer.address.state"></div>
+            <div class="row">Country <input type="text" [(ngModel)]="customer.address.country"></div>
+            <div class="row">Postal Code <input type="text" [(ngModel)]="customer.address.postalCode"></div>
+            <div class="mt-5 row ">
+                <button type="button" class="d-inline btn btn-info" (click)="showGeneral()">Back</button>
+                <button type="button" class="ml-5 d-inline btn btn-info" (click)="showConfig()">Next</button>
+            </div>
+        </div>
+        <div *ngIf="showConfigDetails" class="mt-3">
+            <div class="row">Hierarchy Level<input type="text" [(ngModel)]="customer.customerConfig.hierarchylevel"
+                    readonly></div>
+            <div class="container">
+                <div class="row" [ngStyle]="{'background-color': showSoSAlert? 'cornflowerblue': 'black'}"
+                    style="cursor: pointer; width: 650px;color: white;" (click)="showSoS()">SOS Alert</div>
+                <div class="row" [ngStyle]="{'background-color': showHazardousAlert? 'cornflowerblue': 'black'}"
+                    style="cursor: pointer;width: 650px;color: white;" (click)="showHazardous()">Hazardous Alert</div>
+                <div class="row" [ngStyle]="{'background-color': showBatteryAlert? 'cornflowerblue': 'black'}"
+                    style="cursor: pointer;width: 650px;color: white;" (click)="showBattery()">Battery Alerts</div>
+            </div>
+            <div class="container" style="border: black;">
+                Email Template
+                <div *ngIf="showSoSAlert && sosTemplates.length > 0">
+                    <div *ngFor="let template of sosTemplates">
+                        <div class="mt-2 row">
+                            <div class="d-inline">{{template.templateName}}</div>
+                            <div class="ml-3 d-inline">
+                                <button type="button" class="ml-5 d-inline btn btn-info"
+                                    (click)="showDetailsOfTemplate(template.template)">Eye
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="overlay" *ngIf="showDialog">
+                        <a class="close" style="cursor: pointer;" (click)="showDialog = false">&times;</a>
+                        <div class="content" [innerHTML]="templateData">
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="showHazardousAlert && hazardousTemplates.length > 0">
+                    <div *ngFor="let template of hazardousTemplates">
+                        <div class="mt-2 row">
+                            <div class="d-inline">{{template.templateName}}</div>
+                            <div class="ml-3 d-inline">
+                                <button type="button" class="ml-5 d-inline btn btn-info"
+                                    (click)="showDetailsOfTemplate(template.template)">Eye
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="overlay" *ngIf="showDialog">
+                        <a class="close" style="cursor: pointer;" (click)="showDialog = false">&times;</a>
+                        <div class="content" [innerHTML]="templateData">
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="showBatteryAlert && batteryTemplates.length > 0">
+                    <div *ngFor="let template of batteryTemplates">
+                        <div class="mt-2 row">
+                            <div class="d-inline">{{template.templateName}}</div>
+                            <div class="ml-3 d-inline">
+                                <button type="button" class="ml-5 d-inline btn btn-info"
+                                    (click)="showDetailsOfTemplate(template.template)">Eye
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="overlay" *ngIf="showDialog">
+                        <a class="close" style="cursor: pointer;" (click)="showDialog = false">&times;</a>
+                        <div class="content" [innerHTML]="templateData">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <b>Alert Sound</b>
+                <div class="row">
+                    <div class="col">Audio File</div>
+                    <div class="col">Browse/Play</div>
+                    <div class="col">Action</div>
+                </div>
+                <div class="row" *ngFor="let url of customer.customerConfig.alertSoundUrls">
+                    <div class="col">
+                        {{url === "" ? "Sound Text" : url.substring(url.lastIndexOf('-')+1, url.length)}}
+                    </div>
+                    <div class="col mt-2">
+                        <button type="button" class="d-inline btn btn-info">Browse</button>
+                    </div>
+                    <div class="col mt-2">
+                        <button type="button"
+                            [ngStyle]="{'background-color': customer.customerConfig.activeSoundUrl === url? '#41ca41': 'rgba(0,0,0,.38)'}"
+                            class="d-inline btn mat-button">Active</button>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-5 row ">
+                <button type="button" class="d-inline btn btn-info" (click)="showAddress()">Back</button>
+                <button type="button" class="ml-5 d-inline btn btn-info" (click)="showRole()">Next</button>
+            </div>
+        </div>
+        <div *ngIf="showRoleDetails && !editCustomerFlag">
+            <div class="mt-3 row"><b>Role Type Configuration</b></div>
+            <div class="container" style="width: 800px;">
+                <div class="row">
+                    <div class="col-3">System Names</div>
+                    <div class="col-8 ml-5">User Defined Names</div>
+                </div>
+                <div class="row" *ngFor="let role of customer.roleTypes| keyvalue">
+                    <div class="col-3">
+                        {{role.key}}
+                    </div>
+                    <div class="ml-5 col-8">
+                        <input type="text" style="width: inherit;" [(ngModel)]="role.value" readonly>
+                    </div>
+
+                </div>
+            </div>
+            <div class="mt-5 row">
+                <button type="button" class="d-inline btn btn-info" (click)="showConfig()">Back</button>
+                <button type="button" class="ml-5 d-inline btn btn-info" (click)="showRule()">Next</button>
+            </div>
+        </div>
+        <div *ngIf="showRoleDetails && editCustomerFlag">
+            <div class="mt-3 row"><b>Role Type Configuration</b></div>
+            <div class="container" style="width: 800px;">
+                <div class="row">
+                    <div class="col-3">System Names</div>
+                    <div class="col-8 ml-5">User Defined Names</div>
+                </div>
+                <div class="row" *ngFor="let role of customer.roleTypes| keyvalue">
+                    <div class="col-3">
+                        {{role.key}}
+                    </div>
+                    <div class="ml-5 col-8">
+                        <input type="text" style="width: inherit;" [(ngModel)]="role.value">
+                    </div>
+
+                </div>
+            </div>
+            <div class="mt-5 row">
+                <button type="button" class="d-inline btn btn-info" (click)="showConfig()">Back</button>
+                <button type="button" class="ml-5 d-inline btn btn-info" (click)="showRule()">Next</button>
+            </div>
+        </div>
+        <div *ngIf="showRuleDetails && !editCustomerFlag">
+            <div class="mt-3 row"><b>Rule Configuration</b></div>
+            <div class="container" style="width: 500px;">
+
+                <div class="mt-3 row">
+                    <div class="col-5">
+                        <input *ngIf="!customer.mailNotificationAllowed" class="form-check-input" type="checkbox"
+                            value="" id="flexCheckDisabled" disabled>
+                        <input *ngIf="customer.mailNotificationAllowed" class="form-check-input" type="checkbox"
+                            value="" id="flexCheckDisabled">
+                        Email Notification
+                    </div>
+                    <div class="col-5">
+                        <input *ngIf="!customer.smsnotificationAllowed" class="form-check-input" type="checkbox"
+                            value="" id="flexCheckDisabled" disabled>
+                        <input *ngIf="customer.smsnotificationAllowed" class="form-check-input" type="checkbox" value=""
+                            id="flexCheckDisabled">
+                        SMS Notification
+                    </div>
+                </div>
+                <div class="mt-2 row">
+                    Threshold Value For Abnormal Battery (%)
+                </div>
+                <div class="row">
+                    <input type="text" class="form-control" disabled
+                        [(ngModel)]="customer.customerConfig.abnormalBatteryPercentValue">
+                </div>
+            </div>
+
+            <div class="mt-5 row">
+                <button type="button" class="d-inline btn btn-info" (click)="showRole()">Back</button>
+                <button type="button" class="ml-5 d-inline btn btn-info" (click)="showColor()">Next</button>
+            </div>
+        </div>
+        <div *ngIf="showRuleDetails && editCustomerFlag">
+            <div class="mt-3 row"><b>Rule Configuration</b></div>
+            <div class="container" style="width: 500px;">
+
+                <div class="mt-3 row">
+                    <div class="col-5">
+                        <input [(ngModel)]="customer.mailNotificationAllowed" type="checkbox">
+
+                        Email Notification
+                    </div>
+                    <div class="col-5">
+                        <input [(ngModel)]="customer.smsnotificationAllowed" type="checkbox">
+                        SMS Notification
+                    </div>
+                </div>
+                <div class="mt-2 row">
+                    Threshold Value For Abnormal Battery (%)
+                </div>
+                <div class="row">
+                    <input type="text" [(ngModel)]="customer.customerConfig.abnormalBatteryPercentValue">
+                </div>
+            </div>
+
+            <div class="mt-5 row">
+                <button type="button" class="d-inline btn btn-info" (click)="showRole()">Back</button>
+                <button type="button" class="ml-5 d-inline btn btn-info" (click)="showColor()">Next</button>
+            </div>
+        </div>
+        <div *ngIf="showColorDetails">
+            <div class="mt-3 row"><b>Color Configuration</b></div>
+            <div *ngIf="!editCustomerFlag">
+            <div class="mt-2 row">
+                Hazardous
+            </div>
+            <div class="row">
+                <input type="text" class="form-control" disabled
+                    [(ngModel)]="customer.customerConfig.hazardousColorCode"
+                    [style.background-color]="customer.customerConfig.hazardousColorCode">
+            </div>
+
+            <div class="mt-2 row">
+                SOS
+            </div>
+            <div class="row">
+                <input type="text" class="form-control" disabled [(ngModel)]="customer.customerConfig.sosColorCode"
+                    [style.background-color]="customer.customerConfig.sosColorCode">
+            </div>
+            <div class="mt-2 row">Battery Low</div>
+            <div class="row">
+                <input type="text" class="form-control" disabled
+                    [(ngModel)]="customer.customerConfig.batteryLowColorCode"
+                    [style.background-color]="customer.customerConfig.batteryLowColorCode">
+            </div>
+            <div class="mt-2 row">
+                Fall
+            </div>
+            <div class="row">
+                <input type="text" class="form-control" disabled value="undefined">
+            </div>
+            <div class="mt-2 row">
+                Idle
+            </div>
+            <div class="row">
+                <input type="text" class="form-control" disabled value="undefined">
+            </div>
+            <div class="mt-5 row">
+                <button type="button" class="d-inline btn btn-info" (click)="showRule()">Back</button>
+            </div>
+        </div>
+        <div *ngIf="editCustomerFlag">
+            <div class="mt-2 row">
+                Hazardous
+            </div>
+            <div class="row">
+                <input type="text"
+                    [(ngModel)]="customer.customerConfig.hazardousColorCode"
+                    [style.background-color]="customer.customerConfig.hazardousColorCode">
+            </div>
+
+            <div class="mt-2 row">
+                SOS
+            </div>
+            <div class="row">
+                <input type="text" [(ngModel)]="customer.customerConfig.sosColorCode"
+                    [style.background-color]="customer.customerConfig.sosColorCode">
+            </div>
+            <div class="mt-2 row">Battery Low</div>
+            <div class="row">
+                <input type="text"
+                    [(ngModel)]="customer.customerConfig.batteryLowColorCode"
+                    [style.background-color]="customer.customerConfig.batteryLowColorCode">
+            </div>
+            <div class="mt-2 row">
+                Fall
+            </div>
+            <div class="row">
+                <input type="text" class="form-control" [(ngModel)]="customer.customerConfig.fallColorCode"
+                [style.background-color]="customer.customerConfig.fallColorCode">
+            </div>
+            <div class="mt-2 row">
+                Idle
+            </div>
+            <div class="row">
+                <input type="text" class="form-control" [(ngModel)]="customer.customerConfig.idleColorCode"
+                [style.background-color]="customer.customerConfig.idleColorCode">
+            </div>
+            <div class="mt-5 row">
+                <button type="button" class="d-inline btn btn-info" (click)="showRule()">Back</button>
+                <button *ngIf="editCustomerFlag" type="button" class="d-inline btn btn-info" (click)="save()">Save</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>

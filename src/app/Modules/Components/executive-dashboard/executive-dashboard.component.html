@@ -1,0 +1,256 @@
+<app-header></app-header>
+<app-left-navigation></app-left-navigation>
+<div fxLayout="row" fxlayoutAlign="space-between center" fxLayout.lt-sm="column" class="operationalHeading executiveDashboardMain">
+    <div fxLayout="row">
+        <div fxFlex="">
+            <h1>Executive Dashboard</h1>
+        </div>
+    </div>
+
+</div>
+
+<div fxLayout="row" fxLayoutAlign="space-between center" fxLayout.lt-sm="column" class="executiveDashboard">
+    <div fxLayout="column">
+        <div fxFlex="">
+            <span>City</span>
+        </div>
+        <div fxFlex="">
+            <mat-form-field appearance="fill">
+                <mat-select (selectionChange)="cityChanged($event)" [(ngModel)]="selectedCity">
+                    <mat-option *ngFor="let city of cityNames" [value]="city">
+                        {{city}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div fxLayout="column">
+        <div fxFlex="">
+            <span>Plant</span>
+        </div>
+        <div fxFlex="">
+            <mat-form-field *ngIf="plantNames" appearance="fill">
+                <mat-select (selectionChange)="plantChanged($event)" [(ngModel)]="selectedPlant">
+                    <mat-option *ngFor="let plant of plantNames" [value]="plant">
+                        {{plant}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div fxLayout="column">
+        <div fxFlex="">
+            <span> Site </span>
+        </div>
+        <div fxFlex="">
+            <mat-form-field *ngIf="siteNames" appearance="fill">
+                <mat-select (selectionChange)="siteChanged($event)" [(ngModel)]="selectedSite">
+                    <mat-option *ngFor="let site of siteNames" [value]="site">
+                        {{site}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div fxLayout="column" class="exeDaptePickerBox">
+        <div fxFlex="">
+            <span> Date Range </span>
+        </div>
+        <div fxFlex="">
+            <input class="form-control exeDaptePicker" [value]="dateTextInput" placeholder="Select a date"
+                daterangepicker name="daterangeInput" (selected)="selectedDate($event)" [options]="options"
+                (cancelDaterangepicker)="calendarCanceled($event)" (applyDaterangepicker)="calendarApplied($event)" />
+        </div>
+    </div>
+
+    <div fxLayout="row" class="exeHeadingBtns">
+        <button type="button" class="ml-3 btn btn-info exeClear" (click)="clear()">
+            <span>Clear</span>
+        </button>
+        <button type="button" class="ml-3 btn btn-info exesearch" (click)="search()">
+            <span>Search</span>
+        </button>
+    </div>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="space-between End" fxLayout.lt-sm="column" class="executiveDashboard">
+    <div fxLayout="column" class="executiveDashRow">
+        <div>
+            <span>Hierarchy View</span>
+        </div>
+        <div fxLayout="row">
+            <div fxFlex="" class="executiveDashRowView">
+                <div fxlayout="row"><span>{{cities.length}}</span></div>
+                <div fxlayout="row" class="nameImage">
+                    <div fxFlex="">
+                        <span>Cities</span>
+                    </div>
+                    <div fxFlex="">
+                        <em><img src="assets/svg/cities.svg" alt="cities"></em>
+                    </div>
+                </div>
+            </div>
+            <div fxFlex="" class="executiveDashRowView">
+                <div fxlayout="row"><span>{{plantCount}}</span></div>
+                <div fxlayout="row" class="nameImage">
+                    <div fxFlex="">
+                        <span>Plants</span>
+                    </div>
+                    <div fxFlex="">
+                        <em><img src="assets/svg/plant.svg" alt="plant"></em>
+                    </div>
+                </div>
+            </div>
+            <div fxFlex="" class="executiveDashRowView">
+                <div fxlayout="row"><span>{{siteCount}}</span></div>
+                <div fxlayout="row" class="nameImage">
+                    <div fxFlex="">
+                        <span>Sites</span>
+                    </div>
+                    <div fxFlex="">
+                        <em><img src="assets/svg/Sites.svg" alt="Sites"></em>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="exeSummary">
+            <em>Utilization Summary</em> Active users count is based on uplink recieved from 2 am today
+        </div>
+        <div fxLayout="row">
+            <div fxFlex="" class="executiveDashRowView">
+                <div fxlayout="row"><span>{{responsDto.totalUsers}}</span></div>
+                <div fxlayout="row" class="nameImage">
+                    <div fxFlex="">
+                        <span>End users</span>
+                    </div>
+                    <div fxFlex="">
+                        <em><img src="assets/svg/EndUser.svg" alt="EndUser"></em>
+                    </div>
+                </div>
+            </div>
+            <div fxFlex="" class="executiveDashRowView">
+                <div fxlayout="row"><span>{{responsDto.activeUsers}}</span></div>
+                <div fxlayout="row" class="nameImage">
+                    <div fxFlex="">
+                        <span>Active Users</span>
+                    </div>
+                    <div fxFlex="">
+                        <em><img src="assets/svg/ActiveUser.svg" alt="ActiveUser"></em>
+                    </div>
+                </div>
+            </div>
+            <div fxFlex="" class="executiveDashRowView">
+                <div fxlayout="row"><span>{{responsDto.avgHrs}}</span></div>
+                <div fxlayout="row" class="nameImage">
+                    <div fxFlex="">
+                        <span>Average Hrs</span>
+                    </div>
+                    <div fxFlex="">
+                        <em><img src="assets/svg/Hrs.svg" alt="Hrs"></em>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div fxLayout="row">
+            <div fxFlex="" class="executiveDashRowView">
+                <div fxlayout="row"><span>{{responsDto.monitoredZones}}</span></div>
+                <div fxlayout="row" class="nameImage">
+                    <div fxFlex="">
+                        <span>Monitored Zones</span>
+                    </div>
+                    <div fxFlex="">
+                        <em><img src="assets/svg/MZ.svg" alt="MZ"></em>
+                    </div>
+                </div>
+            </div>
+            <div fxFlex="" class="executiveDashRowView">
+                <div fxlayout="row"><span>{{responsDto.hzZones}}</span></div>
+                <div fxlayout="row" class="nameImage">
+                    <div fxFlex="">
+                        <span>Hazardous Zones</span>
+                    </div>
+                    <div fxFlex="">
+                        <em><img src="assets/svg/HZ.svg" alt="HZ"></em>
+                    </div>
+                </div>
+            </div>
+            <div fxFlex="" class="executiveDashRowView">
+                <div fxlayout="row"><span>{{responsDto.restrictedZones}}</span></div>
+                <div fxlayout="row" class="nameImage">
+                    <div fxFlex="">
+                        <span>Restricted Zones</span>
+                    </div>
+                    <div fxFlex="">
+                        <em><img src="assets/svg/RZ.svg" alt="HZ"></em>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div fxLayout="column" class="executiveDashRow">
+
+        <div fxLayout="column">
+            <div fxFlex="">
+                <div class="exeCharts">
+                    <span>Hierarchy View</span>
+                    <span>Alerts</span>
+                </div>
+                <div class="container" style="width:fit-content;width: 500px;">
+                    <div style="display: block">
+                        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels"
+                            [options]="barChartOptions" [legend]="barChartLegend" [colors]="colors"
+                            [chartType]="barChartType">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+            <div fxFlex="">
+                <div class="exeCharts">
+                    <span>Social Distancing</span>
+                </div>
+                <div class="container" style="width:fit-content;width: 500px;">
+                    <div style="display: block">
+                        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels"
+                            [options]="barChartOptions" [legend]="barChartLegend" [colors]="colors"
+                            [chartType]="barChartType">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 
+<div class="container">
+    Hierarchy View
+    Cities {{cities.length}}
+    Plants {{plantCount}}
+    Sites {{siteCount}}
+</div>
+<div class="container">
+    Utilization Summary
+    <div class="row">
+        End users {{responsDto.totalUsers}}
+    </div>
+    <div class="row">
+        Active users {{responsDto.activeUsers}}
+    </div>
+    <div class="row">
+        Average Hrs {{responsDto.avgHrs}}
+    </div>
+    <div class="row">
+        Monitored Zones {{responsDto.monitoredZones}}
+    </div>
+    <div class="row">
+        Hazardous Zones {{responsDto.hzZones}}
+    </div>
+    <div class="row">
+        Restricted Zones {{responsDto.restrictedZones}}
+    </div>
+
+
+</div>
+ -->

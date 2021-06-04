@@ -1,0 +1,212 @@
+*{
+	text-decoration: none;
+    list-style-type: none;
+    box-sizing: border-box;
+}
+body {
+	background: #eeeeee;
+	font-family: 'Varela Round', sans-serif;
+    display: flex;
+    box-sizing: border-box;
+}
+.operationalHeading {
+    padding: 0 22px;
+    margin: 0;
+    height: auto;
+    border-bottom: solid 1px rgb(148, 187, 226);
+	color: rgb(43,95,143);
+	justify-content: space-between;
+}
+.operationalHeading .ngSelect {
+	width: 250px;
+	margin: 10px 0;
+}
+.executiveDashboard span {
+	margin: 0;
+    font-weight: 600;
+	color: #000;
+	font-size: 12px;
+}
+.executiveDashboard {
+    padding: 10px 0 5px 22px;
+    margin: 0;
+    height: auto;
+}
+.executiveDashRowView{
+    width: 250px;
+    border-radius: 4px;
+    border: solid 1px #e3e3e3;
+    margin: 15px 25px 0 0;
+    padding: 20px 30px;
+}
+.executiveDashRow span {
+    font-size: 18px;
+    display: block;
+}
+.executiveDashRow .exeCharts{
+    margin: 5px 0 0 0;
+} 
+.executiveDashRowView span {
+    font-size: 16px;
+    color: rgb(43,95,143);
+    font-weight: 700;
+}
+.executiveDashRowView em{
+   float: right;
+}
+.exeSummary {
+    padding: 20px 20px 10px 0;
+}
+.executiveDashboard .exeHeadingBtns .exeClear{
+    background-color: rgb(245,247,250);
+    padding: 16px 40px;
+    color: rgb(43,95,143);
+    font-size: 12px;
+}
+.executiveDashboard .exeHeadingBtns .exesearch{
+    background-color: rgb(43,95,143);
+    color: #fff;
+    font-size: 12px;
+    padding: 16px 40px;
+    margin-right: 21px;
+}
+.executiveDashboard .exeHeadingBtns .exesearch span{
+    color: #fff;
+} 
+.executiveDashRowView .nameImage span{
+    padding-top: 10px;
+    color: #000;
+    /* line-height: 2.5em; */
+    font-weight: normal;
+} 
+.exeSummary em{
+    font-size: 20px;
+    font-style: normal;
+    padding-right: 20px;
+}
+ .operationalHeading h1{
+    margin: 0;
+    font-size: 1.5rem;
+    color: rgb(43,95,143);
+    display:inline-block;
+	line-height: 2.2em;
+	font-size: 1.5rem;
+}
+.executiveDashboard .exeHeadingBtns {
+    margin-top: 20px;
+}
+.exeDaptePickerBox{
+    position: relative;
+    top: -2px;
+}
+input.exeDaptePicker {
+    background-color: rgb(245,247,250);
+    border: none;
+    padding: 24px 33px;
+}
+.exeDaptePickerBox span{
+    line-height: 30px;
+}
+.ZoneParaM {
+	display: flex;
+	justify-content: space-between;
+	padding: 1rem 1.5rem;
+}
+.ZoneParaM h5{
+	font-size: 1rem;
+}
+.zoneParaRow{
+	padding: 1rem 1.5rem;
+}
+.zoneParaRow h4{
+	width: 200px;
+    color: rgb(43,95,143);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+    line-height: 0.5rem;
+}
+.zoneParaRow em{
+	font: 0.4rem;
+	color: rgb(43,95,143);
+	font-style: normal;
+}
+.operationalHeading .siteSearch{
+	font-size: 12px;
+    border: none;
+    /* min-width: 77%; */
+    display: block;
+    margin-top: 4px;
+}
+.operationalDataRow{
+	/* width: 94%;
+    margin: 2% auto; */
+	/* padding: 10px 0 0 0; */
+	border-radius: 3px;
+	height: 360px;
+} 
+.dataTblHeadings input[type=text], select, button{
+	border: none;
+	font-size: 12px;
+}
+.dataTblHeadings .form-control{
+	border: none;
+	font-size: 12px;
+}
+.dataTabal{
+	margin: 25px 25px 25px 130px;
+	position: relative;
+    height: 360px;
+    overflow: auto;
+    background-color: #d3d3d3;
+	box-shadow: 0 0 1 rgb(196, 196, 196);
+	box-shadow: 0px 0px 4px 2px #e4e5e6 ;             
+}
+.dataTblHeadings{
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	background-color: rgb(247,247,247);
+    padding: 10px 8px;
+    border-bottom: solid 1px rgb(43,95,143);
+}
+.dataTabal .empList{
+    background-color: rgb(43,95,143);
+    padding: 7px 15px;
+    /* min-width: 100%; */
+    /* font-size: 16px; */
+    margin-right: 20px;
+    border: none;
+    color: #fff;
+}
+.input-wrapper .form-control{
+    display: inline-block;
+    position: relative;
+    padding-left: 40px;
+}
+.dataTblHeadings .input-wrapper::before{
+    font-family: 'FontAwesome';
+    content: '\f002';
+    position: absolute;
+    left:  30px;
+    color: rgb(43,95,143);
+    top: 4px;
+    z-index: 111;
+}
+.dataTopShow {
+    font-size: 12px;
+    padding-top: 10px;
+}
+.emplistBg{
+      background-color: rgb(255, 255, 255);
+    padding: 7px 15px;
+    /* min-width: 100%; */
+    /* font-size: 16px; */
+    margin-right: 20px;
+    border: none;
+    color: rgb(43,95,143);
+}
+.tZone span{
+	font-size: 12px;
+}

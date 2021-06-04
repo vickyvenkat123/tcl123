@@ -1,0 +1,371 @@
+<app-header></app-header>
+<app-left-navigation></app-left-navigation>
+<div fxLayout="row" fxlayoutAlign="space-between center" fxLayout.lt-sm="column" class="operationalHeading">
+    <div fxLayout="row">
+        <div fxFlex="">
+            <h1>Network Gateway Dashboard</h1>
+        </div>
+    </div>
+    <div fxLayout="row">
+        <div fxFlex="100">
+            <span>Dashboard last updated on  </span>
+        </div>
+        <div fxFlex="">
+            <button type="button" class=" btn-info empList" data-toggle="modal"
+                data-target="#resetModal">Export</button>
+        </div>
+    </div>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="space-between center" fxLayout.lt-sm="column" class="zoneRwo">
+    <div fxLayout="column">
+        <div fxFlex="">
+            <h6>Network Status</h6>
+        </div>
+        <div>
+            <p>Network uptime will be calculated from the day Gateway is onboarded in
+                application</p>
+        </div>
+    </div>
+    <div fxLayout="row">
+        <div fxFlex="">
+            <span>Customer</span>
+        </div>
+        <div fxFlex>
+            <select class="form-control" *ngFor="let y of customerListData">
+                <option>{{y.customerName}}</option>
+            </select>
+        </div>
+    </div>
+
+</div>
+<div fxLayout="row" fxLayoutAlign="space-between center" fxLayout.lt-sm="column" class="zoneThreeRow">
+    <div fxLayout="row">
+        <div>
+            <em>Total Installed Gateways</em>
+        </div>
+        <div class="zoneSvgHeading"> 
+            <svg height="100" width="100">
+                <circle cx="50" cy="50" r="30" width="500" height="100" style="fill:rgb(255, 255, 255); stroke-width:4; stroke:rgb(38, 78, 116);" />
+            </svg>
+            <span class="total-installedGateway">{{networkStatusData.totalInstalledGateways}}</span>
+        </div>
+    </div>
+    <div fxLayout="row">
+        <div><em>Working Gateways</em></div>
+        <div class="zoneSvgHeading">
+             <svg height="100" width="100">
+                <circle cx="50" cy="50" r="30" style="fill:rgb(255, 255, 255); stroke-width:4; stroke:rgb(38, 78, 116);"  />
+            </svg>
+            <span class="workingGateway">{{networkStatusData.totalWorkingGateways}}</span>
+        </div>
+    </div>
+    <div fxLayout="row">
+        <div> <em>Non Working Gateways </em></div>
+        <div class="zoneSvgHeading"> 
+            <svg height="100" width="100">
+                <circle cx="50" cy="50" r="30" style="fill:rgb(255, 255, 255); stroke-width:4; stroke:rgb(38, 78, 116);"  />
+            </svg>
+            <span class="nonWokingGateway">{{networkStatusData.totalNonWorkingGateways}}</span>
+        </div>
+    </div>
+
+    <div fxLayout="row">
+        <div> <em>Network Uptime</em></div>
+        <div class="zoneSvgHeading">
+            <svg height="100" width="100">
+                <circle cx="50" cy="50" r="30" style="fill:rgb(255, 255, 255); stroke-width:4; stroke:rgb(38, 78, 116);"  />
+            </svg>
+            <span class="networkUptime">{{networkStatusData.networkUptime}}</span>
+        </div>
+    </div>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="space-between center" fxLayout.lt-sm="column" class="zoneFourRow">
+    <div fxLayout="row" class="zoneFourRowOne" >
+        <div>
+            <table>
+                <thead class="GateWayStickyHeader">
+                    <tr>
+                        <th>Locations</th>
+                        <th>Installed Gateways</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="totalInstalledGatewaysData.statusList">
+                    <tr *ngFor="let x of totalInstalledGatewaysData.statusList">
+                        <td>{{x.city.cityName}}</td>
+                        <td class="installedGateway">{{x.count}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div fxLayout="row" class="zoneFourRowOne">
+        <div>
+            <table>
+                <thead class="GateWayStickyHeader">
+                    <tr>
+                        <th>Locations</th>
+                        <th>Working Gateways</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="workingGatewaysData.statusList">
+                    <tr *ngFor="let x of workingGatewaysData.statusList">
+                        <td>{{x.city.cityName}}</td>
+                        <td class="installedGateway">{{x.count}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div fxLayout="row" class="zoneFourRowOne">
+        <div>
+            <table>
+                <thead class="GateWayStickyHeader">
+                    <tr>
+                        <th>Locations</th>
+                        <th>Non Working Gateways</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="nonWorkingGatewaysData.statusList">
+                    <tr *ngFor="let x of nonWorkingGatewaysData.statusList">
+                        <td>{{x.city.cityName}}</td>
+                        <td class="installedGateway">{{x.count}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div fxLayout="row" class="zoneFourRowOne">
+        <div>
+            <table>
+                <thead class="GateWayStickyHeader">
+                    <tr>
+                        <th>Locations</th>
+                        <th>Network Uptime %</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="networkUptimeData.networkStatusList">
+                    <tr *ngFor="let x of networkUptimeData.networkStatusList">
+                        <td>{{x.city.cityName}}</td>
+                        <td class="installedGateway">{{x.upTimePercentage}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="">
+    <div class="row">
+        <!-- <div class="col-md-9">
+                    <h3>Network Gateway Dashboard</h3>
+                </div> -->
+        <div clss="col-md-3">
+            <!-- <button type="button" class="ml-2 d-inline btn btn-info" data-toggle="modal"
+                        data-target="#resetModal">Export</button> -->
+            <!-- Modal -->
+            <div class="modal fade" id="resetModal" tabindex="-1" role="dialog" aria-labelledby="resetModalTitle"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Report</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+                                <select class="form-control" id="gatewayDropdown" form
+                                    formControlName="gatewayDropdown">
+                                    <option value="" selected>All </option>
+                                    <option value="2">Total Installed Gateways</option>
+                                    <option value="3">Working Gateways</option>
+                                    <option value="4">Non Working Gateways</option>
+                                    <option value="5">Network Uptime</option>
+                                </select>
+                                <!-- <br /> -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <span>Start Date</span>
+                                        <mat-form-field>
+                                            <input matInput [matDatepicker]="picker1" formControlName="fromDate"
+                                                id="fromDate" placeholder="dd/mm/yyyyy">
+                                            <mat-datepicker-toggle matSuffix [for]="picker1">
+                                            </mat-datepicker-toggle>
+                                            <mat-datepicker #picker1></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <span>End Date</span>
+
+                                        <mat-form-field>
+                                            <input matInput [matDatepicker]="picker2" placeholder="dd/mm/yyyyy"
+                                                formControlName="toDate" id="toDate">
+                                            <mat-datepicker-toggle matSuffix [for]="picker2">
+                                            </mat-datepicker-toggle>
+                                            <mat-datepicker #picker2></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <span>City List</span>
+                                        <select class="form-control" id="cityDropdown" formControlName="cityDropdown" (selectionChange)="cityChanged($event)" [(ngModel)]="selectedCity">
+                                            <option *ngFor="let x of totalInstalledGatewaysData.statusList" [value]="city">
+                                                {{x.city.cityName}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-6">
+                                        <span>Report Type</span>
+                                        <select class="form-control" id="reportType" formControlName="reportType">
+                                            <option value="" selected>NW Downtime Report</option>
+                                            <option value="2">Historical Report</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="ml-2 d-inline btn btn-info"
+                                (click)="download()">Download</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    <div class="row">
+        <div class="col-lg-6">
+            <!-- <h6>Network Status</h6>
+            <p style="font-size: 12px;">Network uptime will be calculated from the day Gateway is onboarded in
+                application</p> -->
+        </div>
+        <div class="col-lg-2"></div>
+        <div class="col-lg-4">
+            <!-- <span>Customer</span>
+            <select class="form-control" *ngFor="let y of customerListData">
+                <option>{{y.customerName}}</option>
+            </select> -->
+        </div>
+    </div>
+    <!-- <div class="row">
+        <div>
+            <span>Total Installed Gateways</span>
+            <span>
+                <svg height="100" width="100">
+                    <circle cx="50" cy="50" r="30" stroke="blue" stroke-width="3" fill="white" />
+                </svg>
+                <span class="total-installedGateway">{{networkStatusData.totalInstalledGateways}}</span>
+            </span>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Locations</th>
+                        <th>Installed Gateways</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="totalInstalledGatewaysData.statusList">
+                    <tr *ngFor="let x of totalInstalledGatewaysData.statusList">
+                        <td>{{x.city.cityName}}</td>
+                        <td class="installedGateway">{{x.count}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-3">
+            <span>Working Gateways</span>
+            <span>
+                <svg height="100" width="100">
+                    <circle cx="50" cy="50" r="30" stroke="blue" stroke-width="3" fill="white" />
+                </svg>
+                <span class="workingGateway">{{networkStatusData.totalWorkingGateways}}</span>
+            </span>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Locations</th>
+                        <th>Working Gateways</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="workingGatewaysData.statusList">
+                    <tr *ngFor="let x of workingGatewaysData.statusList">
+                        <td>{{x.city.cityName}}</td>
+                        <td class="installedGateway">{{x.count}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-3">
+            <span>Non Working Gateways </span>
+            <span>
+                <svg height="100" width="100">
+                    <circle cx="50" cy="50" r="30" stroke="blue" stroke-width="3" fill="white" />
+                </svg>
+                <span class="nonWokingGateway">{{networkStatusData.totalNonWorkingGateways}}</span>
+            </span>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Locations</th>
+                        <th>Non Working Gateways</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="nonWorkingGatewaysData.statusList">
+                    <tr *ngFor="let x of nonWorkingGatewaysData.statusList">
+                        <td>{{x.city.cityName}}</td>
+                        <td class="installedGateway">{{x.count}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-3">
+            <span>Network Uptime</span>
+            <span>
+                <svg height="100" width="100">
+                    <circle cx="50" cy="50" r="30" stroke="blue" stroke-width="3" fill="white" />
+                </svg>
+                <span class="networkUptime">{{networkStatusData.networkUptime}}</span>
+            </span>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Locations</th>
+                        <th>Network Uptime %</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="networkUptimeData.networkStatusList">
+                    <tr *ngFor="let x of networkUptimeData.networkStatusList">
+                        <td>{{x.city.cityName}}</td>
+                        <td class="installedGateway">{{x.upTimePercentage}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div> -->
+</div>

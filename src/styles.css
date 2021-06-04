@@ -1,0 +1,196 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@ng-select/ng-select/themes/default.theme.css";
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import "../node_modules/ag-grid-community/dist/styles/ag-grid.css";
+@import "../node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css";
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.siteSearch .ng-select .ng-select-container {
+    color: #333;
+    background-color: #f8fbfb;
+    border-radius: 4px;
+    border: 1px solid #fffefe;
+    min-height: 36px;
+    align-items: center;
+    width: 300px;
+}
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-optgroup, .ng-dropdown-panel .ng-dropdown-panel-items .ng-option{
+    font-size: 12px;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.ag-theme-alpine .ag-ltr .ag-cell{
+    font-size: 12px;
+    border-bottom: solid 1px rgb(43,95,143);
+    border-top: 0;
+}
+.ag-theme-alpine{
+    background-color: rgb(247,247,247);
+    padding: 0px 10px 10px 10px;
+}
+.ag-theme-alpine .ag-cell, .ag-theme-alpine .ag-full-width-row .ag-cell-wrapper.ag-row-group{
+    border : none;
+}
+.ag-theme-alpine .ag-root-wrapper{
+    border: none;
+}
+#myGrid{
+    padding: 0;
+}
+.ag-theme-alpine .ag-row {
+    font-size: 14px;
+    border: 0;
+}
+.mat-form-field {
+    display: inline-block;
+    position: relative;
+    text-align: left;
+    padding: 0;
+    border: 0;
+    border-radius: 4px;
+}
+.ng-select.ng-select-single .ng-select-container{
+    background-color: rgb(245,247,250);
+}
+.ng-select .ng-select-container{
+    border : none;
+}
+.zoneStick.ng-select .ng-select-container.ng-has-value {
+    background-color: #fff;
+    font-size: 12px;
+    height: 25px;
+}
+table.mat-table {
+    border-spacing: 0;
+    margin: 0 auto;
+    width: 100%;
+    font-size: 1rem;
+}
+.ng-input> input{
+    font-size: 12px;
+}
+.mat-sort-header, .mat-cell {
+    font-size: 12px;
+}
+.mat-header-row, .mat-header-cell{
+    font-size: 12px;
+    font-weight: bold;
+}
+.mat-form-field-appearance-fill .mat-form-field-infix {
+    padding: .25em 0 .75em 0;
+    background: none;
+    padding: 0;
+    border-radius: 14px;
+    border: none;
+}
+.operationalHeading .mat-form-field-appearance-fill .mat-form-field-flex {
+    border-radius: 4px !important;
+    padding: 10px 15px  !important;
+    background-color:rgb(245,247,250) !important;
+    margin-top: 15px;
+    width: 250px !important;
+}
+.mat-select-arrow {
+
+    margin-top: 11px !important;
+}
+
+.mat-form-field-appearance-fill .mat-form-field-underline::before {
+    background:transparent;
+}
+.cdk-overlay-container{ z-index: 1200 !important; }
+.tZone .mat-form-field-appearance-fill .mat-form-field-flex {
+    background-color: #fff !important;
+    margin: 0;
+    height: 33px;
+}
+.tZone .mat-form-field-wrapper {
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+.tZone .mat-form-field-ripple {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    transform-origin: 50%;
+    transform: scaleX(0.5);
+    opacity: 0;
+    transition: background-color 300ms cubic-bezier(0.22, 0, 0.22, 0.0);
+    background-color: #e9f2f8;
+
+}
+.mat-select-value-text, .mat-option-text{
+    font-size: 12px;
+}
+.mat-select-panel .mat-option {
+    font-size: inherit;
+    line-height: 2em;
+    height: 2em !important;
+}
+.tZone .mat-select-value-text, .mat-option-text{
+    font-size: 12px;
+    position: relative;
+    top: -4px;
+}
+
+/* opt dashboard */
+.signIn.forGotPassword .otp-input{
+    width: 59px;
+    height: 50px;
+    border-radius: 4px;
+    border: 1px solid rgb(43,95,143) !important;
+    text-align: center;
+    font-size: 32px;
+    color: rgb(43,95,143) ;
+}
+.signIn.forGotPassword .otp-input:focus-visible{
+
+    border: 2px solid rgb(43,95,143) !important;
+
+    color: rgb(43,95,143) ;
+}
+.signIn.forGotPassword .wrapper .otp-input{
+    margin-left: 0 !important;
+}
+.mat-dialog-title{
+    background:none !important;
+    color : #B00020 !important;
+    margin-bottom: 10px !important;
+}
+.mat-dialog-container{
+    background-color: rgb(245,247,250);
+    display: block;
+    padding: 24px 30px;
+    font-size: 14px;
+}
+.mat-dialog-actions {
+    padding: 13px 0 !important   
+}
+/* executive dashboard */
+.executiveDashboard .mat-form-field-appearance-fill .mat-form-field-flex {
+    border-radius: 4px !important;
+    padding: 15px 15px  !important;
+    background-color:rgb(245,247,250) !important;
+    margin-top: 5px;
+    width: 250px !important;
+}
+.executiveDashboard .mat-form-field-wrapper {
+    
+    padding-bottom: 0;
+}
+.executiveDashboard .mat-form-field-appearance-fill .mat-form-field-ripple{
+    bottom: -24px !important;
+    height: 1px;
+}
+/* card utilization */
+#resetModalUtilization .mat-form-field-appearance-fill .mat-form-field-flex{
+    padding-bottom: 10px;
+}
+#resetModalUtilization span{
+    font-size: 12px;
+}
+/* #resetModalUtilization .matSlt{
+    
+} */

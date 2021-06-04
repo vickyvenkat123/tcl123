@@ -1,0 +1,12 @@
+.headerContainer span.sideHeading{
+	position: relative;
+    color: rgb(43,95,143);
+    font-size: 1.4rem;
+    margin: 0;
+    padding: 5px 0 0 0;
+} 
+.headerContainer{
+    padding: 10px 0;
+    box-shadow: 0 0 1 rgb(196, 196, 196);
+     box-shadow: 0px 0px 4px 2px #e4e5e6 ;                 
+}

@@ -1,0 +1,39 @@
+
+<div class="container" *ngIf= "beaconList">
+<h1 style="background-color:rgb(43,95,143);"  mat-dialog-title>Beacon List</h1>
+<mat-dialog-content>
+<div class="table">
+    <table>
+    <thead>
+        <tr>
+            <th style="width: 200px;">Sr No</th>
+            <th style="width: 50px;">Deveui</th>
+            <th style="width: 50px;">Beacon Id</th>
+            <th style="width: 150px;">Serial Number</th>
+            <th style="width: 50px;">Beacon Type</th>
+            <th style="width: 50px;">Device Status</th>
+        </tr>
+    </thead>
+    <tbody *ngIf="beaconList.length>0">
+        <tr *ngFor="let beacon of beaconList; index as count">
+            <td>{{count + 1}}</td>
+            <td>{{beacon.deveui}}</td>
+            <td>{{beacon.beaconId}}</td>
+            <td>{{beacon.serialNumber}}</td>
+            <td>{{beacon.beaconType}}</td>
+            <td>{{beacon.deviceStatus}}</td>
+        </tr>
+    </tbody>
+    <tbody *ngIf="beaconList.length == 0">
+        No data to display
+    </tbody>
+    </table>
+    {{beaconList.length}} Total
+</div>    
+
+</mat-dialog-content>
+<mat-dialog-actions>
+<button  mat-raised-button (click)="closeMe()">Close</button>
+</mat-dialog-actions>
+
+</div>

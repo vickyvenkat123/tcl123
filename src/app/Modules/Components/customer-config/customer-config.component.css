@@ -1,0 +1,96 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    background-color: transparent;
+}
+body{
+    background-color : #f3f7f8;
+}
+.topBread{
+    background-color: #e3e3e3;
+    padding: 5px 15px;
+    width: 100%;
+}
+.leftFontaesomeNav {
+    height: 100vh;
+    padding: 10px;
+    background-color: #0c6ca6;
+}
+.leftNavIcons {
+    background-color: #0c6ca6;
+    color: #fff;
+}
+.leftNavIcons .fa:hover {
+    background-color: #0c6ca6;
+    color: #fff;
+    background-color: #333;
+    cursor: pointer;
+}
+.leftNavIcons .fa{
+    background-color: #0c6ca6;
+    padding: 10px 23px;
+    width: 60px;
+    border-bottom: solid 1px #0a7bc0;
+}
+.leftNavIcons .fa.active{
+    background-color: #333;
+    padding: 10px 23px;
+    width: 60px;
+    border-bottom: solid 1px #0a7bc0;
+}
+.leftIconsBox {
+    float: left;
+}
+.leftNavigationIcons{
+    background-color: #0c6ca6;
+    padding-top: 36px;
+    height: 100%;
+    float: left;
+}
+.allData{
+    background-color: #333;
+    color: #fff;
+    float: left;
+    max-height: 100vh;
+}
+.allData .rightDataList{
+    position: relative;
+    font-size: 12px;
+    padding: 10px 0;
+}
+.allData .rightDataList .namesIcons{
+    background-color: #0c6ca6;
+    padding: 5px 10px;
+    font-size: 12px;
+    cursor: pointer;
+}
+.allData .displayDataDiv{
+    max-height: 250px;
+    overflow: auto;
+    width: 319px;
+}
+.allData .displayDataDiv .cityNamesData{
+    padding: 5px 10px;
+    font-size: 12px;
+}
+.allData .displayDataDiv .cityNamesData:hover{
+    background-color: #0c6ca6;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+.allData .displayDataDiv .dataHeading{
+    font-size: 14px;
+    padding: 3px 15px;
+}
+.customerRightData{
+    background-color: #e3e3e3;
+    height: 100vh;
+    width: 100%;
+}
+@media screen and (max-width : 768px){
+    .allData .displayDataDiv{
+        width: 300px;
+    }
+}
