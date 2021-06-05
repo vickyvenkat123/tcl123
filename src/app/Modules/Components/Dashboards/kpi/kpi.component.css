@@ -1,0 +1,28 @@
+.kpi-header{
+    display: block !important;
+    border-bottom: 1px solid #ece4e4;
+}
+
+*{
+	text-decoration: none;
+    list-style-type: none;
+    box-sizing: border-box;
+}
+body {
+	background: #eeeeee;
+	font-family: 'Varela Round', sans-serif;
+    display: flex;
+    box-sizing: border-box;
+}
+.dashrow-one em{
+    font-size: 15px;
+    font-style: normal;
+    display: inline-block;
+    padding: 0px 40px 5px 0px;
+    line-height: 1.2em;
+}
+
+.dashrow-one{
+	padding-right: 0;
+}
+
