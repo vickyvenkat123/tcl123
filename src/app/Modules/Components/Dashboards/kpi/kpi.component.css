@@ -26,3 +26,16 @@ body {
 	padding-right: 0;
 }
 
+.outer-params .other-params{
+    border: 1px solid #e7e8ea;
+    padding: 15px;
+    border-radius: 12px;
+    background: #f5f7fa;
+}
+
+.params-title{
+    color:#2b5f8f;
+    font-size: 17px;
+    font-weight: bold;
+
+}
