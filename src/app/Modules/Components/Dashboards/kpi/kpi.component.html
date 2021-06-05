@@ -176,13 +176,11 @@
                 Name4
             </div>
             <div fxLayout="column">
-                <div fxLayout="row" fxLayoutGap="14px">
-                    <div fxFlex="70" class="sec1" fxFlex.xs="55">
-                        first-section
-                    </div>
-                    <div fxFlex="30" class="sec2">
-                        second-section
-                    </div>
+                <div fxLayout="row">
+                    <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors"
+                        [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins" (chartHover)="lineChartHovered($event)"
+                        (chartClick)="lineChartClicked($event)">
+                    </canvas>
                 </div>
             </div>
         </div>
