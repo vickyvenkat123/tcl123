@@ -14,124 +14,127 @@
     </div>
     <div fxLayout="row" fxLayoutAlign="space-between center" fxLayout.lt-sm="column" class="operationalChartRow">
 
-        <div fxLayout="column">
+        <div fxLayout="column"  fxFlex="33">
             <div fxLayout="row">
                 <div class="dashrow-one">
-                    <em>KPI: Data Loss
+                    <span>KPI: Data Loss
                         <img src="assets/svg/info.svg" alt="info" />
-                    </em>
+                    </span>
                 </div>
                 <div class="dashrow-one">
-                    <em>Date
+                    <span>Date
                         <i class="fa fa-calendar" aria-hidden="true"></i>
-                    </em>
+                    </span>
                 </div>
                 <div class="dashrow-one">
-                    <em> Export
+                    <span> Export
                         <img _ngcontent-ktb-c209="" src="assets/svg/download.svg" alt="download">
-                    </em>
+                    </span>
                 </div>
             </div>
             <div fxLayout="row" fxLayoutAlign="space-around center">
-                <div fxLayout="column" fxFlex="30">
-                    <em>Scheduled Package Loss</em>
-                    <em>Scheduled Package Loss</em>
+                <div fxLayout="column" fxFlex="40">
+                    <span>Scheduled Package Loss</span>
+                    <span>Hazardous Package Loss</span>
                 </div>
-                <div fxLayout="column" fxFlex="30">
-                    <em>Scheduled Package Loss</em>
-                    <em>Scheduled Package Loss</em>
-                </div>
+
                 <div fxLayout="column" fxFlex="40">
                     <div style="height: 200px;" class="row">
-                        <canvas baseChart [data]="demodoughnutChartData" [options]="chartOptions" [labels]="doughnutChartLabels" [chartType]="doughnutChartType"
-                            [colors]="chartColors" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                        <canvas baseChart [data]="demodoughnutChartData" [options]="chartOptions"
+                            [labels]="doughnutChartLabels" [chartType]="doughnutChartType" [colors]="chartColors"
+                            (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
                         </canvas>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div fxLayout="column">
+        <div fxLayout="column" fxFlex="33">
             <div fxLayout="row">
                 <div class="dashrow-one">
-                    <em>KPI: Data Loss
+                    <span>KPI: Accuracy
                         <img src="assets/svg/info.svg" alt="info" />
-                    </em>
+                    </span>
                 </div>
-                <div class="dashrow-one">
-                    <em>Date
-                        <i class="fa fa-calendar" aria-hidden="true"></i>
-                    </em>
-                </div>
-                <div class="dashrow-one">
-                    <em> Export
-                        <img _ngcontent-ktb-c209="" src="assets/svg/download.svg" alt="download">
-                    </em>
-                </div>
+
             </div>
             <div fxLayout="row" fxLayoutAlign="space-around center">
-                <div fxLayout="column" fxFlex="30">
-                    <em>Scheduled Package Loss</em>
-                    <em>Scheduled Package Loss</em>
+                <div fxLayout="column" fxFlex="40">
+                    <span>Beacon Accuracy</span>
+                    <span>Total Installed Beacons</span>
+                    <span>Unmanaged Beacons</span>
                 </div>
-                <div fxLayout="column" fxFlex="30">
-                    <em>Scheduled Package Loss</em>
-                    <em>Scheduled Package Loss</em>
-                </div>
+
                 <div fxLayout="column" fxFlex="40">
                     <div style="height: 200px;" class="row">
-                        <canvas baseChart [data]="demodoughnutChartData" [options]="chartOptions" [labels]="doughnutChartLabels" [chartType]="doughnutChartType"
-                            [colors]="chartColors" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                        <canvas baseChart [data]="demodoughnutChartData" [options]="chartOptions"
+                            [labels]="doughnutChartLabels" [chartType]="doughnutChartType" [colors]="chartColors"
+                            (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
                         </canvas>
                     </div>
                 </div>
             </div>
         </div>
-        <div fxLayout="column">
+        <div fxLayout="column" fxFlex="33">
             <div fxLayout="row">
                 <div class="dashrow-one">
-                    <em>KPI: Data Loss
+                    <span>KPI: Delay
                         <img src="assets/svg/info.svg" alt="info" />
-                    </em>
+                    </span>
                 </div>
                 <div class="dashrow-one">
-                    <em>Date
+                    <span>Date
                         <i class="fa fa-calendar" aria-hidden="true"></i>
-                    </em>
+                    </span>
                 </div>
                 <div class="dashrow-one">
-                    <em> Export
+                    <span> Export
                         <img _ngcontent-ktb-c209="" src="assets/svg/download.svg" alt="download">
-                    </em>
+                    </span>
                 </div>
             </div>
             <div fxLayout="row" fxLayoutAlign="space-around center">
-                <div fxLayout="column" fxFlex="30">
-                    <em>Scheduled Package Loss</em>
-                    <em>Scheduled Package Loss</em>
+                <div fxLayout="column" fxFlex="40">
+                    <span>Hazardous Pocket Travel Time</span>
+                    <span>Scheduled Pocket Travel Time</span>
+                    <span>SOS Packet Travel Time</span>
                 </div>
-                <div fxLayout="column" fxFlex="30">
-                    <em>Scheduled Package Loss</em>
-                    <em>Scheduled Package Loss</em>
-                </div>
+
                 <div fxLayout="column" fxFlex="40">
                     <div style="height: 200px;" class="row">
-                        <canvas baseChart [data]="demodoughnutChartData" [options]="chartOptions" [labels]="doughnutChartLabels" [chartType]="doughnutChartType"
-                            [colors]="chartColors" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                        <canvas baseChart [data]="demodoughnutChartData" [options]="chartOptions"
+                            [labels]="doughnutChartLabels" [chartType]="doughnutChartType" [colors]="chartColors"
+                            (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
                         </canvas>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
+    <div>
+        <div>
+            <h4>Other Parametrs</h4>
+            <div fxLayout="row" fxLayoutAlign="center" fxLayout.lt-sm="column" class="operationalChartRow">
+                <div class="dashrow-one">
+                    <span>Date
+                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="dashrow-one">
+                    <span> Export
+                        <img _ngcontent-ktb-c209="" src="assets/svg/download.svg" alt="download">
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="outer-params" fxLayout="row" fxLayoutAlign="space-around center" fxLayout.xs="column">
         <div class="other-params" fxLayout="column" fxFlex="20" fxLayout.xs="column">
             <div fxLayout="row" class="params-title">
                 Hazardous Alerts
             </div>
             <div fxLayout="column">
-                <div fxLayout="row" fxLayoutGap="14px">
+                <div fxLayout="row" fxLayoutGap="5px">
                     <div fxFlex="70" class="sec1" fxFlex.xs="55">
                         first-section
                     </div>
@@ -146,7 +149,7 @@
                 Battery Alerts
             </div>
             <div fxLayout="column">
-                <div fxLayout="row" fxLayoutGap="14px">
+                <div fxLayout="row" fxLayoutGap="5px">
                     <div fxFlex="70" class="sec1" fxFlex.xs="55">
                         first-section
                     </div>
@@ -161,7 +164,7 @@
                 SOS Alerts
             </div>
             <div fxLayout="column">
-                <div fxLayout="row" fxLayoutGap="14px">
+                <div fxLayout="row" fxLayoutGap="5px">
                     <div fxFlex="70" class="sec1" fxFlex.xs="55">
                         first-section
                     </div>
@@ -171,18 +174,42 @@
                 </div>
             </div>
         </div>
-        <div fxLayout="column" fxFlex="35" fxLayout.xs="column">
+        <div fxLayout="column" fxFlex="23" fxLayout.xs="column">
             <div fxLayout="row">
-                Name4
+                Badges
+                <div class="dashrow-one">
+                    <span> Export
+                        <img _ngcontent-ktb-c209="" src="assets/svg/download.svg" alt="download">
+                    </span>
+                </div>
             </div>
             <div fxLayout="column">
                 <div fxLayout="row">
-                    <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors"
-                        [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins" (chartHover)="lineChartHovered($event)"
+                    <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+                        [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"
+                        [plugins]="lineChartPlugins" (chartHover)="lineChartHovered($event)"
                         (chartClick)="lineChartClicked($event)">
                     </canvas>
                 </div>
             </div>
+        </div>
+    </div>
+
+
+    <div class="outer-params" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="14px">
+        <div class="other-params" fxLayout="column" fxFlex="60" fxLayout.xs="column">
+            <div fxLayout="row" class="params-title">
+                Health Index
+            </div>
+
+        </div>
+    </div>
+    <div class="outer-params" fxLayout="row" fxLayoutAlign="end start">
+
+        <div style="display: block;">
+            <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+                [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType">
+            </canvas>
         </div>
     </div>
 </div>

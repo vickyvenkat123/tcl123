@@ -28,9 +28,12 @@ body {
 
 .outer-params .other-params{
     border: 1px solid #e7e8ea;
-    padding: 15px;
+    padding: 50px;
     border-radius: 12px;
-    background: #f5f7fa;
+    background:white;
+    margin: 2px;
+    max-width: 50px;
+
 }
 
 .params-title{
@@ -39,3 +42,5 @@ body {
     font-weight: bold;
 
 }
+
+

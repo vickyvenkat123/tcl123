@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartType, ChartDataSets, ChartOptions } from 'chart.js';
 import { Color, Label, SingleDataSet } from 'ng2-charts';
-
 @Component({
   selector: 'app-kpi',
   templateUrl: './kpi.component.html',
@@ -18,6 +17,9 @@ export class KpiComponent implements OnInit {
   sizeChanged: boolean = false;
   totalNoOfPages: number = 0;
   lineChartType: ChartType = 'line';
+  public barChartOptions: ChartOptions = {
+    responsive: true,
+  };
   constructor() { }
 
   ngOnInit(): void {
@@ -38,9 +40,7 @@ export class KpiComponent implements OnInit {
         displayColors: false
       }
     };
-
   }
-
   // events
   chartClicked(e: any): void {
     //console.log(e);
@@ -50,8 +50,6 @@ export class KpiComponent implements OnInit {
   chartHovered(e: any): void {
     //console.log(e);
   }
-
-
   lineChartData: ChartDataSets[] = [
     { data: [1, 3, 27, 8, 12, 5], label: 'Hazardous' },
     { data: [0, 13, 10, 16, 6, 2], label: 'SOS' }
@@ -92,5 +90,14 @@ export class KpiComponent implements OnInit {
   lineChartHovered(event: any) {
     console.log(event);
   }
+  public barChartLabels: Label[] = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
+  public barChartType: ChartType = 'bar';
+  public barChartLegend = true;
+  public barChartPlugins = [];
+
+  public barChartData: ChartDataSets[] = [
+    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Live mobile' },
+    { data: [28, 48, 40, 19, 86, 27, 90], label: 'Total mobile' }
+  ];
 
 }
