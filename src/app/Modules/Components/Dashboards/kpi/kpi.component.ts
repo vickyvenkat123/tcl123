@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartType, ChartDataSets, ChartOptions } from 'chart.js';
 import { Color, Label, SingleDataSet } from 'ng2-charts';
+import { KpiService } from 'src/app/core/services/kpi.service';
 @Component({
   selector: 'app-kpi',
   templateUrl: './kpi.component.html',
-  styleUrls: ['./kpi.component.css']
+  styleUrls: ['./kpi.component.css'],
 })
 export class KpiComponent implements OnInit {
   chartOptions: any;
@@ -20,7 +21,12 @@ export class KpiComponent implements OnInit {
   public barChartOptions: ChartOptions = {
     responsive: true,
   };
-  constructor() { }
+
+  kpiAlertData: any;
+  kpiSOSData: any;
+  kpiBatteData: any;
+
+  constructor(private kpi: KpiService) {}
 
   ngOnInit(): void {
     this.chartOptions = {
@@ -29,50 +35,61 @@ export class KpiComponent implements OnInit {
       maintainAspectRatio: false,
       title: {
         display: true,
-        fontFamily: "quicksand-medium",
+        fontFamily: 'quicksand-medium',
         fontSize: 16,
-        fontColor: "#747d8c"
+        fontColor: '#747d8c',
       },
       legend: {
-        display: true
+        display: true,
       },
       tooltips: {
-        displayColors: false
-      }
+        displayColors: false,
+      },
     };
-  }
+    this.getKPISOS();
+    this.getKPIBattery();
+    this.getKPIAlerts()
+;  }
   // events
   chartClicked(e: any): void {
     //console.log(e);
   }
-
 
   chartHovered(e: any): void {
     //console.log(e);
   }
   lineChartData: ChartDataSets[] = [
     { data: [1, 3, 27, 8, 12, 5], label: 'Hazardous' },
-    { data: [0, 13, 10, 16, 6, 2], label: 'SOS' }
+    { data: [0, 13, 10, 16, 6, 2], label: 'SOS' },
   ];
 
   //Labels shown on the x-axis
-  lineChartLabels: Label[] = ['23-04-2021', '22-04-2021', '21-04-2021', '20-04-2021', '19-04-2021', '18-04-2021'];
+  lineChartLabels: Label[] = [
+    '23-04-2021',
+    '22-04-2021',
+    '21-04-2021',
+    '20-04-2021',
+    '19-04-2021',
+    '18-04-2021',
+  ];
 
   // Define chart options
   lineChartOptions: ChartOptions = {
-    responsive: true
+    responsive: true,
   };
 
   // Define colors of chart segments
   lineChartColors: Color[] = [
-    { // dark grey
+    {
+      // dark grey
       backgroundColor: 'white',
       borderColor: '#2B5F8F',
     },
-    { // red
+    {
+      // red
       backgroundColor: 'white',
       borderColor: '#BC1D19',
-    }
+    },
   ];
 
   // Set true to show legends
@@ -90,14 +107,48 @@ export class KpiComponent implements OnInit {
   lineChartHovered(event: any) {
     console.log(event);
   }
-  public barChartLabels: Label[] = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
+  public barChartLabels: Label[] = [
+    '2006',
+    '2007',
+    '2008',
+    '2009',
+    '2010',
+    '2011',
+    '2012',
+  ];
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
   public barChartPlugins = [];
 
   public barChartData: ChartDataSets[] = [
     { data: [65, 59, 80, 81, 56, 55, 40], label: 'Live mobile' },
-    { data: [28, 48, 40, 19, 86, 27, 90], label: 'Total mobile' }
+    { data: [28, 48, 40, 19, 86, 27, 90], label: 'Total mobile' },
   ];
 
+  //SOS
+  getKPISOS() {
+    this.kpi.getkpiSOS().subscribe(res => {
+      this.kpiSOSData = res;
+      console.log(res);
+    });
+  }
+
+
+//Battery
+  getKPIBattery() {
+    this.kpi.getkpiBattery().subscribe(res=>{
+      this.kpiBatteData=res;
+      console.log(res);
+    })
+  }
+
+
+
+  //Alerts
+  getKPIAlerts() {
+    this.kpi.getkpiBell().subscribe((res) => {
+      this.kpiAlertData = res;
+      console.log(res);
+    });
+  }
 }
