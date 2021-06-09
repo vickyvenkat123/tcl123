@@ -30,7 +30,9 @@ body {
     vertical-align: middle;
     margin-left: 8px;
 }
-
+.params-img{
+    height: 35px;
+}
 .outer-params .other-params{
     border: 1px solid #e7e8ea;
     padding: 25px;
