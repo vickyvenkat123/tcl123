@@ -2,12 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { ChartType, ChartDataSets, ChartOptions } from 'chart.js';
 import { Color, Label, SingleDataSet } from 'ng2-charts';
 import { KpiService } from 'src/app/core/services/kpi.service';
+import { GatewayService } from 'src/app/core/services/gateway.service';
+import { GatewaysCountDo, NetworkUptimeDto, CityCountDO } from 'src/app/shared/models/gateways-count-do.model';
+
 @Component({
   selector: 'app-kpi',
   templateUrl: './kpi.component.html',
   styleUrls: ['./kpi.component.css'],
 })
 export class KpiComponent implements OnInit {
+  networkStatusData: GatewaysCountDo = new GatewaysCountDo();
   chartOptions: any;
   chartColors: any;
   doughnutChartLabels: string[] = ['Hot Zones', 'Live Zones'];
@@ -26,7 +30,7 @@ export class KpiComponent implements OnInit {
   kpiSOSData: any;
   kpiBatteData: any;
 
-  constructor(private kpi: KpiService) {}
+  constructor(private kpi: KpiService, private gatewayService: GatewayService) { }
 
   ngOnInit(): void {
     this.chartOptions = {
@@ -49,7 +53,8 @@ export class KpiComponent implements OnInit {
     this.getKPISOS();
     this.getKPIBattery();
     this.getKPIAlerts()
-;  }
+      ;
+  }
   // events
   chartClicked(e: any): void {
     //console.log(e);
@@ -134,10 +139,10 @@ export class KpiComponent implements OnInit {
   }
 
 
-//Battery
+  //Battery
   getKPIBattery() {
-    this.kpi.getkpiBattery().subscribe(res=>{
-      this.kpiBatteData=res;
+    this.kpi.getkpiBattery().subscribe(res => {
+      this.kpiBatteData = res;
       console.log(res);
     })
   }
@@ -150,5 +155,16 @@ export class KpiComponent implements OnInit {
       this.kpiAlertData = res;
       console.log(res);
     });
+  }
+
+  networkStatus() {
+    this.gatewayService.getNetworkStatus(sessionStorage.getItem("customerId") || "").subscribe(
+      (result: any) => {
+        this.networkStatusData = result.data;
+        if (this.networkStatusData.networkUptime.toString().indexOf('.') != -1) {
+          this.networkStatusData.networkUptime = Number(this.networkStatusData.networkUptime.toString().substring(0, this.networkStatusData.networkUptime.toString().indexOf('.') + 3));
+        }
+        console.log("networkStatusData" + this.networkStatusData)
+      })
   }
 }
