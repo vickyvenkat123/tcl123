@@ -4,6 +4,7 @@ import { Color, Label, SingleDataSet } from 'ng2-charts';
 import { KpiService } from 'src/app/core/services/kpi.service';
 import { GatewayService } from 'src/app/core/services/gateway.service';
 import { GatewaysCountDo, NetworkUptimeDto, CityCountDO } from 'src/app/shared/models/gateways-count-do.model';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-kpi',
@@ -14,7 +15,7 @@ export class KpiComponent implements OnInit {
   networkStatusData: GatewaysCountDo = new GatewaysCountDo();
   chartOptions: any;
   chartColors: any;
-  doughnutChartLabels: string[] = ['Hot Zones', 'Live Zones'];
+  doughnutChartLabels: string[] = [];
   demodoughnutChartData: number[] = [7280, 1];
   doughnutChartType: ChartType = 'doughnut';
   pageNo: number = 0;
@@ -26,11 +27,14 @@ export class KpiComponent implements OnInit {
     responsive: true,
   };
 
+  public date = new Date();
+ 
   kpiAlertData: any;
   kpiSOSData: any;
   kpiBatteData: any;
+  Date!: Date;
 
-  constructor(private kpi: KpiService, private gatewayService: GatewayService) { }
+  constructor(private kpi: KpiService, private gatewayService: GatewayService,private datePipe: DatePipe) { }
 
   ngOnInit(): void {
     this.chartOptions = {
@@ -50,6 +54,7 @@ export class KpiComponent implements OnInit {
         displayColors: false,
       },
     };
+    this.Date = new Date();
     this.getKPISOS();
     this.getKPIBattery();
     this.getKPIAlerts()
