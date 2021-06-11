@@ -8,7 +8,7 @@
                 <h3>KPI Dashboard</h3>
             </div>
             <div fxLayoutAlign="end start" fxFlex="40">
-                Dashboard last updated:
+                <h6> Dashboard last updated:{{ Date | date:'short' }}</h6>
             </div>
         </div>
 
@@ -51,8 +51,9 @@
 
                 <div fxLayout="column" fxFlex="40">
                     <div style="height: 200px; width: 140px;" class="row">
-                        <canvas baseChart [data]="demodoughnutChartData" [options]="chartOptions" [labels]="doughnutChartLabels" [chartType]="doughnutChartType"
-                            [colors]="chartColors" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                        <canvas baseChart [data]="demodoughnutChartData" [options]="chartOptions"
+                            [labels]="doughnutChartLabels" [chartType]="doughnutChartType" [colors]="chartColors"
+                            (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
                         </canvas>
                     </div>
                 </div>
@@ -104,8 +105,9 @@
 
                 <div fxLayout="column" fxFlex="40">
                     <div style="height: 200px; width: 140px" class="row">
-                        <canvas baseChart [data]="demodoughnutChartData" [options]="chartOptions" [labels]="doughnutChartLabels" [chartType]="doughnutChartType"
-                            [colors]="chartColors" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                        <canvas baseChart [data]="demodoughnutChartData" [options]="chartOptions"
+                            [labels]="doughnutChartLabels" [chartType]="doughnutChartType" [colors]="chartColors"
+                            (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
                         </canvas>
                     </div>
                 </div>
@@ -155,8 +157,9 @@
 
                 <div fxLayout="column" fxFlex="40">
                     <div style="height: 200px; width: 140px" class="row">
-                        <canvas baseChart [data]="demodoughnutChartData" [options]="chartOptions" [labels]="doughnutChartLabels" [chartType]="doughnutChartType"
-                            [colors]="chartColors" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                        <canvas baseChart [data]="demodoughnutChartData" [options]="chartOptions"
+                            [labels]="doughnutChartLabels" [chartType]="doughnutChartType" [colors]="chartColors"
+                            (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
                         </canvas>
                     </div>
                 </div>
@@ -164,15 +167,17 @@
         </div>
     </div>
     <div>
-        <div>
-            <h4>Other Parametrs</h4>
+        <div fxLayout="row" fxFlex="60">
+            <div fxLayout="row" fxFlex="40">
+                <h4>Other Parametrs</h4>
+            </div>
             <div fxLayout="row" fxLayoutAlign="center" fxLayout.lt-sm="column" class="operationalChartRow">
                 <div class="dashrow-one">
                     <span>Date
                         <i class="fa fa-calendar" aria-hidden="true"></i>
                     </span>
                 </div>
-                <div class="dashrow-one">
+                <div class="dashrow-one" fxLayoutAlign="end start">
                     <span> Export
                         <img src="assets/svg/download.svg" alt="download">
                     </span>
@@ -188,10 +193,12 @@
             <div fxLayout="column">
                 <div fxLayout="row" fxLayoutAlign="space-between center">
                     <div fxFlex="70" class="sec1" fxFlex.xs="55">
-                        24-May-2021
+                        <div>
+                            <h6>{{ Date | date:'short' }}</h6>
+                        </div>
                     </div>
                     <div>
-                        <img src="assets/svg/HZ.svg" class="params-img" alt="alerts">
+                        <img src="assets/svg/bell.svg" class="params-img" alt="alerts">
                     </div>
                 </div>
             </div>
@@ -203,7 +210,7 @@
             <div fxLayout="column">
                 <div fxLayout="row" fxLayoutAlign="space-between center">
                     <div fxFlex="70" class="sec1" fxFlex.xs="55">
-                        24-May-2021
+                        <h6>{{ Date | date:'short' }}</h6>
                     </div>
                     <div>
                         <img src="assets/svg/bell.svg" class="params-img" alt="alerts">
@@ -218,7 +225,7 @@
             <div fxLayout="column">
                 <div fxLayout="row" fxLayoutAlign="space-between center">
                     <div fxFlex="70" class="sec1" fxFlex.xs="55">
-                        24-May-2021
+                        <h6>{{ Date | date:'short' }}</h6>
                     </div>
                     <div>
                         <img src="assets/svg/bell.svg" class="params-img" alt="alerts">
@@ -227,18 +234,32 @@
             </div>
         </div>
         <div fxLayout="column" fxFlex="30" fxLayout.xs="column">
-            <div fxLayout="row">
+            <div fxLayout="row" class="params-title">
                 Badges
-                <div class="dashrow-one">
+                <div class="dashrow-one" fxFlex="row" fxLayoutAlign="end start" fxLayout="10">
                     <span> Export
                         <img src="assets/svg/download.svg" alt="download">
                     </span>
                 </div>
+                <div class="wrapper" fxLayout="row" fxLayoutAlign="start start">
+                    <input type="radio" name="select" id="option-1" checked>
+
+                    <label for="option-1" class="option option-1">
+                        <span>Total Badges</span>
+                    </label>
+
+                    <input type="radio" name="select" id="option-2">
+                    <label for="option-2" class="option option-2">
+                        <span>Live Badges</span>
+                    </label>
+
+                </div>
             </div>
             <div fxLayout="column">
                 <div fxLayout="row">
-                    <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors"
-                        [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins" (chartHover)="lineChartHovered($event)"
+                    <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+                        [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"
+                        [plugins]="lineChartPlugins" (chartHover)="lineChartHovered($event)"
                         (chartClick)="lineChartClicked($event)">
                     </canvas>
                 </div>
@@ -257,8 +278,8 @@
                     <div fxLayout="row" class="space-evenly center circle-index" fxLayoutGap="5px">
                         <div class="zoneSvgHeading">
                             <svg height="100" width="100">
-                                <circle cx="50" cy="50" r="30" width="500" height="100" style="fill:rgb(255, 255, 255); stroke-width:4; stroke:rgb(38, 78, 116);"
-                                />
+                                <circle cx="50" cy="50" r="30" width="500" height="100"
+                                    style="fill:rgb(255, 255, 255); stroke-width:4; stroke:rgb(38, 78, 116);" />
                             </svg>
                             <span class="total-installedGateway">{{networkStatusData.totalInstalledGateways}}</span>
                         </div>
@@ -268,8 +289,8 @@
                     <div fxLayout="row" class="space-evenly center circle-index" fxLayoutGap="5px">
                         <div class="zoneSvgHeading">
                             <svg height="100" width="100">
-                                <circle cx="50" cy="50" r="30" width="500" height="100" style="fill:rgb(255, 255, 255); stroke-width:4; stroke:rgb(38, 78, 116);"
-                                />
+                                <circle cx="50" cy="50" r="30" width="500" height="100"
+                                    style="fill:rgb(255, 255, 255); stroke-width:4; stroke:rgb(38, 78, 116);" />
                             </svg>
                             <span class="total-installedGateway">{{networkStatusData.totalInstalledGateways}}</span>
                         </div>
@@ -279,8 +300,8 @@
                     <div fxLayout="row" class="space-evenly center circle-index" fxLayoutGap="5px">
                         <div class="zoneSvgHeading">
                             <svg height="100" width="100">
-                                <circle cx="50" cy="50" r="30" width="500" height="100" style="fill:rgb(255, 255, 255); stroke-width:4; stroke:rgb(38, 78, 116);"
-                                />
+                                <circle cx="50" cy="50" r="30" width="500" height="100"
+                                    style="fill:rgb(255, 255, 255); stroke-width:4; stroke:rgb(38, 78, 116);" />
                             </svg>
                             <span class="total-installedGateway">{{networkStatusData.totalInstalledGateways}}</span>
                         </div>
@@ -289,38 +310,48 @@
             </div>
         </div>
         <div fxLayout="column" fxFlex="30" fxLayout.xs="column">
-            <div fxLayout="row">
-                Badges
-                <div class="dashrow-one">
+            <div fxLayout="row" class="params-title">
+                Mobile
+                <div class="dashrow-one" fxFlex="row" fxLayoutAlign="end start" fxLayout="10">
                     <span> Export
                         <img src="assets/svg/download.svg" alt="download">
                     </span>
                 </div>
+
             </div>
-            <div fxLayout="column">
-                <div fxLayout="row">
-                    <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors"
-                        [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins" (chartHover)="lineChartHovered($event)"
-                        (chartClick)="lineChartClicked($event)">
-                    </canvas>
+            <div class="wrapper">
+                <input type="radio" name="select" id="option-1" checked>
+
+                <label for="option-1" class="option option-1">
+                    <span>Live Mobiles</span>
+                </label>
+
+                <input type="radio" name="select" id="option-2">
+                <label for="option-2" class="option option-2">
+                    <span>Total Mobiles</span>
+                </label>
+                <div fxLayout="column">
+                    <div fxLayout="row">
+                        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels"
+                            [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend"
+                            [chartType]="barChartType">
+                        </canvas>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- <div class="outer-params" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="14px">
+        <!-- <div class="outer-params" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="14px">
         <div class="other-params" fxLayout="column" fxFlex="60" fxLayout.xs="column">
             <div fxLayout="row" class="params-title">
                 Health Index
             </div>
-
         </div>
     </div>
     <div class="outer-params" fxLayout="row" fxLayoutAlign="end start">
-
         <div style="display: block;">
             <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [plugins]="barChartPlugins"
                 [legend]="barChartLegend" [chartType]="barChartType">
             </canvas>
         </div>
     </div> -->
-</div>
+    </div>
