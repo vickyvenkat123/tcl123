@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartType, ChartDataSets, ChartOptions } from 'chart.js';
-import { Color, Label, SingleDataSet } from 'ng2-charts';
+import { Color, Label, MultiDataSet, SingleDataSet } from 'ng2-charts';
 import { KpiService } from 'src/app/core/services/kpi.service';
 import { GatewayService } from 'src/app/core/services/gateway.service';
 import { GatewaysCountDo, NetworkUptimeDto, CityCountDO } from 'src/app/shared/models/gateways-count-do.model';
@@ -16,7 +16,15 @@ export class KpiComponent implements OnInit {
   chartOptions: any;
   chartColors: any;
   doughnutChartLabels: string[] = [];
-  demodoughnutChartData: number[] = [7280, 1];
+  public doughnutChartData: MultiDataSet = [
+    [350, 450, 100],
+  ];
+//   public doughnutChartColors: any[] = 
+// [
+//     {
+//         backgroundColor: 'rgba(177,200,84,0.2)'
+//     }
+// ]
   doughnutChartType: ChartType = 'doughnut';
   pageNo: number = 0;
   size: number = 10;

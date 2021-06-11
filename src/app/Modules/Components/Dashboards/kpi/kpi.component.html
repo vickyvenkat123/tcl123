@@ -1,19 +1,15 @@
 <app-header></app-header>
 <app-left-navigation></app-left-navigation>
 
-<div>
-    <div fxLayout="row" class="container kpi-header">
-        <div fxLayoutAlign="start center">
-            <div fxLayoutAlign="start start" fxFlex="60">
-                <h3>KPI Dashboard</h3>
+    <div fxLayout="row" class="kpi-header" fxLayoutAlign="space-between center">
+        <div class="params-title index-title">
+                <h3 fxLayoutGap="10px">KPI Dashboard</h3>
             </div>
-            <div fxLayoutAlign="end start" fxFlex="40">
+            <div class="index-title" fxLayoutGap="10px">
                 <h6> Dashboard last updated:{{ Date | date:'short' }}</h6>
             </div>
-        </div>
-
-    </div>
-    <div fxLayout="row" fxLayoutAlign="space-around" fxLayout.lt-sm="column" class="operationalChartRow">
+         </div>
+    <div fxLayout="row" fxLayoutAlign="space-around" fxLayout.lt-sm="column" class="kpi-info">
 
         <div fxLayout="column">
             <div fxLayout="row">
@@ -51,7 +47,7 @@
 
                 <div fxLayout="column" fxFlex="40">
                     <div style="height: 200px; width: 140px;" class="row">
-                        <canvas baseChart [data]="demodoughnutChartData" [options]="chartOptions"
+                        <canvas baseChart [data]="doughnutChartData" [options]="chartOptions"
                             [labels]="doughnutChartLabels" [chartType]="doughnutChartType" [colors]="chartColors"
                             (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
                         </canvas>
@@ -105,7 +101,7 @@
 
                 <div fxLayout="column" fxFlex="40">
                     <div style="height: 200px; width: 140px" class="row">
-                        <canvas baseChart [data]="demodoughnutChartData" [options]="chartOptions"
+                        <canvas baseChart [data]="doughnutChartData" [options]="chartOptions"
                             [labels]="doughnutChartLabels" [chartType]="doughnutChartType" [colors]="chartColors"
                             (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
                         </canvas>
@@ -157,7 +153,7 @@
 
                 <div fxLayout="column" fxFlex="40">
                     <div style="height: 200px; width: 140px" class="row">
-                        <canvas baseChart [data]="demodoughnutChartData" [options]="chartOptions"
+                        <canvas baseChart [data]="doughnutChartData" [options]="chartOptions"
                             [labels]="doughnutChartLabels" [chartType]="doughnutChartType" [colors]="chartColors"
                             (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
                         </canvas>
@@ -166,26 +162,25 @@
             </div>
         </div>
     </div>
-    <div>
-        <div fxLayout="row" fxFlex="60">
-            <div fxLayout="row" fxFlex="40">
+
+        <div fxLayout="row" fxLayoutAlign="space-around center" fxLayout.xs="column">
+            <div class="params-title index-title" fxFlex="40">
                 <h4>Other Parametrs</h4>
             </div>
-            <div fxLayout="row" fxLayoutAlign="center" fxLayout.lt-sm="column" class="operationalChartRow">
-                <div class="dashrow-one">
+            <div  fxFlex="50" fxLayout.lt-sm="column" class="operationalChartRow">
+                <div fxFlex="25" >
                     <span>Date
                         <i class="fa fa-calendar" aria-hidden="true"></i>
                     </span>
                 </div>
-                <div class="dashrow-one" fxLayoutAlign="end start">
+                <div >
                     <span> Export
                         <img src="assets/svg/download.svg" alt="download">
                     </span>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="outer-params" fxLayout="row" fxLayoutAlign="space-around center" fxLayout.xs="column">
+    <div class="outer-params index-title" fxLayout="row" fxLayoutAlign="space-around center" fxLayout.xs="column">
         <div class="other-params" fxLayout="column" fxFlex="20" fxLayout.xs="column">
             <div fxLayout="row" fxLayoutGap="10px" class="params-title">
                 Hazardous Alerts
@@ -234,27 +229,28 @@
             </div>
         </div>
         <div fxLayout="column" fxFlex="30" fxLayout.xs="column">
-            <div fxLayout="row" class="params-title">
+            <div fxLayout="row" class="params-title index-title">
                 Badges
                 <div class="dashrow-one" fxFlex="row" fxLayoutAlign="end start" fxLayout="10">
                     <span> Export
                         <img src="assets/svg/download.svg" alt="download">
                     </span>
                 </div>
-                <div class="wrapper" fxLayout="row" fxLayoutAlign="start start">
+
+            </div>
+                <div class="wrapper">
                     <input type="radio" name="select" id="option-1" checked>
 
                     <label for="option-1" class="option option-1">
-                        <span>Total Badges</span>
+                        <span>Live Mobiles</span>
                     </label>
-
+    
                     <input type="radio" name="select" id="option-2">
                     <label for="option-2" class="option option-2">
-                        <span>Live Badges</span>
+                        <span>Total Mobiles</span>
                     </label>
 
                 </div>
-            </div>
             <div fxLayout="column">
                 <div fxLayout="row">
                     <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
@@ -310,7 +306,7 @@
             </div>
         </div>
         <div fxLayout="column" fxFlex="30" fxLayout.xs="column">
-            <div fxLayout="row" class="params-title">
+            <div fxLayout="row" class="params-title index-title">
                 Mobile
                 <div class="dashrow-one" fxFlex="row" fxLayoutAlign="end start" fxLayout="10">
                     <span> Export

@@ -1,6 +1,9 @@
 .kpi-header{
-    display: block !important;
     border-bottom: 1px solid #ece4e4;
+    padding: 10px 20px;
+}
+.kpi-info{
+    padding-top: 15px;
 }
 
 *{
