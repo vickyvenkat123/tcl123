@@ -14,7 +14,7 @@ body {
     display: flex;
     box-sizing: border-box;
 }
-.dashrow-one em{
+.dashrow-one span{
     font-size: 15px;
     font-style: normal;
     display: inline-block;
@@ -25,22 +25,37 @@ body {
 .dashrow-one{
 	padding-right: 0;
 }
-
+.option{
+    font-size: 13px;
+    vertical-align: middle;
+    margin-left: 8px;
+}
+.params-img{
+    height: 35px;
+}
 .outer-params .other-params{
     border: 1px solid #e7e8ea;
-    padding: 50px;
+    padding: 25px;
     border-radius: 12px;
     background:white;
-    margin: 2px;
-    max-width: 50px;
+}
 
+.outer-index .inner-index{
+    border: 1px solid #e7e8ea;
+    border-radius: 12px;
+    background:white;
+    padding: 25px;
 }
 
 .params-title{
     color:#2b5f8f;
-    font-size: 17px;
+    font-size: 18px;
+    padding-bottom: 25px;
     font-weight: bold;
-
 }
-
-
+.index-title{
+    padding-bottom: 5px;
+}
+.circle-index{
+    justify-content: space-evenly;
+}
