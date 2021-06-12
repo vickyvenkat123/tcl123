@@ -5,6 +5,7 @@ import { KpiService } from 'src/app/core/services/kpi.service';
 import { GatewayService } from 'src/app/core/services/gateway.service';
 import { GatewaysCountDo, NetworkUptimeDto, CityCountDO } from 'src/app/shared/models/gateways-count-do.model';
 import { DatePipe } from '@angular/common';
+import { FormGroup, FormControl } from '../../../../../../node_modules/@angular/forms';
 
 @Component({
   selector: 'app-kpi',
@@ -16,15 +17,19 @@ export class KpiComponent implements OnInit {
   chartOptions: any;
   chartColors: any;
   doughnutChartLabels: string[] = [];
+  range = new FormGroup({
+    start: new FormControl(),
+    end: new FormControl()
+  });
   public doughnutChartData: MultiDataSet = [
     [350, 450, 100],
   ];
-//   public doughnutChartColors: any[] = 
-// [
-//     {
-//         backgroundColor: 'rgba(177,200,84,0.2)'
-//     }
-// ]
+  //   public doughnutChartColors: any[] = 
+  // [
+  //     {
+  //         backgroundColor: 'rgba(177,200,84,0.2)'
+  //     }
+  // ]
   doughnutChartType: ChartType = 'doughnut';
   pageNo: number = 0;
   size: number = 10;
@@ -36,13 +41,13 @@ export class KpiComponent implements OnInit {
   };
 
   public date = new Date();
- 
+
   kpiAlertData: any;
   kpiSOSData: any;
   kpiBatteData: any;
   Date!: Date;
 
-  constructor(private kpi: KpiService, private gatewayService: GatewayService,private datePipe: DatePipe) { }
+  constructor(private kpi: KpiService, private gatewayService: GatewayService, private datePipe: DatePipe) { }
 
   ngOnInit(): void {
     this.chartOptions = {

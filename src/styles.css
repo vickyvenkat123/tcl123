@@ -293,3 +293,13 @@ span.mat-select-min-line{
     margin-top: 5px;
     width: 340px !important;
 }
+
+.dashrow-one .mat-form-field-prefix, .mat-form-field-suffix{
+    top:14px !important;
+}
+.dashrow-one .mat-button-ripple.mat-ripple, .mat-button-focus-overlay{
+position:  relative !important;
+}
+.dashrow-one .mat-date-range-input-container{
+    font-size: 10px !important;
+}
