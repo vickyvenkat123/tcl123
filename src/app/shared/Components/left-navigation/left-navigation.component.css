@@ -1,10 +1,12 @@
 
 .leftNav{
     position: relative;
-    background-color: rgb(245,247,250);
+    /* background-color: rgb(245,247,250); */
     height: 100vh;
-	width: 100px;
+	width: 80px;
 	float: left;
+    box-shadow: 0 0 1 rgb(196, 196, 196);
+    box-shadow: inset 8px 0px -1px 0px #e4e5e6; 
 }
 .leftNav ul{
     margin :0;
@@ -15,43 +17,50 @@
     display: block;
     width: 100px;
     text-align: center;
+    width: 80px;
 }
 .leftNav ul li a{
     display: block;
-    font-size: 12px;
+    font-size: 11px;
     color: rgb(69,114,156);
     text-decoration: none;
-    padding: 10px 0px 10px 0px;
+    padding: 20px 0px 8px 0px;
+	text-align: -webkit-center;
+ }
+ .leftNav ul li a:hover{
+    display: block;
+    font-size: 11px;
+    color: rgb(69,114,156);
+    text-decoration: none;
+    padding: 20px 0px 8px 0px;
+    background-color: rgb(245,247,250);
 	text-align: -webkit-center;
  }
  .leftNav ul li a.active {
 	display: block;
-    font-size: 12px;
-    color: #fff;
-    background-color: #4B83C3;
-    padding: 10px 0px 7px 0px;
+    font-size: 11px;
+    color: rgb(245,247,250);
+    background-color: rgb(245,247,250);
 	cursor: pointer;
- }
- .leftNav ul li a:hover{
-    display: block;
-    font-size: 12px;
-    color: #fff;
-    background-color: #4B83C3;
-    padding: 10px 0px 7px 0px;
-	cursor: pointer;
- }
+    box-shadow: 0 0 1 rgb(196, 196, 196);
+    box-shadow: inset 2px 3px 5px -2px #e4e5e6; 
+ } 
+
  .leftNav ul li a > img{
     display: block;
     color: rgb(69,114,156);
+    width: 16px;
  }
-.leftNav ul li a:hover img, .leftNav ul li a.active img{
-    color: rgb(255, 255, 255);
-	background-color: rgb(255, 255, 255);
- }
+/* .leftNav ul li a:hover img, .leftNav ul li a.active{
+    color: rgb(245,247,250);
+ } */
  .NavShowHide{
-	background-color: #4B83C3;
+	background-color: rgb(245,247,250);
     float: left;
     height: 100vh;
+    box-shadow: 0 0 1 rgb(196, 196, 196);
+    box-shadow:inset 0px 6px 5px -4px #e4e5e6;
+    padding: 10px 10px;
 }
  .NavShowHide ul{
     margin :0;
@@ -60,7 +69,7 @@
 }
 
 .NavShowHide .dashHeading{
-	color: rgb(255, 255, 255);
+	color: rgb(69,114,156);
     font-size: 16px;
     padding: 24px 0 10px 6px;
     font-size: 16px;
@@ -68,12 +77,13 @@
 }
  .NavShowHide .fa-times{
 	float: right;
-    color: rgb(255, 255, 255);
+    color: rgb(200 206 209);
     padding: 10px;
+    font-size: 12px;
 }
 .NavShowHide .fa-times:hover{
 	float: right;
-    color: rgb(255, 255, 255);
+    color: rgb(69,114,156);
     padding: 10px;
 	cursor: pointer;
 }
@@ -83,19 +93,19 @@
 .NavShowHide ul li a{
     display: block;
     font-size: 12px;
-    color: #fff;
+    color: rgb(0, 0, 0);
     text-decoration: none;
-    padding:10px 6px 10px 7px;
-    border-bottom: solid 1px #4374ab;
+    padding:10px 10px 10px 10px;
+    border-bottom: solid 1px #e3e3e3;
  }
  .NavShowHide ul li a:hover{
     display: block;
     font-size: 12px;
-    color: #fff;
-    background-color: #7ea6d2;
-    padding: 10px 6px 10px 7px;
+    color:rgb(0, 0, 0);
+    /* background-color: #7ea6d2; */
+    padding: 10px 10px 10px 10px;
 	cursor: pointer;
  }
 .NavShowHide{
-    background-color: #4B83C3;
+    background-color: rgb(245,247,250);
 }

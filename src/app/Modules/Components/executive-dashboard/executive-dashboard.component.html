@@ -58,7 +58,7 @@
         </div>
         <div fxFlex="">
             <input class="form-control exeDaptePicker" [value]="dateTextInput" placeholder="Select a date"
-                daterangepicker name="daterangeInput" (selected)="selectedDate($event)" [options]="options"
+                daterangepicker name="daterangeInput" (selected)="selectedDate($event)" [options]=""
                 (cancelDaterangepicker)="calendarCanceled($event)" (applyDaterangepicker)="calendarApplied($event)" />
         </div>
     </div>

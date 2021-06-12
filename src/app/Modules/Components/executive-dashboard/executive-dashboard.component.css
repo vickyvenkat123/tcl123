@@ -10,10 +10,10 @@ body {
     box-sizing: border-box;
 }
 .operationalHeading {
-    padding: 0 22px;
+    padding: 3px 22px;
     margin: 0;
     height: auto;
-    border-bottom: solid 1px rgb(148, 187, 226);
+    border-bottom: solid 1px rgb(226, 226, 226);
 	color: rgb(43,95,143);
 	justify-content: space-between;
 }
@@ -93,11 +93,11 @@ body {
 	font-size: 1.5rem;
 }
 .executiveDashboard .exeHeadingBtns {
-    margin-top: 20px;
+    margin-top: 35px;
 }
 .exeDaptePickerBox{
     position: relative;
-    top: -2px;
+    top: 4px;
 }
 input.exeDaptePicker {
     background-color: rgb(245,247,250);

@@ -11,7 +11,6 @@ import { HierarchyService } from 'src/app/core/services/hierarchy.service';
 import * as fs from 'file-saver';
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import { Color, Label, SingleDataSet } from 'ng2-charts';
-import { Plugins } from 'protractor/built/plugins';
 import { DatePipe } from '@angular/common';
 import { EmployeeZoneDto } from 'src/app/shared/models/employee-zone-dto.model';
 import { Zone } from 'src/app/shared/models/zone.model';
@@ -22,6 +21,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { BeaconListModalComponent } from './beacon-list-modal/beacon-list-modal.component';
 import { filter } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import * as $ from 'jquery';
+import Panzoom from '@panzoom/panzoom';
+import { PinchZoomComponent } from 'src/app/shared/Components/pinch-zoom/pinch-zoom.component';
+
 
 @Component({
   selector: 'app-operational-dashboard',
@@ -29,18 +32,16 @@ import { Router } from '@angular/router';
   styleUrls: ['./operational-dashboard.component.css']
 })
 export class OperationalDashboardComponent implements OnInit, AfterViewInit {
-  data: any;
   pageOfItems: Array<any> = new Array<any>();
   chartType: ChartType = 'pie';
   lineChartType: ChartType = 'line';
   chartLabels: Array<string> = new Array<string>();
   chartData: Array<number> = new Array<number>();
   autoCompleteList: Array<string> = new Array<string>();
-  actualList: Array<string> = new Array<string>("Honda", "Maruti", "Heaven", "Mandatory", "ABC");
   myControl = new FormControl();
   searchOptionArray: Array<string> = new Array<string>();
-  @ViewChild('autocompleteInput')
-  autocompleteInput!: ElementRef;
+  @ViewChild('autocompleteInput') autocompleteInput!: ElementRef;
+  @ViewChild('pinch') pinchZoom!: PinchZoomComponent;
   @Output() onSelectedOption = new EventEmitter();
   selectable = true;
   removable = true;
@@ -66,7 +67,6 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
   defaultColDef: any;
   rowData: any;
   filteredData: any;
-  searchAthelete: string = "";
   params: any;
   enableFirstPager: boolean = false;
   enablePreviousPager: boolean = false;
@@ -87,7 +87,7 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['Zone Name', 'Count', 'Beacon Count'];
   @ViewChild(MatSort) sort: MatSort | undefined;
   totalNoOfEmployeesOfZone: number = 0;
-  
+
   constructor(private customerConfigService: CustomerConfigService, private dashboardService: DashboardService, private hierarchyService: HierarchyService, private dialog: MatDialog, private router: Router) {
     this.columnDefs = [
       {
@@ -156,6 +156,7 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
   @ViewChild("canvasBGImage") canvasBGImage: ElementRef | undefined;
   @ViewChild("canvas") chessCanvas: ElementRef | undefined;
   @ViewChild("canvasupper") canvasupper: ElementRef | any;
+  @ViewChild('panzoomDiv') panzoomDiv: ElementRef | undefined;
   ctxUpper: any;
   ctx: any;
   beaconIdList: Array<any> = [];
@@ -172,8 +173,9 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
   canvasHeight: any;
   canvasWidth: any;
   @ViewChild('canvasDiv') canvasDiv: any;
-  @ViewChild('panzoomDiv') panzoomDiv: ElementRef | undefined;
-  myImage:any;
+  myImage: any;
+  isProcessingOrNotForMap: boolean = false;
+  panzoom: HTMLElement | undefined;
   ngOnInit(): void {
     this.myImage = new Image(32, 32);
     this.myImage.src = './assets/images/Beacon-black.png';
@@ -194,14 +196,50 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    if (this.panzoomDiv){
-      (this.panzoomDiv.nativeElement).panzoom({
-        $zoomIn: ('.zoom-in'),
-        $zoomOut: ('.zoom-out'),
-        $zoomRange: ('.zoom-range'),
-        $reset: ('.reset')
-      });
-    }
+    // if (this.panzoomDiv) {
+    //   (this.panzoomDiv.nativeElement).panzoom({
+    //     $zoomIn: ('.zoom-in'),
+    //     $zoomOut: ('.zoom-out'),
+    //     $zoomRange: ('.zoom-range'),
+    //     $reset: ('.reset')
+    //   });
+    // }
+    // var elem = document.getElementById('panzoomDiv') as HTMLElement;
+    // const panzoom = Panzoom(document.getElementById('panzoom') as HTMLElement,
+    // {
+    //   minScale: 1,
+    //   maxScale: 5,
+    //   contain: 'outside'
+    // });
+
+    // (document.getElementById("zoomIn") as HTMLElement) .addEventListener('click', panzoom.zoomIn);
+    // (document.getElementById("zoomOut") as HTMLElement).addEventListener('click', panzoom.zoomOut);
+    // (document.getElementById("reset") as HTMLElement).addEventListener('reset', panzoom.reset);
+
+
+
+  }
+
+
+
+  zoomIn() {
+    const element = document.querySelector('#zoomIn');
+
+    const zoomLevels = [0.1, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.5, 3];
+    let currentZoomLevel = zoomLevels[4];
+    //const text = document.querySelector('#text');
+    //const panzoom = Panzoom(document.getElementById('panzoom') as HTMLElement,{});
+    //(document.getElementById("zoomIn") as HTMLElement) .addEventListener('click', panzoom.zoomIn);
+  }
+
+  zoomOut() {
+    const panzoom = Panzoom(document.getElementById('panzoom') as HTMLElement, {});
+    (document.getElementById("zoomOut") as HTMLElement).addEventListener('click', panzoom.zoomOut);
+  }
+
+  reset() {
+    const panzoom = Panzoom(document.getElementById('panzoom') as HTMLElement, {});
+    (document.getElementById("reset") as HTMLElement).addEventListener('click', panzoom.reset);
   }
 
   pipeForDate(iotDate: Date) {
@@ -356,8 +394,6 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
   }
 
   getMapDataByMapId(mapId: string) {
-    this.getZoneStatus(mapId, this.selectedSiteId);
-    this.getZoneAndBeaconDetailAccordingHierarchyLevelMapId(mapId);
     this.hierarchyService.getMapDataByMapId(mapId).subscribe((res: any) => {
       this.hierarchyLevelMapDtoForMapData = res.data;
       this.canvasBackgroundImage = this.hierarchyLevelMapDtoForMapData.hierarchyLevelMap.mapImage;
@@ -365,6 +401,7 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
       if (this.chessCanvas) {
         this.ctx = this.chessCanvas.nativeElement.getContext("2d");
       }
+      if (this.ctx)
       this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
       if (this.canvasupper) {
         this.ctxUpper = this.canvasupper.nativeElement.getContext("2d");
@@ -382,7 +419,7 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
               box["xCoordinates"] = this.zones[i].listOfBeacon[j].beaconXAxisCoordinate;
               box["yCoordinates"] = this.zones[i].listOfBeacon[j].beaconYAxisCoordinate;
               this.arrayOfObject.push(box);
-             // this.selectedZone = this.zones[i].zoneName;
+              // this.selectedZone = this.zones[i].zoneName;
               //this.highLightZone(this.zones[i].zoneXAxisCoordinates, this.zones[i].zoneYAxisCoordinates, this.ctx);
             }
           }
@@ -390,6 +427,9 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
       }
     }
     )
+    this.isProcessingOrNotForMap = true;
+    this.getZoneStatus(mapId, this.selectedSiteId);
+    this.getZoneAndBeaconDetailAccordingHierarchyLevelMapId(mapId);
   }
 
   getImageOrCanvasSize(imageSrc: string) {
@@ -410,7 +450,7 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
   getZoneAndBeaconDetailAccordingHierarchyLevelMapId(mapId: string) {
     this.hierarchyService.getZoneAndBeaconDetailAccordingHierarchyLevelMapId(mapId).subscribe((res: any) => {
       this.zones = res.data.zoneList;
-      this.zones.sort((a, b) => Math.min(...a.zoneXAxisCoordinates)<=Math.min(...b.zoneXAxisCoordinates)?-1:1);
+      this.zones.sort((a, b) => Math.min(...a.zoneXAxisCoordinates) <= Math.min(...b.zoneXAxisCoordinates) ? -1 : 1);
     }
     )
   }
@@ -512,11 +552,11 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
           this.showThirdPager = true;
           this.thirdPager = 3;
         }
-        if (((this.totalNoOfPages - this.thirdPager) > 0)) {
+        if (((this.totalNoOfPages - this.thirdPager) > 0) && this.thirdPager != 0) {
           this.showFourthPager = true;
           this.fourthPager = 4;
         }
-        if (((this.totalNoOfPages - this.fourthPager) > 0)) {
+        if (((this.totalNoOfPages - this.fourthPager) > 0) && this.fourthPager != 0) {
           this.showFifthPager = true;
           this.fifthPager = 5;
         }
@@ -535,10 +575,10 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
         if (this.totalNoOfPages - this.secondPager > 0) {
           this.showThirdPager = true;
         }
-        if (this.totalNoOfPages - this.thirdPager > 0) {
+        if ((this.totalNoOfPages - this.thirdPager) > 0 && this.thirdPager != 0) {
           this.showFourthPager = true;
         }
-        if (this.totalNoOfPages - this.fourthPager > 0) {
+        if ((this.totalNoOfPages - this.fourthPager) > 0 && this.fourthPager != 0) {
           this.showFifthPager = true;
         }
       }
@@ -913,19 +953,19 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
 
       this.ctxUpper.fillStyle = '#000';
 
-      this.ctxUpper.shadowColor= 'green';
+      this.ctxUpper.shadowColor = 'green';
       this.ctxUpper.font = "12px Arial";
       this.ctxUpper.fillText(text, xCoordinate, mouseY - 1);
       this.ctxUpper.restore();
     }
   }
-  removeDecimalPart(value:any) {
+  removeDecimalPart(value: any) {
     var number = '' + value;
     var args = number.split(".", 2);
     return args[0];
   }
 
-  getXcoordinateForTitle(canvasWidth:any, pageX:any, offsetLeft:number, textWidth:number) {
+  getXcoordinateForTitle(canvasWidth: any, pageX: any, offsetLeft: number, textWidth: number) {
     var divWidth = this.canvasDiv.nativeElement.offsetWidth;
 
     if (canvasWidth > divWidth) {
@@ -940,10 +980,10 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
     }
   }
 
-  getClickedZoneFromzones(x:any, y:any) {
+  getClickedZoneFromzones(x: any, y: any) {
     var zone;
     if (this.zones) {
-      for(var index=0; index<this.zones.length;index++){
+      for (var index = 0; index < this.zones.length; index++) {
         var zoneXcoordinates = this.zones[index].zoneXAxisCoordinates;
         var zoneYcoordinates = this.zones[index].zoneYAxisCoordinates;
         var vertices = zoneXcoordinates.length - 1;
@@ -953,13 +993,13 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
           return zone;
         }
         return;
-    }
+      }
     }
     return zone;
 
   }
 
-  checkPointLieInPolygon(nvert:any, vertx:any, verty:any, testx:any, testy:any) {
+  checkPointLieInPolygon(nvert: any, vertx: any, verty: any, testx: any, testy: any) {
     var i, j, c = false;
     for (i = 0, j = nvert - 1; i < nvert; j = i++) {
       if (((verty[i] > testy) != (verty[j] > testy)) &&
@@ -973,65 +1013,63 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
 
   drawZoneWithEmployeeCount(ctx: CanvasRenderingContext2D) {
     // let zoneId='5e29c57266b5860001b3a5c8';
- 
-    this.zones.sort((a:any, b:any) => Math.min(...a.zoneXAxisCoordinates)<=Math.min(...b.zoneXAxisCoordinates)?-1:1);
-     for (let i = 0; i < Object.keys(this.zones).length; i++) {
-       let box: any = {};
-       let k = 0;
-       let move: any;
-       let line: Array<any> = [];
-       let minX=0;
-       let minY=0;
-       if(this.zones[i].zoneXAxisCoordinates.length > 0){
-         minX = this.zones[i].zoneXAxisCoordinates.reduce((prev:any, curr:any) => prev < curr ? prev : curr);
-       }
-      
-       if(this.zones[i].zoneYAxisCoordinates.length > 0){
-         minY = this.zones[i].zoneYAxisCoordinates.reduce((prev:any, curr:any) => prev < curr ? prev : curr);
-       }
- 
+
+    this.zones.sort((a: any, b: any) => Math.min(...a.zoneXAxisCoordinates) <= Math.min(...b.zoneXAxisCoordinates) ? -1 : 1);
+    for (let i = 0; i < Object.keys(this.zones).length; i++) {
+      let box: any = {};
+      let k = 0;
+      let move: any;
+      let line: Array<any> = [];
+      let minX = 0;
+      let minY = 0;
+      if (this.zones[i].zoneXAxisCoordinates.length > 0) {
+        minX = this.zones[i].zoneXAxisCoordinates.reduce((prev: any, curr: any) => prev < curr ? prev : curr);
+      }
+
+      if (this.zones[i].zoneYAxisCoordinates.length > 0) {
+        minY = this.zones[i].zoneYAxisCoordinates.reduce((prev: any, curr: any) => prev < curr ? prev : curr);
+      }
+
       // ctx.fillStyle = "blue";
-       ctx.font = "bold 16px Arial";
-       move = { x: this.zones[i].zoneXAxisCoordinates[k], y: this.zones[i].zoneYAxisCoordinates[k] };
-       for (k = 1; k < this.zones[i].zoneXAxisCoordinates.length; k++) {
-         line.push({ x: this.zones[i].zoneXAxisCoordinates[k], y: this.zones[i].zoneYAxisCoordinates[k] });
-        
-       }
-       box["lineStyle"] = "black";
-       box["fillStyle"] = this.hexToRgb(this.zones[i].color, 0.35);
-       box["moveTo"] = move;
-       box["lineTo"] = line;
-       var coordinates = this.getPolygonCentroid(Object.assign([], line));
-       
-       
-      
-    //if(data[i].zoneId==zoneId){
+      ctx.font = "bold 16px Arial";
+      move = { x: this.zones[i].zoneXAxisCoordinates[k], y: this.zones[i].zoneYAxisCoordinates[k] };
+      for (k = 1; k < this.zones[i].zoneXAxisCoordinates.length; k++) {
+        line.push({ x: this.zones[i].zoneXAxisCoordinates[k], y: this.zones[i].zoneYAxisCoordinates[k] });
+
+      }
+      box["lineStyle"] = "black";
+      box["fillStyle"] = this.hexToRgb(this.zones[i].color, 0.35);
+      box["moveTo"] = move;
+      box["lineTo"] = line;
+      var coordinates = this.getPolygonCentroid(Object.assign([], line));
+      //if(data[i].zoneId==zoneId){
       //console.log("zoneName",data[i].zoneName,zoneId,data[i].zoneId);
-     // DrawingZoneBeacon.drawImage(coordinates.x - 7, coordinates.y, ctx, employeeImage, 16, 12);
-     this.drawImage(coordinates.x, coordinates.y, ctx, 16, 12);
-     //}
+      // DrawingZoneBeacon.drawImage(coordinates.x - 7, coordinates.y, ctx, employeeImage, 16, 12);
+      this.drawImage(coordinates.x, coordinates.y, ctx, 16, 12);
+      //}
       //   if (employeeCount) {
       //    ctx.fillText(employeeCount, coordinates.x, coordinates.y);
       //  }
-       ctx.globalAlpha = 1;
-       this.drawBox(box,ctx,this.zones.indexOf(this.zones[i]) + 1,minX,minY,i+1);
-       
-       if (this.zones[i].listOfBeacon != null) {
-         for (let j = 0; j < this.zones[i].listOfBeacon.length; j++) {
-           this.drawBeacon(this.zones[i].listOfBeacon[j].beaconXAxisCoordinate, this.zones[i].listOfBeacon[j].beaconYAxisCoordinate, ctx);
-         }}
- 
- 
-        }
-   }
+      ctx.globalAlpha = 1;
+      this.drawBox(box, ctx, this.zones.indexOf(this.zones[i]) + 1, minX, minY, i + 1);
 
-   drawBox(box:any,ctx:any,boxLabel:any,min_x:any,min_y:any,boxIndex?:any) {
+      if (this.zones[i].listOfBeacon != null) {
+        for (let j = 0; j < this.zones[i].listOfBeacon.length; j++) {
+          this.drawBeacon(this.zones[i].listOfBeacon[j].beaconXAxisCoordinate, this.zones[i].listOfBeacon[j].beaconYAxisCoordinate, ctx);
+        }
+      }
+
+
+    }
+  }
+
+  drawBox(box: any, ctx: any, boxLabel: any, min_x: any, min_y: any, boxIndex?: any) {
     ctx.beginPath();
     ctx.globalAlpha = 1;
     ctx.font = 'bold 12pt Calibri';
     ctx.fillStyle = 'black';
     ctx.textAlign = 'center';
-    ctx.fillText(boxIndex,min_x+10,min_y+12);
+    ctx.fillText(boxIndex, min_x + 10, min_y + 12);
     ctx.moveTo(box.moveTo.x, box.moveTo.y);
     for (var i = 0; i < box.lineTo.length; i++) {
       ctx.lineTo(box.lineTo[i].x, box.lineTo[i].y);
@@ -1046,25 +1084,21 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
 
   }
 
-  /**
-    * @author DB-0050
-    * @description function is used for drawing beacon.
-    */
-  drawBeacon(xCoordinates:any, yCoordinates:any, ctx:any) {
+  drawBeacon(xCoordinates: any, yCoordinates: any, ctx: any) {
     ctx.drawImage(this.myImage, xCoordinates - 15, yCoordinates - 11, 12, 12);
-    
+
   }
-   drawImage(xCoordinates:any, yCoordinates:any, ctx:any, height:any, width:any) {
-  
+  drawImage(xCoordinates: any, yCoordinates: any, ctx: any, height: any, width: any) {
+
     //ctx.drawImage(this.myImage, xCoordinates - 15, yCoordinates - 11, height, width);
   }
 
-  getPolygonCentroid(pts:any) {
+  getPolygonCentroid(pts: any) {
     var first = pts[0], last = pts[pts.length - 1];
     var twicearea = 0,
-      x = 0, y = 0,f=0,
+      x = 0, y = 0, f = 0,
       nPts = pts.length,
-      p1, p2 ;
+      p1, p2;
     if (first && last) {
       if (first.x != last.x || first.y != last.y) pts.push(first);
       for (var i = 0, j = nPts - 1; i < nPts; j = i++) {
@@ -1079,18 +1113,73 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
     return { x: x / f, y: y / f };
   }
 
-   hexToRgb(hex:any, opacity:any) {
+  hexToRgb(hex: any, opacity: any) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result ? "rgba(" + parseInt(result[1], 16) + "," + parseInt(result[2], 16) + "," + parseInt(result[3], 16) + "," + opacity + ")" : null;
   }
 
-  highlightZone(index:any) {
-  //   let zonArray=[];
-  //   this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-  //   DrawingZoneBeacon.drawZoneWithEmployeeCountHighlight(this.zoneList, this.employeeCountMap, this.ctx, this.myImage, this.employeeImage);
-  //   zonArray.push(dataRow);
-  //   DrawingZoneBeacon.drawZoneWithEmployeeCountHighlight(zonArray, this.employeeCountMap, this.ctx, this.myImage, this.employeeImage,index);
-  //
- }
+  highlightZone(index: any) {
+    let zonArray = [];
+    this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+    this.drawZoneWithEmployeeCountHighlight(this.zones, this.ctx, this.myImage);
+    zonArray.push(this.zones[index]);
+    this.drawZoneWithEmployeeCountHighlight(zonArray, this.ctx, this.myImage, index);
 
+  }
+
+  drawZoneWithEmployeeCountHighlight(data: Array<any>, ctx: CanvasRenderingContext2D, image: any, countIndex?: any) {
+    // let zoneId='5e29c57266b5860001b3a5c8';
+
+    data.sort((a, b) => Math.min(...a.zoneXAxisCoordinates) <= Math.min(...b.zoneXAxisCoordinates) ? -1 : 1);
+
+    for (let i = 0; i < data.length; i++) {
+      let box: any = {};
+      let k = 0;
+      let move: any;
+      let line: Array<any> = [];
+      let minX = 0;
+      let minY = 0;
+      if (data[i].zoneXAxisCoordinates.length > 0) {
+        minX = data[i].zoneXAxisCoordinates.reduce((prev: any, curr: any) => prev < curr ? prev : curr);
+      }
+
+      if (data[i].zoneYAxisCoordinates.length > 0) {
+        minY = data[i].zoneYAxisCoordinates.reduce((prev: any, curr: any) => prev < curr ? prev : curr);
+      }
+
+      ctx.fillStyle = "blue";
+      ctx.font = "bold 16px Arial";
+      move = { x: data[i].zoneXAxisCoordinates[k], y: data[i].zoneYAxisCoordinates[k] };
+      for (k = 1; k < data[i].zoneXAxisCoordinates.length; k++) {
+        line.push({ x: data[i].zoneXAxisCoordinates[k], y: data[i].zoneYAxisCoordinates[k] });
+      }
+      box["lineStyle"] = "green";
+      box["fillStyle"] = this.hexToRgb(data[i].color, 0.35);
+      box["moveTo"] = move;
+      box["lineTo"] = line;
+      var coordinates = this.getPolygonCentroid(Object.assign([], line));
+      if (countIndex) {
+        if (data[i].zoneId == this.zones[countIndex].zoneId) {
+          console.log("zoneName", data[i].zoneName, this.zones[countIndex].zoneId, data[i].zoneId);
+          // DrawingZoneBeacon.drawImage(coordinates.x - 7, coordinates.y, ctx, employeeImage, 16, 12);
+          this.drawImage(coordinates.x, coordinates.y, ctx, 16, 12);
+        }
+      }
+      ctx.globalAlpha = 1;
+      if (countIndex) {
+        box["fillStyle"] = this.hexToRgb(data[i].hoverColor, 0.35);
+        this.drawBox(box, ctx, countIndex, minX, minY, i + 1);
+      }
+      else {
+        box["fillStyle"] = this.hexToRgb(data[i].color, 0.35);
+        this.drawBox(box, ctx, i + 1, minX, minY, i + 1);
+      }
+
+      if (data[i].listOfBeacon != null) {
+        for (let j = 0; j < data[i].listOfBeacon.length; j++) {
+          this.drawBeacon(data[i].listOfBeacon[j].beaconXAxisCoordinate, data[i].listOfBeacon[j].beaconYAxisCoordinate, ctx);
+        }
+      }
+    }
+  }
 }

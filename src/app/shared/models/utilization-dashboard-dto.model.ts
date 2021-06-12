@@ -14,11 +14,13 @@ export class UtilizationDashboardDto {
 }
 
 export class CardStatusDto {
+    reportDate:string;
     cardDeteced: number;
     cardDistributed: number;
     cardNotDetected: number;
     inActiveCards: number;
     constructor() {
+        this.reportDate = "";
         this.cardDeteced = 0;
         this.cardDistributed = 0;
         this.cardNotDetected = 0;

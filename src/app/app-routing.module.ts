@@ -12,21 +12,100 @@ import { EmployeeTrackingComponent } from './Modules/Components/Dashboards/emplo
 import { ExecutiveDashboardComponent } from './Modules/Components/executive-dashboard/executive-dashboard.component';
 import { OtpVerificationComponent } from './shared/Components/otp-verification/otp-verification.component';
 import { KpiComponent } from './Modules/Components/Dashboards/kpi/kpi.component';
+import { AuthGuard } from './core/auth.guard';
+import { BeaconLastCommunicationComponent } from './Modules/Components/tracking/beacon-last-communication/beacon-last-communication.component';
+import { ZoneViolationComponent } from './Modules/Components/tracking/zone-violation/zone-violation.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'customerconfiguration', component: CustomerConfigComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
-  { path: 'operational-dashboard', component: OperationalDashboardComponent },
-  { path: 'live-zone', component: ZoneDashboardComponent },
+  {
+    path: 'operational-dashboard', canActivate: [AuthGuard],
+    data: {
+      Permissions: {
+        Only: 'ROLE_DASHBOARD_VIEW',
+      }
+    },
+    component: OperationalDashboardComponent
+  },
+  {
+    path: 'live-zone', canActivate: [AuthGuard],
+    data: {
+      Permissions: {
+        Only: 'ROLE_ZONE_DASHBOARD',
+      }
+    }, component: ZoneDashboardComponent
+  },
   { path: 'forgotpassword', component: ForgotPasswordComponent },
-  { path: 'gateway-dashboard', component: GatewayDashboardComponent },
-  { path: 'card-utilization', component: UtilizationDashboardComponent },
-  { path: 'employee-tracking', component: EmployeeTrackingComponent },
-  { path: 'executive-dashboard', component: ExecutiveDashboardComponent },
+  {
+    path: 'gateway-dashboard',
+    canActivate: [AuthGuard],
+    data: {
+      Permissions: {
+        Only: 'ROLE_NETWORK_GATEWAY_DASHBOARD',
+      }
+    }, component: GatewayDashboardComponent
+  },
+  {
+    path: 'card-utilization',
+    canActivate: [AuthGuard],
+    data: {
+      Permissions: {
+        Only: 'ROLE_SURAKSHA_CARD',
+      }
+    },
+    component: UtilizationDashboardComponent
+  },
+  {
+    path: 'track-employee',
+    canActivate: [AuthGuard],
+    data: {
+      Permissions: {
+        Only: ['ROLE_EMPLOYEE_LOCATION_TRACKING', 'ROLE_EMPLOYEE_BEACON_TRACKING', 'ROLE_EMPLOYEE_MAP_TRACKING'],
+      }
+    }, component: EmployeeTrackingComponent
+  },
+  {
+    path: 'executive-dashboard', canActivate: [AuthGuard],
+    data: {
+      Permissions: {
+        Only: 'ROLE_EXECUTIVE_DASHBOARD',
+      }
+    },
+    component: ExecutiveDashboardComponent,
+    children: []
+  },
   { path: 'otp-verification', component: OtpVerificationComponent },
-  { path: 'kpi', component:KpiComponent}
+
+  {
+    path: 'kpi',
+    canActivate: [AuthGuard],
+    data: {
+      Permissions: {
+        Only: 'ROLE_KPI DASHBOARD',
+      }
+    }, component: KpiComponent
+  },
+  {
+    path: 'beacon-last-communication',
+    canActivate: [AuthGuard],
+    data: {
+      Permissions: {
+        Only: 'ROLE_BEACON_LAST_COMMUNICATION_VIEW',
+      }
+    }, component: BeaconLastCommunicationComponent
+  },
+  {
+    path: 'zone-violation',
+    canActivate: [AuthGuard],
+    data: {
+      Permissions: {
+        Only: 'ROLE_ZONE_VIOLATION',
+      }
+    }, component: ZoneViolationComponent
+  }
 ];
 
 @NgModule({

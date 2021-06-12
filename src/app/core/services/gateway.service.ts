@@ -57,36 +57,21 @@ export class GatewayService {
     return this.http.get(this.url + '/userservice/cities?customerId=' + customerId,
       { headers })
   }
-  // getExecutiveAlerts(customerId: string, fromDate: string, toDate: string, cityId: string, plantId: string, siteId: string) {
-  //   var token = sessionStorage.getItem("token") || "";
-  //   const headers = new HttpHeaders().set('Authorization', token);
-  //   headers.append("Content-Type", "application/json");
-  //   return this.http.get(this.url + '/dashboardservice/executive/dashboard/alert/summary?fromDate=' + fromDate + '&todate=' + toDate + '&customerId=' + customerId + '&cityId=' + cityId + '&plantId=' + plantId + '&siteId=' + siteId,
-  //     { headers: headers });
-  // }
-  downloadNetworkUpTimeHistoricalReport(customerId: string, fromDate: string, toDate: string, cityId: string) {
-    var token = sessionStorage.getItem("token") || "";
-    const headers = new HttpHeaders().set('Authorization', token);
-    headers.append("Content-Type", "application/json");
-    return this.http.get(this.url + '/dashboardservice/gateways/export/histroical?customerId=' +
-      customerId + '&fromDate=' + fromDate + '&toDate=' + toDate + '&cityId=' + cityId,
-      { responseType: 'blob', observe: 'response', headers: headers })
-  }
 
   getTotalInstalledGatewaysExport(customerId: string) {
     var token = sessionStorage.getItem("token") || "";
     const headers = new HttpHeaders().set('Authorization', token);
     headers.append("Content-Type", "application/json");
     return this.http.get(this.url + '/deviceservice/gateways/export?customerId=' + customerId,
-      { headers })
+      { responseType: 'blob', observe: 'response', headers: headers })
   }
 
-  getWorkingGatewaysExport(customerId: string, workingStatus: string) {
+  getWorkingGatewaysExport(customerId: string) {
     var token = sessionStorage.getItem("token") || "";
     const headers = new HttpHeaders().set('Authorization', token);
     headers.append("Content-Type", "application/json");
-    return this.http.get(this.url + '/deviceservice/gateways/export?customerId=' + customerId + '&workingStatus=' + workingStatus,
-      { headers })
+    return this.http.get(this.url + '/deviceservice/gateways/export?customerId=' + customerId + '&workingStatus=Working',
+      { responseType: 'blob', observe: 'response', headers: headers })
   }
 
   getNonWorkingGatewaysExport(customerId: string) {
@@ -94,20 +79,48 @@ export class GatewayService {
     const headers = new HttpHeaders().set('Authorization', token);
     headers.append("Content-Type", "application/json");
     return this.http.get(this.url + '/deviceservice/gateways/export?customerId=' + customerId + '&workingStatus=Not%20Working',
-      { headers })
+      { responseType: 'blob', observe: 'response', headers: headers })
   }
-  getNetworkUptimeExport(customerId: string) {
+
+  getNetworkUptimeExport(customerId: string, cityId: string, fromDate: string, toDate: string) {
     var token = sessionStorage.getItem("token") || "";
     const headers = new HttpHeaders().set('Authorization', token);
     headers.append("Content-Type", "application/json");
-    return this.http.get(this.url + '/dashboardservice/gateways/export/uptime/historical?customerId=' + customerId,
-      { headers })
+    if (cityId === "") {
+      return this.http.get(this.url + '/dashboardservice/gateways/export/uptime/histroical?customerId=' + customerId + '&fromDate=' + fromDate + '&toDate=' + toDate,
+        { responseType: 'blob', observe: 'response', headers: headers })
+    }
+    else {
+      return this.http.get(this.url + '/dashboardservice/gateways/export/uptime/histroical?customerId=' + customerId + '&cityId=' + cityId + 'fromDate=' + fromDate + '&toDate=' + toDate,
+        { responseType: 'blob', observe: 'response', headers: headers })
+    }
   }
-getAllGatewaysExport(customerId: string){
-  var token = sessionStorage.getItem("token") || "";
-  const headers = new HttpHeaders().set('Authorization', token);
-  headers.append("Content-Type", "application/json");
-  return this.http.get(this.url + '/dashboardservice/gateways/export/historical?customerId=' + customerId,
-    { headers })
-}
+
+  getHistoricalExport(customerId: string, cityId: string, fromDate: string, toDate: string) {
+    var token = sessionStorage.getItem("token") || "";
+    const headers = new HttpHeaders().set('Authorization', token);
+    headers.append("Content-Type", "application/json");
+    if (cityId === "") {
+      return this.http.get(this.url + '/dashboardservice/gateways/export/historical?customerId=' + customerId + '&fromDate=' + fromDate + '&toDate=' + toDate,
+        { responseType: 'blob', observe: 'response', headers: headers })
+    }
+    else {
+      return this.http.get(this.url + '/dashboardservice/gateways/export/historical?customerId=' + customerId + '&fromDate=' + fromDate + '&toDate=' + toDate + '&cityId=' + cityId,
+        { responseType: 'blob', observe: 'response', headers: headers })
+    }
+  }
+
+  getDownTimeExport(customerId: string, cityId: string, fromDate: string, toDate: string) {
+    var token = sessionStorage.getItem("token") || "";
+    const headers = new HttpHeaders().set('Authorization', token);
+    headers.append("Content-Type", "application/json");
+    if (cityId === "") {
+      return this.http.get(this.url + '/dashboardservice/gateways/export/network/summary?customerId=' + customerId + '&fromDate=' + fromDate + '&toDate=' + toDate,
+        { responseType: 'blob', observe: 'response', headers: headers })
+    }
+    else {
+      return this.http.get(this.url + '/dashboardservice/gateways/export/network/summary?customerId=' + customerId + '&fromDate=' + fromDate + '&toDate=' + toDate + '&cityId=' + cityId,
+        { responseType: 'blob', observe: 'response', headers: headers })
+    }
+  }
 }

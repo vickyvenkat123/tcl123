@@ -36,7 +36,6 @@ export class ExecutiveDashboardComponent implements OnInit {
   selectedPlant: string = "All";
   selectedSite: string = "All";
   customerId: string = sessionStorage.getItem("customerId") || "";
-  @Output() selectDateRange = new EventEmitter();
   fromDate: any;
   toDate: any;
   selectedDateValue: any;

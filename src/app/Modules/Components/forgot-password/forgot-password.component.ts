@@ -48,4 +48,7 @@ export class ForgotPasswordComponent implements OnInit {
   toLoginPage(){
     this.router.navigateByUrl("login");
   }
+  navigatedOtpVerification(){
+    this.router.navigate(['otp-verification']);
+  }
 }

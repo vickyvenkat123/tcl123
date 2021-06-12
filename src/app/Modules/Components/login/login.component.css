@@ -34,18 +34,28 @@ body {
 }
 .signIn h3{
     font-size : 20px;
-    color: #333;
-    display: flex;
+    color: rgb(65,64,66);
+    font-weight: normal;
 }
  .signIn .imgDiv img{
     width: 80%;
     height: auto;
 }  
 .signIn .form-control{
-    border: solid 1px #4863A0;
+    border: solid 1px rgb(165,193,225);
     padding: 25px 30px;
     color: #333;
     font-size: 12px;
+}
+.signIn .showEyeInput .form-control{
+    /* border: solid 1px rgb(165,193,225); */
+    padding: 25px 30px;
+    color: #333;
+    font-size: 12px;
+    border-top: solid 1px rgb(165,193,225);
+    border-left: solid 1px rgb(165,193,225);
+    border-bottom: solid 1px rgb(165,193,225);
+    border-right: none;
 }
 .signIn .form-control:focus{
     outline : none;
@@ -53,20 +63,20 @@ body {
 }
 .signIn .signIn-btn{
     padding : 15px 30px;
-    background-color : #62a4f7;
+    background-color :rgb(43,95,143);
     border : none;
     border-radius : 5px;
     color : #fff;
-    font-weight : bold;
     width: 100%;
+    font-size: 18px;
 }
 .signIn a {
     text-decoration : none;
-    color: #62a4f7;
+    color: rgb(65,64,66);
+    font-size: 14px;
 }
 .signIn a:hover {
     text-decoration : none;
-    color: #62a4f7;
     cursor: pointer;
 }
 .remember input[type="checkbox"] {
@@ -83,10 +93,10 @@ body {
   }
   .signIn .lorawanB{
     position: relative;
-    padding-top: 6%;
+    padding-top: 10%;
 }
 .lorawan{
-    margin-right: 20px;
+    margin-right: 40px;
 }
 .fa-eye-slash:hover,
 .fa-eye:hover {
@@ -95,7 +105,7 @@ body {
 .input-group-text {
     display: flex;
     align-items: center;
-    padding: .375rem .75rem;
+    padding: 10px 20px;
     margin-bottom: 0;
     font-size: 1rem;
     font-weight: 400;
@@ -103,9 +113,13 @@ body {
     color: #4863A0;
     text-align: center;
     white-space: nowrap;
-    background-color: rgb(232,240,254);
-    border: 1px solid  #4863A0;
+    background :transparent;
+    /* border: 1px solid  rgb(165,193,225); */
     border-radius: .25rem;
+    border-right: 1px solid  rgb(165,193,225); 
+    border-top: 1px solid  rgb(165,193,225);
+    border-bottom: 1px solid  rgb(165,193,225);
+
 }
 @media (max-width: 768px){
     .signIn {

@@ -8,8 +8,8 @@ import { LoginComponent } from './Modules/Components/login/login.component';
 import { CustomerConfigComponent } from './Modules/Components/customer-config/customer-config.component';
 import { HeaderComponent } from './shared/Components/header/header.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { CustomerComponent } from './Modules/Components/customer/customer.component';
-import { CityComponent } from './Modules/Components/city/city.component';
+import { CustomerComponent } from './Modules/Components/customer-config/customer/customer.component';
+import { CityComponent } from './Modules/Components/customer-config/city/city.component';
 import { PlantComponent } from './Modules/Components/plant/plant.component';
 import { SiteComponent } from './Modules/Components/site/site.component';
 import { ResetPasswordComponent } from './Modules/Components/reset-password/reset-password.component';
@@ -44,15 +44,20 @@ import { ErrorModalComponent } from './Modules/Components/error-modal/error-moda
 import { ChangePasswordComponent } from './Modules/Components/change-password/change-password.component';
 import { LeftNavigationComponent } from './shared/Components/left-navigation/left-navigation.component';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
-import {MatMenuModule} from '@angular/material/menu'; 
+import { MatMenuModule } from '@angular/material/menu';
 import { EmployeeTrackingComponent } from './Modules/Components/Dashboards/employee-tracking/employee-tracking.component';
 import { UtilizationDashboardComponent } from './Modules/Components/utilization-dashboard/utilization-dashboard.component';
 import { ExecutiveDashboardComponent } from './Modules/Components/executive-dashboard/executive-dashboard.component';
 import { Daterangepicker } from 'ng2-daterangepicker';
 import { DateRangeComponent } from './shared/Components/date-range/date-range.component';
 import { OtpVerificationComponent } from './shared/Components/otp-verification/otp-verification.component';
-import { NgOtpInputModule } from  'ng-otp-input';
+import { NgOtpInputModule } from 'ng-otp-input';
 import { KpiComponent } from './Modules/Components/Dashboards/kpi/kpi.component';
+import 'hammerjs';
+import { PinchZoomComponent } from './shared/Components/pinch-zoom/pinch-zoom.component';
+import { NgxPermissionsModule } from 'ngx-permissions';
+import { BeaconLastCommunicationComponent } from './Modules/Components/tracking/beacon-last-communication/beacon-last-communication.component';
+import { ZoneViolationComponent } from './Modules/Components/tracking/zone-violation/zone-violation.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +84,10 @@ import { KpiComponent } from './Modules/Components/Dashboards/kpi/kpi.component'
     ExecutiveDashboardComponent,
     DateRangeComponent,
     OtpVerificationComponent,
-    KpiComponent
+    KpiComponent,
+    PinchZoomComponent,
+    BeaconLastCommunicationComponent,
+    ZoneViolationComponent
   ],
   imports: [
     BrowserModule,
@@ -110,7 +118,9 @@ import { KpiComponent } from './Modules/Components/Dashboards/kpi/kpi.component'
     MatSelectModule,
     MatMenuModule,
     Daterangepicker,
-    NgOtpInputModule
+    NgOtpInputModule,
+    NgxPermissionsModule.forRoot()
+
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]

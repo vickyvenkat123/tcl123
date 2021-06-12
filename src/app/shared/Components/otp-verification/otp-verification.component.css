@@ -4,11 +4,6 @@ body {
   height: 100%;
   margin: 0;
 }
-/* .ng-touched{
-    color:red;
-    font-size: 14px;
-    } */
-    
   input.ng-valid{
   color:blue;
   }
@@ -20,7 +15,7 @@ body {
 }
 .signIn.forGotPassword button.sendOTP{
     background-color: rgb(43,95,143);
-    padding: 10px 0;
+    padding: 15px 30px;
     min-width: 100%;
     font-size: 16px;
     margin-left: 4px;
@@ -28,11 +23,14 @@ body {
 }
 .signIn.forGotPassword .lorawanB{
     position: relative;
-    padding-top: 40%;
+    padding-top: 23%;
+}
+.lorawan {
+    margin-right: 40px;
 }
 .signIn.forGotPassword .goBackToLogin{
     font-size: 20px;
-    color: rgb(43,95,143);
+    color: rgb(61,133,198);
     border :none;
     text-align: center;
     cursor: pointer;
@@ -45,12 +43,8 @@ body {
 }
 .signIn h3{
     font-size : 20px;
-    color: rgb(146,146,149);
+    color: rgb(65,64,66);
 }
-/* .signIn img.left-image {
-    width: 100%;
-    height: auto;
-} */
  .signIn .imgDiv img{
     width: 80%;
     height: auto;
@@ -65,37 +59,10 @@ body {
     outline : none;
     box-shadow: none;
 }
-/* .signIn label{
-    color : #6f7072;
-    font-size: 12px;
-} */
-/* .signIn .signIn-btn{
-    padding : 15px 30px;
-    background-color : #62a4f7;
-    border : none;
-    border-radius : 5px;
-    color : #fff;
-    font-weight : bold;
-    width: 100%;
-    
-} */
 .signIn a {
     text-decoration : none;
     color: #62a4f7;
 }
-/* .remember input[type="checkbox"] {
-    display: inline-block;
-    width: 25px;
-    vertical-align: middle;
-    border-radius: 0px;
-    height: 18px;
-    border: solid 1px  #4863A0;
-    margin-right: 10px;
-  } */
-/* .bottomIcons span{
-    width: 25%;
-    text-align: right;
-} */
 .signIn.forGotPassword .otp-input{
     width: 55px !important;
     font-size: 24px;
@@ -108,9 +75,6 @@ body {
     }
 .signIn .signIn-btn{
     width: 100%;
-}
-.footer, .footer .right-text{
-    text-align : center;
 }
  .signIn .loginInputs{
     padding: 5px 0;
@@ -130,6 +94,9 @@ body {
     position: relative;
     padding-top: 10%;
 }
+.lorawan{
+    margin-right: 40px;
+}
 .signIn.forGotPassword .goBackToLogin{
     font-size: 16px;
     color: rgb(43,95,143);
@@ -139,9 +106,8 @@ body {
     width: 59px;
     height: 50px;
     border-radius: 4px;
-    border: 1px solid rgb(43,95,143) !important;
+    border: solid 1px rgb(165,193,225) !important;
     text-align: center;
     font-size: 32px;
 }
-
 }

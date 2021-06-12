@@ -4,7 +4,7 @@
 @import "../node_modules/ag-grid-community/dist/styles/ag-grid.css";
 @import "../node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css";
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; padding : 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .siteSearch .ng-select .ng-select-container {
     color: #333;
     background-color: #f8fbfb;
@@ -87,7 +87,7 @@ table.mat-table {
 .operationalHeading .mat-form-field-appearance-fill .mat-form-field-flex {
     border-radius: 4px !important;
     padding: 10px 15px  !important;
-    background-color:rgb(245,247,250) !important;
+    background-color:rgb(255,255,255) !important;
     margin-top: 15px;
     width: 250px !important;
 }
@@ -97,7 +97,7 @@ table.mat-table {
 }
 
 .mat-form-field-appearance-fill .mat-form-field-underline::before {
-    background:transparent;
+    width: 0 !important;
 }
 .cdk-overlay-container{ z-index: 1200 !important; }
 .tZone .mat-form-field-appearance-fill .mat-form-field-flex {
@@ -140,19 +140,21 @@ table.mat-table {
     width: 59px;
     height: 50px;
     border-radius: 4px;
-    border: 1px solid rgb(43,95,143) !important;
+    border: 1px solid rgb(165,193,225)!important;
     text-align: center;
     font-size: 32px;
     color: rgb(43,95,143) ;
 }
 .signIn.forGotPassword .otp-input:focus-visible{
 
-    border: 2px solid rgb(43,95,143) !important;
+    border: 1px solid rgb(120,162,210) !important;
 
-    color: rgb(43,95,143) ;
+    color: rgb(120,162,210) ;
 }
 .signIn.forGotPassword .wrapper .otp-input{
     margin-left: 0 !important;
+    color: rgb(61,133,198);
+    font-size: 20px;
 }
 .mat-dialog-title{
     background:none !important;
@@ -170,14 +172,15 @@ table.mat-table {
 }
 /* executive dashboard */
 .executiveDashboard .mat-form-field-appearance-fill .mat-form-field-flex {
-    border-radius: 4px !important;
     padding: 15px 15px  !important;
     background-color:rgb(245,247,250) !important;
     margin-top: 5px;
     width: 250px !important;
 }
+.executiveDashboard.zone .mat-form-field-appearance-fill .mat-form-field-flex{
+    width: 230px !important;
+}
 .executiveDashboard .mat-form-field-wrapper {
-    
     padding-bottom: 0;
 }
 .executiveDashboard .mat-form-field-appearance-fill .mat-form-field-ripple{
@@ -187,10 +190,106 @@ table.mat-table {
 /* card utilization */
 #resetModalUtilization .mat-form-field-appearance-fill .mat-form-field-flex{
     padding-bottom: 10px;
+    background-color: rgb(255,255,255);
+    height: 40px;
+    border-radius: 4px;
+    border: solid 1px #e3e3e3;
 }
-#resetModalUtilization span{
+.modal-body span{
+    font-size: 12px;
+    font-weight: 700;
+} 
+.mat-select-value-text{
+    font-size: 12px;
+    font-weight: normal !important;
+}
+.mat-select-value-text .mat-form-field-flex{
+    border : solid 1px #e3e3e3;
+    background-color: rgb(255,255,255);
+    border-radius: 4px;
+}
+.cardDate .mat-form-field-flex{
+    width: 90%;
+    height: 44px;
+    border : solid 1px #e3e3e3;
+    background-color: rgb(255,255,255);
+    border-radius: 4px !important;
+}
+.cardDate .mat-form-field-underline{
+    width: 0;
+}
+.cardDate .cdk-text-field-autofill-monitored:not(:-webkit-autofill) {
+    animation: cdk-text-field-autofill-end 0s 1ms;
+    position: relative;
+    bottom: 16px;
     font-size: 12px;
 }
-/* #resetModalUtilization .matSlt{
-    
-} */
+.cardTotalReport .mat-form-field-flex  {
+        display: inline-flex;
+        align-items: baseline;
+        box-sizing: border-box;
+        width: 468px;
+        height: 41px;
+        background-color: rgb(255, 255, 255);
+        border: solid 1px #e3e3e3;
+        border-radius: 4px !important;
+}
+.cardCity .mat-form-field-flex  {
+    display: inline-flex;
+    align-items: baseline;
+    box-sizing: border-box;
+    height: 41px;
+    background-color: rgb(255, 255, 255);
+    border: solid 1px #e3e3e3;
+    border-radius: 4px !important;
+    width: 107%;
+}
+.cardTotalSlt .gateWaySlt .mat-form-field-flex {
+    width: 119%;
+    height: 50px;
+    background-color: transparent;
+    position: relative;
+    left: -13px;
+    top: -10px;
+}
+.cardTotalSlt .gateWaySlt .mat-select-arrow{
+    position: relative;
+    top :5px;
+}
+.mat-form-field-appearance-fill{
+    height: 40px;
+}
+.modal-header{
+    border: none;
+}
+svg.mat-datepicker-toggle-default-icon.ng-star-inserted {
+    position: relative;
+    bottom: 10px;
+    color: rgb(43,95,143);
+    right : -10px;
+}
+.close.closeX {
+    font-weight:300;
+    font-size: 24px;
+}
+.mat-form-field-appearance-fill:not(.mat-form-field-disabled) .mat-form-field-flex:hover~.mat-form-field-underline .mat-form-field-ripple{
+    opacity: 0 !important;
+}
+span.mat-select-min-line{
+    font-weight: normal;
+    font-size: 12px;
+}
+.stickyGateTbl .mat-sort-header-content{
+    color: #fff;
+    font-weight: normal;
+}
+.stickyGateTbl .mat-sort-header-arrow{
+    color: #fff;
+    opacity: 1 !important;
+}
+.executiveDashboard.beacon .mat-form-field-appearance-fill .mat-form-field-flex {
+    padding: 15px 15px  !important;
+    background-color:rgb(245,247,250) !important;
+    margin-top: 5px;
+    width: 340px !important;
+}

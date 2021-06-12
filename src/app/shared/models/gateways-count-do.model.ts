@@ -1,3 +1,5 @@
+import { City } from "./customer-details.model";
+
 export class GatewaysCountDo {
 
     gatewaysNotAllocatedToCity: number;
@@ -33,14 +35,6 @@ export class NetworkUptimeDto {
     }
 }
 
-export class City {
-    cityId: string;
-    cityName: string;
-    constructor() {
-        this.cityId = '';
-        this.cityName = '';
-    }
-}
 
 export class CityCountDO {
     city: City;

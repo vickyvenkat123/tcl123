@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { CustomerConfigService } from 'src/app/core/services/customer-config.service';
 import { LoginService } from 'src/app/core/services/login.service';
 import * as CryptoJS from 'crypto-js';
+import { AuthGuard } from 'src/app/core/auth.guard';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -22,7 +23,8 @@ export class LoginComponent implements OnInit {
     userId: '',
     password: ''
   });
-  constructor(private formBuilder: FormBuilder, private loginService: LoginService, private router: Router, private customerConfigService: CustomerConfigService) {
+  constructor(private formBuilder: FormBuilder, private loginService: LoginService, private router: Router, private customerConfigService: CustomerConfigService,
+    private authGuard: AuthGuard) {
   }
 
   ngOnInit(): void {
@@ -43,7 +45,10 @@ export class LoginComponent implements OnInit {
             this.customerConfigService.getLoggedInUser().subscribe(
               (result: any) => {
                 sessionStorage.setItem("customerId", result.customer.customerId);
-                console.log(res);
+                localStorage.setItem('STATE', 'true');
+                localStorage.setItem('ROLE', result.userType);
+                localStorage.setItem("login_detail", JSON.stringify(result));
+                this.authGuard.addAuthorities();
               }
             )
             if (res.status == 200) {

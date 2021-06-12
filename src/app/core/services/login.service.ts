@@ -1,6 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 
@@ -9,6 +8,7 @@ import { environment } from 'src/environments/environment';
 })
 export class LoginService {
   url: string = environment.url;
+  secretKey:string = "MP2021";
   constructor(private http: HttpClient) { }
 
   login(username: string, password: string) {
@@ -26,5 +26,14 @@ export class LoginService {
     const headers = new HttpHeaders().set('Authorization', token);
     headers.append("Content-Type", "application/json");
     return this.http.get(this.url + '/logout', { headers });
+  }
+
+  isLoggedIn(){
+    if(sessionStorage.getItem("token")!== ""){
+    return true;
+    }
+    else{
+      return false;
+    }
   }
 }

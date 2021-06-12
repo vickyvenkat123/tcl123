@@ -4,7 +4,7 @@ import { CityConfigService } from 'src/app/core/services/city-config.service';
 import { CustomerConfigService } from 'src/app/core/services/customer-config.service';
 import { City, CityConfig, Customer, CustomerDetails, Plant, Site } from 'src/app/shared/models/customer-details.model';
 import { Template } from 'src/app/shared/models/template.model';
-import { CityComponent } from '../city/city.component';
+import { CityComponent } from './city/city.component';
 
 @Component({
   selector: 'app-customer-config',

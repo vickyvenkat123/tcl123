@@ -1,14 +1,14 @@
 <div class="leftNav">
     <ul>
-        <li (click)="showHideNavigation()">
-            <a routerLink="/operational-dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <li (click)="showHideNavigation('dashboard')">
+            <a routerLink="/operational-dashboard" routerLinkActive="active" class="dash" [routerLinkActiveOptions]="{exact: true}">
                 <img src="assets/svg/Group.svg" alt="Group">
                 Dashboards</a>
         </li>
         <li><a routerLink="/login" routerLinkActive="active">
                 <img src="assets/svg/bell.svg" alt="Bell" class="bell">Alerts</a></li>
 
-        <li><a routerLink="/forgotpassword" routerLinkActive="active">
+        <li (click)="showHideNavigation('tracking')"><a routerLink="/track-employee" routerLinkActive="active">
                 <img src="assets/svg/Tracking.svg" alt="Tracking">Tracking</a></li>
 
         <li><a href="#"><img src="assets/svg/Reports.svg" alt="Reports">Reports</a></li>
@@ -23,17 +23,34 @@
     </ul>
 </div>
 
-<div class="NavShowHide" *ngIf="isShownNav">
-    <div><i (click)="showHideNavigation()" class="fa fa-times" aria-hidden="true"></i></div>
+<div class="NavShowHide" *ngIf="showDashboard">
+    <div><i (click)="showHideNavigation('dashboard')" class="fa fa-times" aria-hidden="true"></i></div>
     <div class="dashHeading">Dashboards</div>
     <ul>
-        <li><a href="executive-dashboard">Executive Dashboard</a></li>
-        <li><a href="operational-dashboard">Operational DashBoard</a></li>
-        <li><a href="live-zone">Zone Dashboard</a></li>
-        <li><a href="card-utilization">Utilization Dashboard</a></li>
-        <li><a href="#">Key Performance Indicator</a></li>
-        <li><a href="gateway-dashboard">Network Gateway Dashboard</a></li>
-        <li><a href="employee-tracking">Employee Tracking</a></li>
-        <li><a href="kpi">KPI</a></li>
+        <li *ngxPermissionsOnly="['ROLE_EXECUTIVE_DASHBOARD']"><a href="executive-dashboard">Executive Dashboard</a>
+        </li>
+        <li *ngxPermissionsOnly="['ROLE_DASHBOARD_VIEW']"><a href="operational-dashboard">Operational DashBoard</a></li>
+        <li *ngxPermissionsOnly="['ROLE_ZONE_DASHBOARD']"><a href="live-zone">Zone Dashboard</a></li>
+        <li *ngxPermissionsOnly="['ROLE_SURAKSHA_CARD']"><a href="card-utilization">Utilization Dashboard</a></li>
+        <li *ngxPermissionsOnly="['ROLE_NETWORK_GATEWAY_DASHBOARD']"><a href="gateway-dashboard">Network Gateway
+                Dashboard</a></li>
+
+        <li *ngxPermissionsOnly="['ROLE_KPI DASHBOARD']"><a href="kpi">KPI</a></li>
+    </ul>
+</div>
+
+<div class="NavShowHide" *ngIf="showTracking">
+    <div><i (click)="showHideNavigation('tracking')" class="fa fa-times" aria-hidden="true"></i></div>
+    <div class="dashHeading">Tracking</div>
+    <ul>
+        <li
+            *ngxPermissionsOnly="['ROLE_EMPLOYEE_LOCATION_TRACKING', 'ROLE_EMPLOYEE_BEACON_TRACKING', 'ROLE_EMPLOYEE_MAP_TRACKING']">
+            <a href="track-employee">Employee Tracking</a>
+        </li>
+        <li *ngxPermissionsOnly="['ROLE_ZONE_VIOLATION']"><a href="zone-violation">Zone Violation</a>
+    </li>
+        <li *ngxPermissionsOnly="['ROLE_BEACON_LAST_COMMUNICATION_VIEW']"><a href="beacon-last-communication">Beacon
+                Last Communocation</a>
+        </li>
     </ul>
 </div>

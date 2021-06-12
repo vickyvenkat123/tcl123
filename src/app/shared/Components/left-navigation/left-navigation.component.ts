@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { NgxPermissionsService } from 'ngx-permissions';
 @Component({
   selector: 'app-left-navigation',
   templateUrl: './left-navigation.component.html',
@@ -7,20 +7,31 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LeftNavigationComponent implements OnInit {
 
-  isShownNav: boolean = false;
+  showDashboard: boolean = false;
+  showTracking: boolean = false;
+  showAlerts: boolean = false;
   check: boolean = false;
   
-  constructor() { }
+  constructor(private _permissionService: NgxPermissionsService) { }
 
   ngOnInit(): void {
   }
   
-  showHideNavigation() {
-    this.isShownNav = !this.isShownNav;
-    if (this.check == false) {
-      this.check = true;
-    } else {
-      this.check = false;
+  showHideNavigation(type:string) {
+    if(type === "dashboard"){
+      this.showTracking = false;
+      this.showDashboard = !this.showDashboard; 
+      
     }
+    if(type === "tracking"){
+      this.showDashboard = false;
+      this.showTracking = !this.showTracking; 
+    }
+    // this.isShownNav = !this.isShownNav;
+    // if (this.check == false) {
+    //   this.check = true;
+    // } else {
+    //   this.check = false;
+    // }
   }
 }

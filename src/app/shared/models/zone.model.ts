@@ -1,4 +1,5 @@
 import { City, Customer, Plant, Site } from "./customer-details.model";
+import { DeviceDO, EmployeeDO, ZoneDO } from "./employee-dashboard-dto.model";
 import { HierarchyLevelMap } from "./hierarchy-level-map-dto.model";
 
 export class Zone {
@@ -95,5 +96,84 @@ export class ZoneResponseDto {
         this.totalHotZoneEmployees = 0;
         this.totalHotZones = 0;
         this.totalZones = 0;
+    }
+}
+
+export class ViolationResponseDtoResponse {
+    data: ViolationResponseDto;
+    error: boolean
+    message: string;
+    status: number;
+    constructor() {
+        this.data = new ViolationResponseDto();
+        this.error = false;
+        this.message = "";
+        this.status = 0;
+    }
+}
+
+export class ViolationResponseDto {
+    totalViolations: number;
+    constructor() {
+        this.totalViolations = 0;
+    }
+}
+
+export class ZoneViolationStatus {
+    city: City;
+    customer: Customer;
+    id: string;
+    modifiedDate: string;
+    plant: Plant;
+    reportDate: string;
+    site: Site;
+    totalViolations: number;
+    zone: ZoneDO;
+    constructor() {
+        this.city = new City();
+        this.customer = new Customer();
+        this.id = "";
+        this.modifiedDate = "";
+        this.plant = new Plant();
+        this.reportDate = "";
+        this.site = new Site();
+        this.totalViolations = 0;
+        this.zone = new ZoneDO();
+    }
+}
+
+export class ZoneViolations {
+    city: City;
+    customer: Customer;
+    device: DeviceDO;
+    duration: number;
+    employee: EmployeeDO;
+    entryTime: string;
+    exitTime: string;
+    id: string;
+    iotServerDateTimeStamp: string;
+    plant: Plant;
+    site: Site;
+    uplinkCity: City;
+    uplinkPlant: Plant;
+    uplinkSite: Site;
+    zone: ZoneDO;
+
+    constructor() {
+        this.city = new City();
+        this.customer = new Customer();
+        this.device = new DeviceDO();
+        this.duration = 0;
+        this.employee = new EmployeeDO();
+        this.entryTime = "";
+        this.exitTime = "";
+        this.id = "";
+        this.iotServerDateTimeStamp = "";
+        this.plant = new Plant();
+        this.site = new Site();
+        this.uplinkCity = new City();
+        this.uplinkPlant = new Plant();
+        this.uplinkSite = new Site();
+        this.zone = new ZoneDO();
     }
 }

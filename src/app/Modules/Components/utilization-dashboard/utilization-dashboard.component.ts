@@ -9,6 +9,8 @@ import * as fs from 'file-saver';
 import { DatePipe } from '@angular/common';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { MatDialog } from '@angular/material/dialog';
+import * as am4core from '@amcharts/amcharts4/core';
+import * as am4charts from '@amcharts/amcharts4/charts';
 
 @Component({
   selector: 'app-utilization-dashboard',
@@ -17,7 +19,8 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class UtilizationDashboardComponent implements OnInit {
 
-  constructor(private customerConfigService: CustomerConfigService, private dashboardService: DashboardService, private formBuilder: FormBuilder, private dialog: MatDialog) { }
+  constructor(private customerConfigService: CustomerConfigService, private dashboardService: DashboardService, private formBuilder: FormBuilder, private dialog: MatDialog,) { }
+
   customers: Customer[] = new Array<Customer>();
   customerNames: string[] = new Array<string>();
   cities: City[] = new Array<City>();
@@ -31,7 +34,11 @@ export class UtilizationDashboardComponent implements OnInit {
   cityId: string = "All";
   plantId: string = "All";
   utilizationDashboardDto: UtilizationDashboardDto = new UtilizationDashboardDto();
-  cardStatusDto: CardStatusDto = new CardStatusDto();
+  cardStatusDto: CardStatusDto[] = new Array<CardStatusDto>();
+  cardsDetectedArray: number[] = new Array<number>();
+  cardsNotDetectedArray: number[] = new Array<number>();
+  inactiveCardsArray: number[] = new Array<number>();
+  reportDateArray: string[] = new Array<string>();
   cardUtilizationResponse: CardUtilizationResponse = new CardUtilizationResponse();
   countDataFetched: boolean = false;
   chartOptions: any;
@@ -40,6 +47,7 @@ export class UtilizationDashboardComponent implements OnInit {
   doughnutChartLabels: string[] = ['Distributed Cards', 'Live Cards'];
   demodoughnutChartData: number[] = new Array<number>();
   doughnutChartType: ChartType = 'doughnut';
+  Amcharts: any;
   exportForm = this.formBuilder.group({
     reportType: "totalCards"
   });
@@ -51,12 +59,13 @@ export class UtilizationDashboardComponent implements OnInit {
   });
   exportDate: string = "";
 
+  chart: any;
   ngOnInit(): void {
     this.getCustomerList();
     this.getUtilizationCount();
     this.getCitiesByCustomerId();
     this.getCardUtilizationTrends();
-    this.getbadgeUtilizationStauts();
+    this.getCardUtilizationStauts();
     this.chartOptions = {
       responsive: true,
       cutoutPercentage: 90,
@@ -103,12 +112,81 @@ export class UtilizationDashboardComponent implements OnInit {
   getCardUtilizationTrends() {
     this.dashboardService.getCardUtilizationTrends(this.customerId, this.cityId, this.plantId).subscribe((res: any) => {
       this.cardStatusDto = res.data;
-    }
-    )
+       var chart = am4core.create("chartdiv", am4charts.XYChart);
+
+      chart.data = this.cardStatusDto;
+
+      /* Create axes */
+      var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+
+      /* Create value axis */
+      var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+
+      /* Create series */
+      var series1 = chart.series.push(new am4charts.LineSeries());
+      series1.dataFields.valueY = "cardDeteced";
+      series1.dataFields.dateX = "reportDate";
+      series1.name = "Cards Detected";
+      series1.stroke = am4core.color("#FCD202");
+      series1.strokeWidth = 1;
+      let bullet = series1.bullets.push(new am4charts.Bullet());
+
+      var square = bullet.createChild(am4core.Rectangle);
+      square.width = 8;
+      square.height = 8;
+
+      // Add outline to the square bullet
+      square.fill = am4core.color("#FCD202");
+
+      var series2 = chart.series.push(new am4charts.LineSeries());
+      series2.dataFields.valueY = "inActiveCards";
+      series2.dataFields.dateX = "reportDate";
+      series2.name = "Inactive Cards";
+      series2.stroke = am4core.color("#B0DE09");
+      series2.strokeWidth = 1;
+      bullet = series2.bullets.push(new am4charts.Bullet());
+
+      var arrow = bullet.createChild(am4core.Triangle);
+      arrow.horizontalCenter = "middle";
+      arrow.verticalCenter = "middle";
+      arrow.fill = am4core.color("#B0DE09");
+      arrow.direction = "top";
+      arrow.width = 8;
+      arrow.height = 8;
+
+      var series3 = chart.series.push(new am4charts.LineSeries());
+      series3.dataFields.valueY = "cardNotDetected";
+      series3.dataFields.dateX = "reportDate";
+      series3.name = "Cards Not Detected";
+      series3.stroke = am4core.color("#ff4d4d");
+      series3.strokeWidth = 1;
+      bullet = series3.bullets.push(new am4charts.Bullet());
+
+      var arrow = bullet.createChild(am4core.Triangle);
+      arrow.horizontalCenter = "middle";
+      arrow.verticalCenter = "middle";
+      arrow.fill = am4core.color("#ff4d4d");
+      arrow.direction = "top";
+      arrow.width = 8;
+      arrow.height = 8;
+
+      series3.tooltipText = `
+       Detected  : {cardDeteced}
+       Not On Network: {inActiveCards}
+       Not Detected : {cardNotDetected}`;
+      series3.tooltip.pointerOrientation = "vertical";
+      series3.tooltip.autoTextColor = true;
+
+      /* Add legend */
+      chart.legend = new am4charts.Legend();
+
+      /* Create a cursor */
+      chart.cursor = new am4charts.XYCursor();
+    });
   }
 
-  getbadgeUtilizationStauts() {
-    this.dashboardService.getbadgeUtilizationStauts(this.customerId, this.cityId, this.plantId).subscribe((res: any) => {
+  getCardUtilizationStauts() {
+    this.dashboardService.getCardUtilizationStauts(this.customerId, this.cityId, this.plantId).subscribe((res: any) => {
       //this.dashboardService.getbadgeUtilizationStauts(this.customerId).subscribe((res: any) => {
       this.cardUtilizationResponse = res.data;
     })
@@ -149,7 +227,7 @@ export class UtilizationDashboardComponent implements OnInit {
           })
         this.getUtilizationCount();
         this.getCardUtilizationTrends();
-        this.getbadgeUtilizationStauts();
+        this.getCardUtilizationStauts();
       }
     }
     else {
@@ -157,7 +235,7 @@ export class UtilizationDashboardComponent implements OnInit {
       this.cityId = this.selectedCity;
       this.getUtilizationCount();
       this.getCardUtilizationTrends();
-      this.getbadgeUtilizationStauts();
+      this.getCardUtilizationStauts();
     }
   }
 
@@ -169,7 +247,7 @@ export class UtilizationDashboardComponent implements OnInit {
         this.plantId = plantId;
         this.getUtilizationCount();
         this.getCardUtilizationTrends();
-        this.getbadgeUtilizationStauts();
+        this.getCardUtilizationStauts();
       }
     }
     else {
@@ -177,7 +255,7 @@ export class UtilizationDashboardComponent implements OnInit {
       this.plantId = this.selectedPlant;
       this.getUtilizationCount();
       this.getCardUtilizationTrends();
-      this.getbadgeUtilizationStauts();
+      this.getCardUtilizationStauts();
     }
   }
 

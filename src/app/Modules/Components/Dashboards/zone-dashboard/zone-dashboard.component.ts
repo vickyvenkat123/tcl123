@@ -606,11 +606,11 @@ export class ZoneDashboardComponent implements OnInit {
           this.showThirdPager = true;
           this.thirdPager = 3;
         }
-        if (((this.totalNoOfPages - this.thirdPager) > 0)) {
+        if (((this.totalNoOfPages - this.thirdPager) > 0) && this.thirdPager != 0) {
           this.showFourthPager = true;
           this.fourthPager = 4;
         }
-        if (((this.totalNoOfPages - this.fourthPager) > 0)) {
+        if (((this.totalNoOfPages - this.fourthPager) > 0) && this.fourthPager != 0) {
           this.showFifthPager = true;
           this.fifthPager = 5;
         }
@@ -629,10 +629,10 @@ export class ZoneDashboardComponent implements OnInit {
         if (this.totalNoOfPages - this.secondPager > 0) {
           this.showThirdPager = true;
         }
-        if (this.totalNoOfPages - this.thirdPager > 0) {
+        if ((this.totalNoOfPages - this.thirdPager) > 0 && this.thirdPager != 0) {
           this.showFourthPager = true;
         }
-        if (this.totalNoOfPages - this.fourthPager > 0) {
+        if ((this.totalNoOfPages - this.fourthPager) > 0 && this.fourthPager != 0) {
           this.showFifthPager = true;
         }
       }

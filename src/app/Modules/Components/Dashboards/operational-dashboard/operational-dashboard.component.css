@@ -748,3 +748,7 @@ body {
     height: 500px;
   }
   
+  
+  img {
+    cursor: move;
+  }

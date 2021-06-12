@@ -1,0 +1,369 @@
+<app-header></app-header>
+<app-left-navigation></app-left-navigation>
+<div fxLayout="row" fxlayoutAlign="space-between center" fxLayout.lt-sm="column"
+    class="operationalHeading executiveDashboardMain">
+    <div fxLayout="row">
+        <div fxFlex="">
+            <h1>Zone Violation Dashboard</h1>
+        </div>
+    </div>
+
+</div>
+<div fxLayout="row" fxLayoutAlign="space-between center" fxLayout.lt-sm="column" class="executiveDashboard zone">
+    <div fxLayout="column">
+        <div fxFlex="">
+            <span>City</span>
+        </div>
+        <div fxFlex="">
+            <mat-form-field appearance="fill">
+                <mat-select (selectionChange)="cityChanged($event)" [(ngModel)]="selectedCity">
+                    <mat-option *ngFor="let city of cityNames" [value]="city">
+                        {{city}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div fxLayout="column">
+        <div fxFlex="">
+            <span>Plant</span>
+        </div>
+        <div fxFlex="">
+            <mat-form-field *ngIf="plantNames" appearance="fill">
+                <mat-select (selectionChange)="plantChanged($event)" [(ngModel)]="selectedPlant">
+                    <mat-option *ngFor="let plant of plantNames" [value]="plant">
+                        {{plant}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div fxLayout="column">
+        <div fxFlex="">
+            <span> Site </span>
+        </div>
+        <div fxFlex="">
+            <mat-form-field *ngIf="siteNames" appearance="fill">
+                <mat-select (selectionChange)="siteChanged($event)" [(ngModel)]="selectedSite">
+                    <mat-option *ngFor="let site of siteNames" [value]="site">
+                        {{site}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div fxLayout="column" class="exeDaptePickerBox">
+        <div fxFlex="">
+            <span> Date Range </span>
+        </div>
+        <div fxFlex="">
+            <input class="form-control exeDaptePicker" [value]="dateTextInput" placeholder="Select a date"
+                daterangepicker name="daterangeInput" (selected)="selectedDate($event)" [options]=""
+                (cancelDaterangepicker)="calendarCanceled($event)" (applyDaterangepicker)="calendarApplied($event)" />
+        </div>
+    </div>
+
+    <div fxLayout="row" class="exeHeadingBtns">
+        <button type="button" class="ml-3 btn btn-info exeClear" (click)="clear()">
+            <span>Clear</span>
+        </button>
+        <button type="button" class="ml-3 btn btn-info exesearch" (click)="search()">
+            <span>Search</span>
+        </button>
+    </div>
+</div>
+
+
+<div>
+    <div class="row mt-5 ml-3">
+        <div class="modal fade" id="resetModal" tabindex="-1" role="dialog" aria-labelledby="resetModalTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Report</h5>
+                        <button type="button" class="close closeX" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form [formGroup]="exportForm">
+
+                            <mat-form-field appearance="fill" class="cardTotalReport">
+                                <mat-select formControlName="reportType">
+                                    <mat-option value="status">Status</mat-option>
+                                    <mat-option value="summary">Summary</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary cancelBtn" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="ml-2 d-inline btn btn-info downloadBtn"
+                            (click)="export()">Download</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- main table-->
+<div class="utilTblData">
+    <div class="stickyGateTbl">
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayout.lt-sm="column" class="utilSticky">
+            <div fxFlex="" class="dataTblHeadings">
+                <strong>Total Violations : </strong><span class="zoneTot">{{totalViolations}}</span>
+            </div>
+            <div fxFlex="" class="dataTblHeadings">
+                <div class="" *ngIf="showPagination">
+                    <span *ngIf="enableFirstPager"><i style="cursor:pointer;" (click)="pagerClicked('first')"
+                            class="fa fa-step-backward" aria-hidden="true"></i></span>
+                    <span *ngIf="!enableFirstPager"><i style="pointer-events:none;color: grey;"
+                            class="fa fa-step-backward" aria-hidden="true"></i></span>
+                    <span><i *ngIf="enablePreviousPager" style="cursor:pointer;" (click)="pagerClicked('previous')"
+                            class="ml-3 fa fa-caret-left" aria-hidden="true"></i></span>
+                    <span><i *ngIf="!enablePreviousPager" style="pointer-events:none;color: grey;"
+                            class="ml-3 fa fa-caret-left" aria-hidden="true"></i></span>
+                    <span *ngIf="showFirstPager"><button type="button"
+                            [ngStyle]="{'background-color': selectedPageValue == firstPager? 'black': '#17a2b8'}"
+                            class="ml-3 d-inline btn btn-info"
+                            (click)="pagerNumClicked(firstPager, 1)">{{firstPager}}</button></span>
+                    <span *ngIf="showSecondPager"><button type="button"
+                            [ngStyle]="{'background-color': selectedPageValue == secondPager? 'black': '#17a2b8'}"
+                            class="ml-3 d-inline btn btn-info"
+                            (click)="pagerNumClicked(secondPager, 2)">{{secondPager}}</button></span>
+                    <span *ngIf="showThirdPager"><button type="button"
+                            [ngStyle]="{'background-color': selectedPageValue == thirdPager? 'black': '#17a2b8'}"
+                            class="ml-3 d-inline btn btn-info"
+                            (click)="pagerNumClicked(thirdPager, 3)">{{thirdPager}}</button></span>
+                    <span *ngIf="showFourthPager"><button type="button"
+                            [ngStyle]="{'background-color': selectedPageValue == fourthPager? 'black': '#17a2b8'}"
+                            class="ml-3 d-inline btn btn-info"
+                            (click)="pagerNumClicked(fourthPager, 4)">{{fourthPager}}</button></span>
+                    <span *ngIf="showFifthPager"><button type="button"
+                            [ngStyle]="{'background-color': selectedPageValue == fifthPager? 'black': '#17a2b8'}"
+                            class="ml-3 d-inline btn btn-info"
+                            (click)="pagerNumClicked(fifthPager, 5)">{{fifthPager}}</button></span>
+                    <span><i *ngIf="enableNextPager" style="cursor:pointer;" (click)="pagerClicked('next')"
+                            class="ml-3 fa fa-caret-right" aria-hidden="true"></i></span>
+                    <span><i *ngIf="!enableNextPager" style="pointer-events:none;color: grey;"
+                            class="ml-3 fa fa-caret-right" aria-hidden="true"></i></span>
+                    <span><i *ngIf="enableLastPager" style="cursor:pointer;" (click)="pagerClicked('last')"
+                            class="ml-3 fa fa-step-forward" aria-hidden="true"></i></span>
+                    <span><i *ngIf="!enableLastPager" style="pointer-events:none;color: grey;"
+                            class="ml-3 fa fa-step-forward" aria-hidden="true"></i></span>
+
+                </div>
+            </div>
+            <div fxFlex="" class="one dataTblHeadings">
+                 <div fxFlex="50">
+
+                </div>
+                <div fxFlex="80">
+
+                </div>
+                <div fxFlex="">
+                    <!-- <span class="">Show</span> -->
+                </div>
+                <div fxFlex="">
+                    <span class="">Show</span>
+                </div> 
+
+                <div class="">
+                    <select class="form-control" [(ngModel)]="size" (change)="onSizeChange($event)">
+                        <option [value]="5">5</option>
+                        <option [value]="10">10</option>
+                        <option [value]="20">20</option>
+                        <option [value]="25">25</option>
+                    </select>
+                </div>
+                <div class="">
+                    <span class="toTalRecords">{{totalRecords}}</span>
+                    <span class="toTalRecordT">Total</span>
+                </div>
+                <div fxFlex="">
+                    <!-- <span class="">{{totalRecords}}Total</span> -->
+                </div>
+
+                <div fxFlex="" class="two">
+                    <button type="button" data-toggle="modal" data-target="#resetModal"
+                        class="ml-2 d-inline btn btn-info exportBtn">Export</button>
+                </div>
+            </div>
+
+
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between center" class="">
+            <table mat-table [dataSource]="dataSourceForZoneViolations" matSort (matSortChange)="sortData($event)"
+                class="mat-elevation-z8" class="tblBg">
+
+                <ng-container matColumnDef="Zone Name" class="stickyData">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="zone"> Zone Name
+                    </th>
+
+                    <td mat-cell *matCellDef="let element"> <a (click)="openZone(element.zone.zoneId)"
+                            style="cursor: pointer;"><b>{{element.zone?element.zone.zoneName:'-'}}</b></a>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Total Violations">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="totalViolations"> Total Violations
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{element.totalViolations}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Date">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="reportDate">Date
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{element.reportDate}} </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsForZoneViolations" class="tabaleMat"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsForZoneViolations;"></tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- onclick visible table-->
+<div class="invisible">
+
+</div>
+
+
+<div class="utilTblData" *ngIf="showZoneViolationDetails">
+    <div class="stickyGateTbl">
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayout.lt-sm="column" class="utilSticky">
+            <div fxFlex="" class="dataTblHeadings">
+                <strong>Total : </strong><span class="zoneTot">{{totalRecordsForZVD}}</span>
+            </div>
+            <div fxFlex="" class="dataTblHeadings">
+                <div class="" *ngIf="showPaginationForZVD">
+                    <span *ngIf="enableFirstPager"><i style="cursor:pointer;" (click)="pagerClicked('first')"
+                            class="fa fa-step-backward" aria-hidden="true"></i></span>
+                    <span *ngIf="!enableFirstPager"><i style="pointer-events:none;color: grey;"
+                            class="fa fa-step-backward" aria-hidden="true"></i></span>
+                    <span><i *ngIf="enablePreviousPager" style="cursor:pointer;" (click)="pagerClicked('previous')"
+                            class="ml-3 fa fa-caret-left" aria-hidden="true"></i></span>
+                    <span><i *ngIf="!enablePreviousPager" style="pointer-events:none;color: grey;"
+                            class="ml-3 fa fa-caret-left" aria-hidden="true"></i></span>
+                    <span *ngIf="showFirstPager"><button type="button"
+                            [ngStyle]="{'background-color': selectedPageValue == firstPager? 'black': '#17a2b8'}"
+                            class="ml-3 d-inline btn btn-info"
+                            (click)="pagerNumClicked(firstPager, 1)">{{firstPager}}</button></span>
+                    <span *ngIf="showSecondPager"><button type="button"
+                            [ngStyle]="{'background-color': selectedPageValue == secondPager? 'black': '#17a2b8'}"
+                            class="ml-3 d-inline btn btn-info"
+                            (click)="pagerNumClicked(secondPager, 2)">{{secondPager}}</button></span>
+                    <span *ngIf="showThirdPager"><button type="button"
+                            [ngStyle]="{'background-color': selectedPageValue == thirdPager? 'black': '#17a2b8'}"
+                            class="ml-3 d-inline btn btn-info"
+                            (click)="pagerNumClicked(thirdPager, 3)">{{thirdPager}}</button></span>
+                    <span *ngIf="showFourthPager"><button type="button"
+                            [ngStyle]="{'background-color': selectedPageValue == fourthPager? 'black': '#17a2b8'}"
+                            class="ml-3 d-inline btn btn-info"
+                            (click)="pagerNumClicked(fourthPager, 4)">{{fourthPager}}</button></span>
+                    <span *ngIf="showFifthPager"><button type="button"
+                            [ngStyle]="{'background-color': selectedPageValue == fifthPager? 'black': '#17a2b8'}"
+                            class="ml-3 d-inline btn btn-info"
+                            (click)="pagerNumClicked(fifthPager, 5)">{{fifthPager}}</button></span>
+                    <span><i *ngIf="enableNextPager" style="cursor:pointer;" (click)="pagerClicked('next')"
+                            class="ml-3 fa fa-caret-right" aria-hidden="true"></i></span>
+                    <span><i *ngIf="!enableNextPager" style="pointer-events:none;color: grey;"
+                            class="ml-3 fa fa-caret-right" aria-hidden="true"></i></span>
+                    <span><i *ngIf="enableLastPager" style="cursor:pointer;" (click)="pagerClicked('last')"
+                            class="ml-3 fa fa-step-forward" aria-hidden="true"></i></span>
+                    <span><i *ngIf="!enableLastPager" style="pointer-events:none;color: grey;"
+                            class="ml-3 fa fa-step-forward" aria-hidden="true"></i></span>
+
+                </div>
+            </div>
+            <div fxFlex="" class="one dataTblHeadings">
+                 <div fxFlex="50">
+
+                </div>
+                <div fxFlex="80">
+
+                </div>
+                <div fxFlex="">
+                    <!-- <span class="">Show</span> -->
+                </div>
+                <div fxFlex="">
+                    <span class="">Show</span>
+                </div>
+
+                <div class="">
+                    <select class="form-control" [(ngModel)]="sizeForZVD"
+                    (change)="onSizeChangeForZVD($event)">
+                    <option [value]="5">5</option>
+                    <option [value]="10">10</option>
+                    <option [value]="25">25</option>
+                    <option [value]="50">50</option>
+                    <option [value]="100">100</option>
+                </select>
+                </div>
+                <div class="">
+                    <span class="toTalRecords">{{totalRecords}}</span>
+                    <span class="toTalRecordT">Total</span>
+                </div>
+                 <div fxFlex="">
+
+                </div>
+
+                <div fxFlex="" class="two">
+                    <button type="button" (click)="exportZoneViolationDetails()"
+                        class="ml-2 d-inline btn btn-info exportBtn">Export</button>
+                </div>
+            </div>
+
+
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between center" class="">
+            <table mat-table [dataSource]="dataSourceForZoneViolationDetails" matSort
+                (matSortChange)="sortDataForZVD($event)" class="mat-elevation-z8" class="tblBg">
+
+                <ng-container matColumnDef="Zone Name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="zone"> Zone Name
+                    </th>
+
+                    <td mat-cell *matCellDef="let element">{{element.zone?element.zone.zoneName:'-'}}</td>
+                </ng-container>
+                <ng-container matColumnDef="Employee Id">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="employeeId"> Employee Id
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{element.employee.employeeId}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Employee Name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="name">Employee Name
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{element.employee.name}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Serial No">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="serialNumber">Serial No
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{element.device.serialNumber}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Date">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="iotServerDateTimeStamp">Date
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{element.iotServerDateTimeStamp}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Entry Time">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="entryTime">Entry Time
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{element.entryTime}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Exit Time">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="exitTime">Exit Time
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{element.exitTime}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Duration(mins)">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="duration">Duration(mins)
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{element.duration}} </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsForZoneViolationDetails" class="tabaleMat"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsForZoneViolationDetails;"></tr>
+            </table>
+        </div>
+    </div>
+</div>

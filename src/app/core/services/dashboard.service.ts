@@ -112,11 +112,11 @@ export class DashboardService {
       { headers: headers });
   }
 
-  getbadgeUtilizationStauts(customerId: string, cityId: string, plantId: string) {
+  getCardUtilizationStauts(customerId: string, cityId: string, plantId: string) {
     var token = sessionStorage.getItem("token") || "";
     const headers = new HttpHeaders().set('Authorization', token);
     headers.append("Content-Type", "application/json");
-    return this.http.get(this.url + '/dashboardservice/dashboard/utilization/status?customerId=' + customerId + '&cityId=' + cityId + '&plantId=' + plantId,
+    return this.http.get(this.url + '/dashboardservice/dashboard/card/utilization/status?customerId=' + customerId + '&cityId=' + cityId + '&plantId=' + plantId,
       { headers: headers });
   }
 
@@ -173,5 +173,53 @@ export class DashboardService {
         '&customerId=' + customerId + '&cityId=' + cityId + '&date=' + date,
         { responseType: 'blob', observe: 'response', headers: headers });
     }
+  }
+
+  getZoneViolationCount(customerId: string, fromDate: string, toDate: string, cityId: string, plantId: string, siteId: string) {
+    var token = sessionStorage.getItem("token") || "";
+    const headers = new HttpHeaders().set('Authorization', token);
+    headers.append("Content-Type", "application/json");
+    return this.http.get(this.url + '/dashboardservice/zone/violations/summary/count?fromDate=' + fromDate + '&todate=' + toDate + '&customerId=' + customerId + '&cityId=' + cityId + '&plantId=' + plantId + '&siteId=' + siteId,
+      { headers: headers });
+  }
+
+  getTotalViolationsSummaryByPageAndSize(customerId: string, fromDate: string, toDate: string, cityId: string, plantId: string, siteId: string, pageNo: number, size: number) {
+    var token = sessionStorage.getItem("token") || "";
+    const headers = new HttpHeaders().set('Authorization', token);
+    headers.append("Content-Type", "application/json");
+    return this.http.get(this.url + '/dashboardservice/zone/violations/summary?fromDate=' + fromDate + '&todate=' + toDate + '&page=' + pageNo + '&size=' + size + '&customerId=' + customerId + '&cityId=' + cityId + '&plantId=' + plantId + '&siteId=' + siteId,
+      { headers: headers });
+  }
+
+  exportZoneViolationSummary(customerId: string, fromDate: string, toDate: string, cityId: string, plantId: string, siteId: string) {
+    var token = sessionStorage.getItem("token") || "";
+    const headers = new HttpHeaders().set('Authorization', token);
+    headers.append("Content-Type", "application/json");
+    return this.http.get(this.url + '/dashboardservice/zone/violations/summary/export?customerId=' + customerId + '&fromDate=' + fromDate + '&toDate=' + toDate + '&cityId=' + cityId + '&plantId=' + plantId + '&siteId=' + siteId,
+      { responseType: 'blob', observe: 'response', headers: headers });
+  }
+
+  exportZoneViolationStatus(customerId: string, fromDate: string, toDate: string, cityId: string, plantId: string, siteId: string) {
+    var token = sessionStorage.getItem("token") || "";
+    const headers = new HttpHeaders().set('Authorization', token);
+    headers.append("Content-Type", "application/json");
+    return this.http.get(this.url + '/dashboardservice/zone/violations/zone/export?customerId=' + customerId + '&fromDate=' + fromDate + '&toDate=' + toDate + '&cityId=' + cityId + '&plantId=' + plantId + '&siteId=' + siteId,
+      { responseType: 'blob', observe: 'response', headers: headers });
+  }
+
+  getZoneViolationDetails(customerId: string, fromDate: any, toDate: any, cityId: string, plantId: string, siteId: string, pageNo: number, size: number, zoneId: string) {
+    var token = sessionStorage.getItem("token") || "";
+    const headers = new HttpHeaders().set('Authorization', token);
+    headers.append("Content-Type", "application/json");
+    return this.http.get(this.url + '/dashboardservice/zone/violations/zone?&customerId=' + customerId + '&fromDate=' + fromDate + '&todate=' + toDate + '&page=' + '&cityId=' + cityId + '&plantId=' + plantId + '&siteId=' + siteId +
+      '&pageNo=' + pageNo + '&size=' + size + '&zoneId=' + zoneId, { headers: headers });
+  }
+
+  exportZoneViolationDetails(customerId: string, fromDate: string, toDate: string, cityId: string, plantId: string, siteId: string, zoneId: string) {
+    var token = sessionStorage.getItem("token") || "";
+    const headers = new HttpHeaders().set('Authorization', token);
+    headers.append("Content-Type", "application/json");
+    return this.http.get(this.url + '/dashboardservice/zone/violations/zone/export?customerId=' + customerId + '&fromDate=' + fromDate + '&toDate=' + toDate + '&cityId=' + cityId + '&plantId=' + plantId + '&siteId=' + siteId + '&zoneId=' + zoneId,
+      { responseType: 'blob', observe: 'response', headers: headers });
   }
 }

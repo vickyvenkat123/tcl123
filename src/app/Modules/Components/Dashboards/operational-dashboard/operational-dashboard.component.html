@@ -17,60 +17,60 @@
                     (clear)="onClear()" (close)="onClose()" (change)="onChange($event)">
                     >
                 </ng-select>
-                
+
             </div>
         </div>
 
     </div>
 </div>
 <div fxLayout="row" fxLayoutAlign="space-between center" fxLayout.lt-sm="column" class="operationalChartRow">
+    <div fxLayout="column">
+        <div fxLayout="row" class="dashrow-one">
+            <em>Safety Alerts</em>
+            <span class=""> {{employeeDashboardDto.totalRecords}} Total Employees </span>
+        </div>
         <div fxLayout="column">
-            <div fxLayout="row" class="dashrow-one">
-                <em>Safety Alerts</em>
-                <span class=""> {{employeeDashboardDto.totalRecords}} Total Employees </span>
-            </div>
-            <div fxLayout="column">
-                <div class="" *ngIf="alertDashboardDto && alertDashboardDto.totalZones > 0">
-                    <div id="chart-container">
-                        <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels"
-                            [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend"
-                            [chartType]="lineChartType" [plugins]="lineChartPlugins"
-                            (chartHover)="lineChartHovered($event)" (chartClick)="lineChartClicked($event)">
-                        </canvas>
-                    </div>
+            <div class="" *ngIf="alertDashboardDto && alertDashboardDto.totalZones > 0">
+                <div id="chart-container">
+                    <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+                        [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"
+                        [plugins]="lineChartPlugins" (chartHover)="lineChartHovered($event)"
+                        (chartClick)="lineChartClicked($event)">
+                    </canvas>
                 </div>
             </div>
         </div>
+    </div>
+    <div fxLayout="column">
+        <div fxLayout="row" class="dashrow-one">
+            <em>Battery Status</em>
+            <span class=""> {{employeeDashboardDto.batteryPercentAlertValue}} Devices </span>
+        </div>
         <div fxLayout="column">
-            <div fxLayout="row" class="dashrow-one">
-                <em>Battery Status</em>
-                <span class=""> {{employeeDashboardDto.batteryPercentAlertValue}} Devices </span>
-            </div>
-            <div fxLayout="column">
-                <div class="" *ngIf="alertDashboardDto && alertDashboardDto.totalZones > 0">
-                    <div id="chart-container">
-                        <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="chartType"
-                            [options]="pieChartOptions" [colors]="batteryPieChartColors" [legend]="pieChartLegend">
-                        </canvas>
-                    </div>
+            <div class="" *ngIf="alertDashboardDto && alertDashboardDto.totalZones > 0">
+                <div id="chart-container">
+                    <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="chartType"
+                        [options]="pieChartOptions" [colors]="batteryPieChartColors" [legend]="pieChartLegend">
+                    </canvas>
                 </div>
             </div>
         </div>
+    </div>
+    <div fxLayout="column">
+        <div fxLayout="row" class="dashrow-one">
+            <em>Overcrowding Alerts</em>
+            <span class=""> {{alertDashboardDto.totalZones}} Total Zones </span>
+        </div>
         <div fxLayout="column">
-            <div fxLayout="row" class="dashrow-one">
-                <em>Overcrowding Alerts</em>
-                <span class=""> {{alertDashboardDto.totalZones}} Total Zones </span>
-            </div>
-            <div fxLayout="column">
-                <div class="" *ngIf="alertDashboardDto && alertDashboardDto.totalZones > 0">
-                    <div id="chart-container">
-                        <canvas baseChart [chartType]="chartType" [data]="chartData" [labels]="chartLabels"
-                            [options]="chartOptions" [colors]="pieChartColors">
-                        </canvas>
-                    </div>
+            <div class="" *ngIf="alertDashboardDto && alertDashboardDto.totalZones > 0">
+                <div id="chart-container">
+                    <canvas baseChart [chartType]="chartType" [data]="chartData" [labels]="chartLabels"
+                        [options]="chartOptions" [colors]="pieChartColors">
+                    </canvas>
                 </div>
             </div>
         </div>
+    </div>
 </div>
 <div class="dataTabal">
     <div *ngIf="showEmployeeList" class="">
@@ -181,106 +181,116 @@
             (gridReady)="onGridReady($event)" [rowData]="employeeDashboardDto.employeestatus"></ag-grid-angular>
     </div>
     <div *ngIf="showZoneList" class="">
-    <div class="dataTblHeadings">
-        <div class="">
-            <div class="row">
-                <div class="col-sm-3">
-                    <button type="button" class="btn btn-info mx-3 " (click)="showEmployees()">
-                        Employee
-                        List</button>
-                    <button type="button" class="btn btn-info empList" (click)="showZones()">
-                        <span>Zone List</span></button>
-                </div>
-                <div class="col-sm-4"> 
-                    <div class="row">
-                        <span class="mx-3 dataTopShow"> Select Hierarchy</span>
-                    <select class="form-control" style="width: 200px;" [(ngModel)]="selectedHieararchy">
-                        <option *ngFor="let hierarchy of hierarchyLevelMapDto.hierarchyLevelMapList"
-                            value="{{hierarchy.hierarchyLevelMapName}}">{{hierarchy.hierarchyLevelMapName}}
-                        </option>
-                    </select>
+        <div class="dataTblHeadings">
+            <div class="">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <button type="button" class="btn btn-info mx-3 " (click)="showEmployees()">
+                            Employee
+                            List</button>
+                        <button type="button" class="btn btn-info empList" (click)="showZones()">
+                            <span>Zone List</span></button>
                     </div>
-                    
-                </div>
-                <div class="col-sm-4"> <span class="dataTopShow"> Total Number Of Employees</span>
-                   <span class="dataTopShow"> {{totalNoOfEmployeesOfZone}}</span>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <span class="mx-3 dataTopShow"> Select Hierarchy</span>
+                            <select class="form-control" style="width: 200px;" [(ngModel)]="selectedHieararchy">
+                                <option *ngFor="let hierarchy of hierarchyLevelMapDto.hierarchyLevelMapList"
+                                    value="{{hierarchy.hierarchyLevelMapName}}">{{hierarchy.hierarchyLevelMapName}}
+                                </option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-4"> <span class="dataTopShow"> Total Number Of Employees</span>
+                        <span class="dataTopShow"> {{totalNoOfEmployeesOfZone}}</span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-  
-    <div class="container-fluid px-0">
-        <div class="row">
-            <div class="col-6 zoneListDataTbl">
-                <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)"
-                    class="mat-elevation-z8">
 
-                    <!-- Name Column -->
-                    <ng-container matColumnDef="Zone Name">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header="zoneName">Zone Name </th>
-                        <td mat-cell *matCellDef="let element; let j = index" (mouseenter)="highlightZone(j)"  (click)="navigateToZoneDashboard(element.zoneId)">
-                          {{j+1  + "." + element.zoneName}} </td>
-                    </ng-container>
+        <div class="container-fluid px-0">
+            <div class="row">
+                <div class="col-6 zoneListDataTbl">
+                    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)"
+                        class="mat-elevation-z8">
 
-                    <!-- Weight Column -->
-                    <ng-container matColumnDef="Count">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header="count"> Employee Count </th>
-                        <td mat-cell *matCellDef="let element"> {{element.count}} </td>
-                    </ng-container>
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="Zone Name">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header="zoneName">Zone Name </th>
+                            <td mat-cell *matCellDef="let element; let j = index" (mouseenter)="highlightZone(j)"
+                                (click)="navigateToZoneDashboard(element.zoneId)">
+                                {{j + 1 + "." + element.zoneName}} </td>
+                        </ng-container>
 
-                    <!-- Symbol Column -->
-                    <ng-container matColumnDef="Beacon Count">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header="beaconCount"> Beacon Count
-                        </th>
+                        <!-- Weight Column -->
+                        <ng-container matColumnDef="Count">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header="count"> Employee Count </th>
+                            <td mat-cell *matCellDef="let element"> {{element.count}} </td>
+                        </ng-container>
 
-                        <td mat-cell *matCellDef="let element">
-                            <a (click)="showBeaconList(element.zoneId)" style="cursor: pointer;"
-                                color="primary"><b>{{element.beaconCount}}</b></a>
-                        </td>
-                    </ng-container>
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="Beacon Count">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header="beaconCount"> Beacon Count
+                            </th>
 
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                </table>
-                <span class="ml-5 row">{{employeeZoneDtos.length}} Total</span>
-            </div>
-            <div class="col-6" >
-                <div class="container">
-                    <!-- <img alt="Red dot" style="width:750px; height:350px;" /> -->
-                    <div class="col-md-12">
-                        <div class="panzoom-btns">
-                            <button id="btn-zoom-in-workspace"
-                                    class="zoom-out">Zoom Out
-                            </button>
-                            <button id="btn-zoom-null-workspace"
-                                    class="reset">Reset
-                            </button>
-                            <button id="btn-zoom-out-workspace"
-                                    class="zoom-in">Zoom In
-                            </button>
-                            
-                         </div>
+                            <td mat-cell *matCellDef="let element">
+                                <a (click)="showBeaconList(element.zoneId)" style="cursor: pointer;"
+                                    color="primary"><b>{{element.beaconCount}}</b></a>
+                            </td>
+                        </ng-container>
 
-                        <div #canvasDiv class="col-md-12 col-sm-12">
-                            <div id="panzoom" #panzoomDiv>
-                                <img #canvasBGImage height=" {{canvasHeight}}"  width=" {{canvasWidth}}" />
-                                <canvas #canvas class=" canvas"  width="{{canvasWidth}}"  height="{{canvasHeight}}"></canvas>
-                                <canvas #canvasupper class="canvas"  width="{{canvasWidth}}"  height="{{canvasHeight}}" (mousemove)="mousemove($event)"></canvas>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                    <span class="ml-5 row">{{employeeZoneDtos.length}} Total</span>
+                </div>
+                <div class="col-6">
+                    <div class="container">
+                        <!-- <img alt="Red dot" style="width:750px; height:350px;" /> -->
+                        <div class="col-md-12">
+                            <!-- <div class="panzoom-btns">
+                                <button id="zoomOut" (click)="zoomOut()" class="zoom-out">Zoom Out
+                                </button>
+                                <button id="reset" (click)="reset()" class="ml-2 reset">Reset
+                                </button>
+                                <button id="zoomIn" (click)="zoomIn()" class="ml-2 zoom-in">Zoom In
+                                </button>
+
+                            </div> -->
+                            <div #canvasDiv class="col-md-12 col-sm-12">
+                                <div id="panzoom" #panzoomDiv>
+                                    <img #canvasBGImage height=" {{canvasHeight}}"  width=" {{canvasWidth}}" />
+                                    <canvas #canvas class=" canvas"  width="{{canvasWidth}}"  height="{{canvasHeight}}"></canvas>
+                                    <canvas #canvasupper class="canvas"  width="{{canvasWidth}}"  height="{{canvasHeight}}" (mousemove)="mousemove($event)"></canvas>
+                                </div>
+                               
+                                <!-- <canvas #canvasupper class="canvas"  width="{{canvasWidth}}"  height="{{canvasHeight}}" (mousemove)="mousemove($event)" (click)="canvasOnClick($event)"></canvas> -->
                             </div>
-                           
-                            <!-- <canvas #canvasupper class="canvas"  width="{{canvasWidth}}"  height="{{canvasHeight}}" (mousemove)="mousemove($event)" (click)="canvasOnClick($event)"></canvas> -->
-                        </div>
-                        <div class="col-md-12 col-sm-12" >
+                            <!-- <div #canvasDiv class="col-md-12 col-sm-12" *ngIf="isProcessingOrNotForMap">
+                                <div id="panzoom" #panzoomDiv>
+                                    <pinch-zoom #pinch> <img #canvasBGImage height=" {{canvasHeight}}"
+                                             width=" {{canvasWidth}}"/>
+                                    </pinch-zoom>
+                                    <canvas #canvas class=" canvas"  width="{{canvasWidth}}"
+                                         height="{{canvasHeight}}"></canvas>
+                                    <canvas #canvasupper class="canvas"  width="{{canvasWidth}}"
+                                         height="{{canvasHeight}}" (mousemove)="mousemove($event)"></canvas>
+                                </div>
+
+                                
+                            </div> -->
+                            <div class="col-md-12 col-sm-12">
                                 <!-- <label class="spinner">
                                     <app-spinner *ngIf="!isProcessingForMap"></app-spinner>
                                 </label>
                                 <label *ngIf="isProcessingForMap">Map Not Available To Display</label> -->
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </div>
