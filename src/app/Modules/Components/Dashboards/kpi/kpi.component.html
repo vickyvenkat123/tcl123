@@ -73,7 +73,7 @@
                     <img src="assets/svg/info.svg" alt="info" />
                 </span>
             </div>
-            <div class="dashrow-one date-field">
+             <div class="dashrow-one date-field">
                 <span>
                     <mat-form-field style="width: 45%;" appearance="legacy">
                         <mat-label>Date Range</mat-label>
@@ -81,7 +81,7 @@
                             <input matStartDate formControlName="start" placeholder="Start date">
                             <input matEndDate formControlName="end" placeholder="End date">
                         </mat-date-range-input>
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker-toggle matSuffix class="date-toogle" [for]="picker"></mat-datepicker-toggle>
                         <mat-date-range-picker #picker></mat-date-range-picker>
 
                         <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
@@ -94,8 +94,7 @@
                     <img src="assets/svg/download.svg" alt="download">
                 </span>
             </div>
-
-        </div>
+             </div>
         <div fxLayout="row" fxLayoutAlign="space-around center">
             <div fxLayout="column">
                 <!-- <span>Beacon Accuracy</span>
@@ -199,9 +198,22 @@
     </div>
     <div fxFlex="50" fxLayout.lt-sm="column" class="operationalChartRow">
         <div fxFlex="25">
-            <span>Date
-                <i class="fa fa-calendar" aria-hidden="true"></i>
-            </span>
+            <div class="dashrow-one date-field">
+                <span>
+                    <mat-form-field style="width: 45%;" appearance="legacy">
+                        <mat-label>Date Range</mat-label>
+                        <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+                            <input matStartDate formControlName="start" placeholder="Start date">
+                            <input matEndDate formControlName="end" placeholder="End date">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix class="date-toogle" [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+
+                        <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+                        <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+                    </mat-form-field>
+                </span>
+            </div>
         </div>
         <div>
             <span> Export
@@ -300,35 +312,61 @@
         <div fxLayout="row">
             <div fxFlex="30" fxLayout.xs="column">
 
-                <div fxLayout="row" class="space-evenly center circle-index" fxLayoutGap="5px">
+                <div fxLayout="row" class="space-evenly center circle-index" fxLayoutGap="10px">
                     <div class="zoneSvgHeading">
-                        <svg height="100" width="100">
-                            <circle cx="50" cy="50" r="30" width="500" height="100" style="fill:rgb(255, 255, 255); stroke-width:4; stroke:rgb(38, 78, 116);"
-                            />
+                        <!-- <svg height="100" width="100">
+                            <circle cx="50" cy="50" r="45" width="100" height="100" style="fill:rgb(255, 255, 255); stroke-width:4; stroke:rgb(38, 78, 116);"
+                            />     
+                          
                         </svg>
-                        <span class="total-installedGateway">{{networkStatusData.totalInstalledGateways}}</span>
+                        -->
+                        <div class="col-md-6 col-sm-6 aligncenter">
+                            <div class="circle">
+                              <div class="circle-inner aligncenter">
+                                <b>97.99</b>
+                              </div>
+                            </div>
+                            <b>Application Up Time</b>
+                          </div>
                     </div>
                 </div>
             </div>
             <div fxFlex="30" fxLayout.xs="column">
                 <div fxLayout="row" class="space-evenly center circle-index" fxLayoutGap="5px">
                     <div class="zoneSvgHeading">
-                        <svg height="100" width="100">
-                            <circle cx="50" cy="50" r="30" width="500" height="100" style="fill:rgb(255, 255, 255); stroke-width:4; stroke:rgb(38, 78, 116);"
+                        <!-- <svg height="100" width="100">
+                            <circle cx="50" cy="50" r="45" width="100" height="100" style="fill:rgb(255, 255, 255); stroke-width:4; stroke:rgb(38, 78, 116);"
                             />
-                        </svg>
-                        <span class="total-installedGateway">{{networkStatusData.totalInstalledGateways}}</span>
+                          
+                            
+                        </svg> -->
+                        <div class="col-md-6 col-sm-6 aligncenter">
+                            <div class="circle">
+                              <div class="circle-inner aligncenter">
+                                <b>99.99</b>
+                              </div>
+                            </div>
+                            <b>Platform  Uptime</b>
+                          </div>
+                       
                     </div>
                 </div>
             </div>
             <div fxFlex="30" fxLayout.xs="column">
                 <div fxLayout="row" class="space-evenly center circle-index" fxLayoutGap="5px">
                     <div class="zoneSvgHeading">
-                        <svg height="100" width="100">
-                            <circle cx="50" cy="50" r="30" width="500" height="100" style="fill:rgb(255, 255, 255); stroke-width:4; stroke:rgb(38, 78, 116);"
+                        <!-- <svg height="100" width="100">
+                            <circle cx="50" cy="50" r="45" width="100" height="100" style="fill:rgb(255, 255, 255); stroke-width:4; stroke:rgb(38, 78, 116);"
                             />
-                        </svg>
-                        <span class="total-installedGateway">{{networkStatusData.totalInstalledGateways}}</span>
+                        </svg> -->
+                        <div class="col-md-6 col-sm-6 aligncenter">
+                            <div class="circle">
+                              <div class="circle-inner aligncenter">
+                                <b>99.99</b>
+                              </div>
+                            </div>
+                            <b>Network Server Uptime</b>
+                          </div>
                     </div>
                 </div>
             </div>

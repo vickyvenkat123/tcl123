@@ -67,3 +67,17 @@ body {
     border-bottom: white !important;
     height: 0 !important;
 }
+.circle-inner {
+    border: 5px solid rgb(38, 78, 116);;
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+  
+}
+.aligncenter {
+    text-align: center;
+}
+b, input, p, small, span {
+    font-size: 12px;
+    font-weight: 400;
+}

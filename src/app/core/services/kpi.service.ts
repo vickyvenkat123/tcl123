@@ -5,6 +5,9 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class KpiService {
+  getkpicalender() {
+    return this.http.get('https://demo.emptracker.iot.tatacommunications.com/api/v1/userservice/customers/5d026850fbf97000016896cc');
+  }
 
  
  
@@ -12,14 +15,15 @@ export class KpiService {
   constructor(private http :HttpClient) { }
 
   getkpiBell(){
-    return this.http.get('https://demo.emptracker.iot.tatacommunications.com/api/v1/userservice/customers')
+    return this.http.get('');
   }
   getkpiSOS(){
-    return this.http.get('https://demo.emptracker.iot.tatacommunications.com/api/v1/userservice/customers/5d026850fbf97000016896cc')
+    return this.http.get('');
   }
   getkpiBattery(){
-    return this.http.get('https://demo.emptracker.iot.tatacommunications.com/api/v1/getLoggedInUser')
+    return this.http.get('');
   }
+ 
   // requestDataFromMultipleSources(): Observable<any[]> {
   //   const response1 = this.getkpiBell(),
   //     response2 = this.getkpiSOS(),
@@ -29,3 +33,7 @@ export class KpiService {
   // }
 
 }
+function https(https: any) {
+  throw new Error('Function not implemented.');
+}
+

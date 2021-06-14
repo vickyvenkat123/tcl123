@@ -6,6 +6,7 @@ import { GatewayService } from 'src/app/core/services/gateway.service';
 import { GatewaysCountDo, NetworkUptimeDto, CityCountDO } from 'src/app/shared/models/gateways-count-do.model';
 import { DatePipe } from '@angular/common';
 import { FormGroup, FormControl } from '../../../../../../node_modules/@angular/forms';
+import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
 
 @Component({
   selector: 'app-kpi',
@@ -13,7 +14,7 @@ import { FormGroup, FormControl } from '../../../../../../node_modules/@angular/
   styleUrls: ['./kpi.component.css'],
 })
 export class KpiComponent implements OnInit {
-  networkStatusData: GatewaysCountDo = new GatewaysCountDo();
+  networkStatusData: GatewaysCountDo = new GatewaysCountDo(); 
   chartOptions: any;
   chartColors: any;
   doughnutChartLabels: string[] = [];
@@ -46,8 +47,15 @@ export class KpiComponent implements OnInit {
   kpiSOSData: any;
   kpiBatteData: any;
   Date!: Date;
+  kpicalender: any;
 
-  constructor(private kpi: KpiService, private gatewayService: GatewayService, private datePipe: DatePipe) { }
+  constructor(private kpi: KpiService, private gatewayService: GatewayService, private datePipe: DatePipe,) { }
+  public options: any = {
+    'locale': { 'format': 'DD-MM-YYYY', 'separator': ' to ' },
+    fromDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 1),
+    toDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 1),
+    'maxDate': new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 1),
+  };
 
   ngOnInit(): void {
     this.chartOptions = {
@@ -67,11 +75,18 @@ export class KpiComponent implements OnInit {
         displayColors: false,
       },
     };
+    this.getKPIcalender();
     this.Date = new Date();
     this.getKPISOS();
     this.getKPIBattery();
     this.getKPIAlerts()
       ;
+  }
+  getKPIcalender() {
+    this.kpi.getkpicalender().subscribe((res: any) => {
+      this.getKPIcalender = res;
+      console.log(res);
+    })
   }
   // events
   chartClicked(e: any): void {
@@ -173,6 +188,7 @@ export class KpiComponent implements OnInit {
       this.kpiAlertData = res;
       console.log(res);
     });
+    
   }
 
   networkStatus() {
