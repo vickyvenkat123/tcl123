@@ -1,21 +1,33 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class KpiService {
-  getkpicalender() {
-    return this.http.get('https://demo.emptracker.iot.tatacommunications.com/api/v1/userservice/customers/5d026850fbf97000016896cc');
-  }
+ 
 
  
  
 
   constructor(private http :HttpClient) { }
 
+ 
+  
+  getkpicalender() {
+    
+ let header = new HttpHeaders().set(
+  "Authorization", sessionStorage.getItem("token")
+   
+);
+  return this.http.get('https://demo.emptracker.iot.tatacommunications.com/api/v1/userservice/customers/5d026850fbf97000016896cc', {headers:header});
+  }
   getkpiBell(){
-    return this.http.get('');
+    let header = new HttpHeaders().set(
+      "Authorization", sessionStorage.getItem("token")
+       
+    );
+    return this.http.get('https://demo.emptracker.iot.tatacommunications.com/api/v1/dashboardservice/dashboard/kpi/management?username=demouser@tcl.com&customerId=5d026850fbf97000016896cc', {headers:header});
   }
   getkpiSOS(){
     return this.http.get('');
