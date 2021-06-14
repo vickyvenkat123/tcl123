@@ -5,6 +5,10 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class KpiService {
+  getkpiData: any;
+  getKPIExport: any;
+  getkpiSOS: any;
+  
  
 
  
@@ -29,8 +33,12 @@ export class KpiService {
     );
     return this.http.get('https://demo.emptracker.iot.tatacommunications.com/api/v1/dashboardservice/dashboard/kpi/management?username=demouser@tcl.com&customerId=5d026850fbf97000016896cc', {headers:header});
   }
-  getkpiSOS(){
-    return this.http.get('');
+  getkpiExportData(){
+    let header = new HttpHeaders().set(
+      "Authorization", sessionStorage.getItem("token")
+       
+    );
+    return this.http.get('https://emptracker.iot.tatacommunications.com/api/v1/reportservice/badge/kpi/management/pl/scheduled/export?customerId=600ea145d938ae00016fd456', {headers:header});
   }
   getkpiBattery(){
     return this.http.get('');

@@ -17,6 +17,7 @@ export class KpiComponent implements OnInit {
   networkStatusData: GatewaysCountDo = new GatewaysCountDo(); 
   chartOptions: any;
   chartColors: any;
+  ExportData : any;
   doughnutChartLabels: string[] = [];
   range = new FormGroup({
     start: new FormControl(),
@@ -48,14 +49,11 @@ export class KpiComponent implements OnInit {
   kpiBatteData: any;
   Date!: Date;
   kpicalender: any;
+  kpiExportData: any;
+  getKPIExportData: any;
 
   constructor(private kpi: KpiService, private gatewayService: GatewayService, private datePipe: DatePipe,) { }
-  public options: any = {
-    'locale': { 'format': 'DD-MM-YYYY', 'separator': ' to ' },
-    fromDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 1),
-    toDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 1),
-    'maxDate': new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 1),
-  };
+ 
 
   ngOnInit(): void {
     this.chartOptions = {
@@ -77,10 +75,11 @@ export class KpiComponent implements OnInit {
     };
     this.getKPIcalender();
     this.Date = new Date();
-    this.getKPISOS();
+    // this.getKPISOS();
     this.getKPIBattery();
     this.getKPIAlerts()
       ;
+      this.getKPIExportData();
   }
   getKPIcalender() {
     this.kpi.getkpicalender().subscribe((res: any) => {
@@ -164,12 +163,12 @@ export class KpiComponent implements OnInit {
   ];
 
   //SOS
-  getKPISOS() {
-    this.kpi.getkpiSOS().subscribe(res => {
-      this.kpiSOSData = res;
-      console.log(res);
-    });
-  }
+  // getKPISOS() {
+  //   this.kpi.getkpiSOS().subscribe(res => {
+  //     this.kpiSOSData = res;
+  //     console.log(res);
+  //   });
+  // }
 
 
   //Battery
@@ -200,5 +199,11 @@ export class KpiComponent implements OnInit {
         }
         console.log("networkStatusData" + this.networkStatusData)
       })
+  }
+  getExportData(){
+    this.kpi.getKPIExport().subscribe((res)=>{
+      this.kpiExportData=res;
+      console.log(res);
+    })
   }
 }
