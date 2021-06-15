@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  url : "https://demo.emptracker.iot.tatacommunications.com/api/v1"
+  url : "https://emptracker.iot.tatacommunications.com/api/v1"
 };

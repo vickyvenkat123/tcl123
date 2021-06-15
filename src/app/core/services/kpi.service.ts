@@ -24,14 +24,14 @@ export class KpiService {
   "Authorization", sessionStorage.getItem("token")
    
 );
-  return this.http.get('https://demo.emptracker.iot.tatacommunications.com/api/v1/userservice/customers/5d026850fbf97000016896cc', {headers:header});
+  return this.http.get('https://emptracker.iot.tatacommunications.com/api/v1/userservice/customers/5d026850fbf97000016896cc', {headers:header});
   }
   getkpiBell(){
     let header = new HttpHeaders().set(
       "Authorization", sessionStorage.getItem("token")
        
     );
-    return this.http.get('https://demo.emptracker.iot.tatacommunications.com/api/v1/dashboardservice/dashboard/kpi/management?username=demouser@tcl.com&customerId=5d026850fbf97000016896cc', {headers:header});
+    return this.http.get('https://emptracker.iot.tatacommunications.com/api/v1/dashboardservice/dashboard/kpi/management?username=demouser@tcl.com&customerId=5d026850fbf97000016896cc', {headers:header});
   }
   getkpiExportData(){
     let header = new HttpHeaders().set(
