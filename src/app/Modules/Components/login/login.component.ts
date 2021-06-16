@@ -44,7 +44,8 @@ export class LoginComponent implements OnInit {
             sessionStorage.setItem("token", res.access_token);
             this.customerConfigService.getLoggedInUser().subscribe(
               (result: any) => {
-                sessionStorage.setItem("customerId", result.customer.customerId);
+                sessionStorage.setItem("customerId", result.customer?.customerId);
+                sessionStorage.setItem("userDetails",JSON.stringify(result));
                 localStorage.setItem('STATE', 'true');
                 localStorage.setItem('ROLE', result.userType);
                 localStorage.setItem("login_detail", JSON.stringify(result));

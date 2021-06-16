@@ -10,10 +10,13 @@ import { ChangePasswordComponent } from 'src/app/Modules/Components/change-passw
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+  loggedInUser: any;
 
   constructor(private router: Router, private dialog: MatDialog, private loginService: LoginService) { }
 
   ngOnInit(): void {
+    const userDetails = JSON.parse(sessionStorage.getItem("userDetails") || '{}');
+    this.loggedInUser = userDetails.firstName + ' ' +  userDetails.lastName;
   }
 
   openOD() {

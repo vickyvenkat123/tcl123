@@ -7,6 +7,7 @@ import { GatewaysCountDo, NetworkUptimeDto, CityCountDO } from 'src/app/shared/m
 import { DatePipe } from '@angular/common';
 import { FormGroup, FormControl } from '../../../../../../node_modules/@angular/forms';
 import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
+import * as fs from 'file-saver';
 
 @Component({
   selector: 'app-kpi',
@@ -24,7 +25,7 @@ export class KpiComponent implements OnInit {
     end: new FormControl()
   });
   public doughnutChartData: MultiDataSet = [
-    [350, 450, 100],
+    [450],
   ];
   //   public doughnutChartColors: any[] = 
   // [
@@ -76,8 +77,8 @@ export class KpiComponent implements OnInit {
     this.getKPIcalender();
     this.Date = new Date();
     // this.getKPISOS();
-    this.getKPIBattery();
-    this.getKPIAlerts()
+    //this.getKPIBattery();
+    //this.getKPIAlerts()
       ;
       this.getKPIExportData();
   }
@@ -171,24 +172,24 @@ export class KpiComponent implements OnInit {
   // }
 
 
-  //Battery
-  getKPIBattery() {
-    this.kpi.getkpiBattery().subscribe(res => {
-      this.kpiBatteData = res;
-      console.log(res);
-    })
-  }
+  // //Battery
+  // getKPIBattery() {
+  //   this.kpi.getkpiBattery().subscribe(res => {
+  //     this.kpiBatteData = res;
+  //     console.log(res);
+  //   })
+  // }
 
 
 
   //Alerts
-  getKPIAlerts() {
-    this.kpi.getkpiBell().subscribe((res) => {
-      this.kpiAlertData = res;
-      console.log(res);
-    });
+  // getKPIAlerts() {
+  //   this.kpi.getkpiBell().subscribe((res) => {
+  //     this.kpiAlertData = res;
+  //     console.log(res);
+  //   });
     
-  }
+  // }
 
   networkStatus() {
     this.gatewayService.getNetworkStatus(sessionStorage.getItem("customerId") || "").subscribe(
@@ -200,10 +201,16 @@ export class KpiComponent implements OnInit {
         console.log("networkStatusData" + this.networkStatusData)
       })
   }
-  getExportData(){
-    this.kpi.getKPIExport().subscribe((res)=>{
-      this.kpiExportData=res;
-      console.log(res);
+  exportData(){
+    this.kpi.getkpiExportData().subscribe((data:any)=>{
+      this.kpiExportData=data;  
+      var headers = data.headers.get('Content-disposition').toString();
+      var fileName = headers.substring((headers.indexOf('=') + 1), headers.length)
+      let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      //fs.saveAs(blob, fileName);
+      fs.saveAs(blob,"nameFile"+".xlsx")
+
+
     })
   }
 }

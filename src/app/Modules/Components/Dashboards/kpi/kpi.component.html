@@ -29,14 +29,15 @@
                         <mat-datepicker-toggle matSuffix class="date-toogle" [for]="picker"></mat-datepicker-toggle>
                         <mat-date-range-picker #picker></mat-date-range-picker>
 
-                        <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+                        <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date
+                        </mat-error>
                         <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
                     </mat-form-field>
                 </span>
             </div>
             <div class="dashrow-one">
                 <span> Export
-                    <img (click)="ExportData()" src="assets/svg/download.svg" alt="download">
+                    <img (click)="exportData();" src="assets/svg/download.svg" alt="download">
                 </span>
             </div>
         </div>
@@ -58,8 +59,9 @@
 
             <div fxLayout="column">
                 <div style="height: 200px; width: 140px;" class="row">
-                    <canvas baseChart [data]="doughnutChartData" [options]="chartOptions" [labels]="doughnutChartLabels" [chartType]="doughnutChartType"
-                        [colors]="chartColors" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                    <canvas baseChart [data]="doughnutChartData" [options]="chartOptions" [labels]="doughnutChartLabels"
+                        [chartType]="doughnutChartType" [colors]="chartColors" (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)">
                     </canvas>
                 </div>
             </div>
@@ -73,7 +75,7 @@
                     <img src="assets/svg/info.svg" alt="info" />
                 </span>
             </div>
-             <div class="dashrow-one date-field">
+            <div class="dashrow-one date-field">
                 <span>
                     <mat-form-field style="width: 45%;" appearance="legacy">
                         <mat-label>Date Range</mat-label>
@@ -84,7 +86,8 @@
                         <mat-datepicker-toggle matSuffix class="date-toogle" [for]="picker"></mat-datepicker-toggle>
                         <mat-date-range-picker #picker></mat-date-range-picker>
 
-                        <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+                        <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date
+                        </mat-error>
                         <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
                     </mat-form-field>
                 </span>
@@ -94,7 +97,7 @@
                     <img src="assets/svg/download.svg" alt="download">
                 </span>
             </div>
-             </div>
+        </div>
         <div fxLayout="row" fxLayoutAlign="space-around center">
             <div fxLayout="column">
                 <!-- <span>Beacon Accuracy</span>
@@ -122,8 +125,9 @@
 
             <div fxLayout="column">
                 <div style="height: 200px; width: 140px" class="row">
-                    <canvas baseChart [data]="doughnutChartData" [options]="chartOptions" [labels]="doughnutChartLabels" [chartType]="doughnutChartType"
-                        [colors]="chartColors" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                    <canvas baseChart [data]="doughnutChartData" [options]="chartOptions" [labels]="doughnutChartLabels"
+                        [chartType]="doughnutChartType" [colors]="chartColors" (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)">
                     </canvas>
                 </div>
             </div>
@@ -147,7 +151,8 @@
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-date-range-picker #picker></mat-date-range-picker>
 
-                        <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+                        <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date
+                        </mat-error>
                         <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
                     </mat-form-field>
                 </span>
@@ -183,8 +188,9 @@
             </div>
             <div fxLayout="column">
                 <div style="height: 200px; width: 140px" class="row">
-                    <canvas baseChart [data]="doughnutChartData" [options]="chartOptions" [labels]="doughnutChartLabels" [chartType]="doughnutChartType"
-                        [colors]="chartColors" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                    <canvas baseChart [data]="doughnutChartData" [options]="chartOptions" [labels]="doughnutChartLabels"
+                        [chartType]="doughnutChartType" [colors]="chartColors" (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)">
                     </canvas>
                 </div>
             </div>
@@ -209,7 +215,8 @@
                         <mat-datepicker-toggle matSuffix class="date-toogle" [for]="picker"></mat-datepicker-toggle>
                         <mat-date-range-picker #picker></mat-date-range-picker>
 
-                        <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+                        <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date
+                        </mat-error>
                         <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
                     </mat-form-field>
                 </span>
@@ -295,8 +302,9 @@
         </div>
         <div fxLayout="column">
             <div fxLayout="row">
-                <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors"
-                    [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins" (chartHover)="lineChartHovered($event)"
+                <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+                    [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"
+                    [plugins]="lineChartPlugins" (chartHover)="lineChartHovered($event)"
                     (chartClick)="lineChartClicked($event)">
                 </canvas>
             </div>
@@ -322,12 +330,12 @@
                         -->
                         <div class="col-md-6 col-sm-6 aligncenter">
                             <div class="circle">
-                              <div class="circle-inner aligncenter">
-                                <b>97.99</b>
-                              </div>
+                                <div class="circle-inner aligncenter">
+                                    <b>97.99</b>
+                                </div>
                             </div>
                             <b>Application Up Time</b>
-                          </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -342,13 +350,13 @@
                         </svg> -->
                         <div class="col-md-6 col-sm-6 aligncenter">
                             <div class="circle">
-                              <div class="circle-inner aligncenter">
-                                <b>99.99</b>
-                              </div>
+                                <div class="circle-inner aligncenter">
+                                    <b>99.99</b>
+                                </div>
                             </div>
-                            <b>Platform  Uptime</b>
-                          </div>
-                       
+                            <b>Platform Uptime</b>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -361,12 +369,12 @@
                         </svg> -->
                         <div class="col-md-6 col-sm-6 aligncenter">
                             <div class="circle">
-                              <div class="circle-inner aligncenter">
-                                <b>99.99</b>
-                              </div>
+                                <div class="circle-inner aligncenter">
+                                    <b>99.99</b>
+                                </div>
                             </div>
                             <b>Network Server Uptime</b>
-                          </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -395,8 +403,8 @@
             </label>
             <div fxLayout="column">
                 <div fxLayout="row">
-                    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [plugins]="barChartPlugins"
-                        [legend]="barChartLegend" [chartType]="barChartType">
+                    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+                        [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType">
                     </canvas>
                 </div>
             </div>

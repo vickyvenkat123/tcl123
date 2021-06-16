@@ -5,8 +5,7 @@
     height: 100vh;
 	width: 80px;
 	float: left;
-    box-shadow: 0 0 1 rgb(196, 196, 196);
-    box-shadow: inset 8px 0px -1px 0px #e4e5e6; 
+   box-shadow:inset 2px 4px 8px -2px #d0d0d1;
 }
 .leftNav ul{
     margin :0;
@@ -50,6 +49,7 @@
     display: block;
     color: rgb(69,114,156);
     width: 16px;
+    margin: 0 auto;
  }
 /* .leftNav ul li a:hover img, .leftNav ul li a.active{
     color: rgb(245,247,250);
