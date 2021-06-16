@@ -206,9 +206,9 @@ export class KpiComponent implements OnInit {
       this.kpiExportData=data;  
       var headers = data.headers.get('Content-disposition').toString();
       var fileName = headers.substring((headers.indexOf('=') + 1), headers.length)
-      let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-      //fs.saveAs(blob, fileName);
-      fs.saveAs(blob,"nameFile"+".xlsx")
+      let blob = new Blob([data], { type: 'application/vnd.ms-excel' });
+      fs.saveAs(blob, fileName);
+      //fs.saveAs(blob,"nameFile"+".xlsx")
 
 
     })

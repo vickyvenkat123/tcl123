@@ -45,8 +45,9 @@ export class KpiService {
 
     var token = sessionStorage.getItem("token") || "";
     const headers = new HttpHeaders().set('Authorization', token);
+    sessionStorage.getItem("customerId")
     headers.append("Content-Type", "application/json");
-    return this.http.get(this.url + '/reportservice/badge/kpi/management/pl/scheduled/export?customerId=600ea145d938ae00016fd456',
+    return this.http.get(this.url + '/reportservice/badge/kpi/management/pl/scheduled/export?customerId='+ sessionStorage.getItem("customerId"),
       { responseType: 'blob', observe: 'response', headers: headers });
   }
   
