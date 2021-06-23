@@ -22,11 +22,11 @@ import { BeaconListModalComponent } from './beacon-list-modal/beacon-list-modal.
 import { filter } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import * as $ from 'jquery';
-import Panzoom from '@panzoom/panzoom';
 import { PinchZoomComponent } from 'src/app/shared/Components/pinch-zoom/pinch-zoom.component';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { PluginServiceGlobalRegistration } from 'chart.js';
 import { Legend } from '@amcharts/amcharts4/charts';
+import panzoom from "panzoom";
 
 @Component({
   selector: 'app-operational-dashboard',
@@ -44,6 +44,67 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
   searchOptionArray: Array<string> = new Array<string>();
   @ViewChild('autocompleteInput') autocompleteInput!: ElementRef;
   @ViewChild('pinch') pinchZoom!: PinchZoomComponent;
+  @ViewChild('scene', { static: true }) scene: ElementRef;
+  panZoomController;
+  zoomLevels: number[];
+
+  currentZoomLevel: number;
+
+  zoom() {
+    const isSmooth = false;
+    const scale = this.currentZoomLevel;
+
+
+    if (scale) {
+      const transform = this.panZoomController.getTransform();
+      const deltaX = transform.x;
+      const deltaY = transform.y;
+      const offsetX = scale + deltaX;
+      const offsetY = scale + deltaY;
+
+      if (isSmooth) {
+        this.panZoomController.smoothZoom(0, 0, scale);
+      } else {
+        this.panZoomController.zoomTo(offsetX, offsetY, scale);
+      }
+    }
+
+  }
+  zoomReset(){
+    this.panZoomController.zoomAbs(0, 0, 1);
+    this.currentZoomLevel = 1;
+  }
+
+  zoomToggle(zoomIn: boolean) {
+    const idx = this.zoomLevels.indexOf(this.currentZoomLevel);
+    if (zoomIn) {
+      if (typeof this.zoomLevels[idx + 1] !== 'undefined') {
+        this.currentZoomLevel = this.zoomLevels[idx + 1];
+      }
+    } else {
+      if (typeof this.zoomLevels[idx - 1] !== 'undefined') {
+        this.currentZoomLevel = this.zoomLevels[idx - 1];
+      }
+    }
+    if (this.currentZoomLevel === 1) {
+      this.panZoomController.moveTo(0, 0);
+      this.panZoomController.zoomAbs(0, 0, 1);
+    } else {
+      this.zoom();
+    }
+  }
+
+  ngAfterViewInit() {
+
+    this.zoomLevels = [0.1, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.5, 3];
+    this.currentZoomLevel = this.zoomLevels[4];
+    // panzoom(document.querySelector('#scene'));
+  
+    setTimeout(() => {
+      this.panZoomController = panzoom(document.querySelector('#canvasBGImage'));
+    }, 8000);
+   
+  }
   @Output() onSelectedOption = new EventEmitter();
   selectable = true;
   removable = true;
@@ -205,7 +266,7 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
     )
   }
 
-  ngAfterViewInit(): void {
+  //ngAfterViewInit(): void {
     // if (this.panzoomDiv) {
     //   (this.panzoomDiv.nativeElement).panzoom({
     //     $zoomIn: ('.zoom-in'),
@@ -228,7 +289,7 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
 
 
 
-  }
+  //}
 
   getBatteryStatus() {
     this.dashboardService.getBatteryStatus(sessionStorage.getItem("userId") || "", this.selectedSiteId).subscribe((res: any) => {
@@ -252,29 +313,6 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
       //this.sum = this.batteryStatusDto.low + this.batteryStatusDto.normal + this.batteryStatusDto.high;
       //this.demodoughnutChartData = [this.batteryStatusDto.low, this.batteryStatusDto.normal, this.batteryStatusDto.high];
     })
-  }
-
-  zoomIn() {
-    const element = document.querySelector('#zoomIn');
-
-    const zoomLevels = [0.1, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.5, 3];
-    let currentZoomLevel = zoomLevels[4];
-    //const text = document.querySelector('#text');
-    //const panzoom = Panzoom(document.getElementById('panzoom') as HTMLElement,{});
-    //(document.getElementById("zoomIn") as HTMLElement) .addEventListener('click', panzoom.zoomIn);
-  }
-
-  zoomOut() {
-     const panzoom = Panzoom(document.getElementById('panzoom') as HTMLElement, {});
-     (document.getElementById("zoomOut") as HTMLElement).addEventListener('click', panzoom.zoomOut);
-    
- 
-  }
-  
-
-  reset() {
-    const panzoom = Panzoom(document.getElementById('panzoom') as HTMLElement, {});
-    (document.getElementById("reset") as HTMLElement).addEventListener('click', panzoom.reset);
   }
 
   pipeForDate(iotDate: Date) {

@@ -235,13 +235,13 @@
             </div>
             <div fxFlex="">
                 <div fxLayout="row" class="zoomInOut">
-                    <div fxFlex="6"><i (click)="zoomIn()" class="fa fa-search-plus" aria-hidden="true"></i></div>
-                    <div fxFlex="6"><i (click)="zoomOut()" class="fa fa-search-minus" aria-hidden="true"></i> </div>
-                    <div fxFlex="6"><i (click)="reset()" class="fa fa-refresh" aria-hidden="true"></i> </div>
+                    <div fxFlex="6"><i (click)="zoomToggle(true)" class="fa fa-search-plus" aria-hidden="true"></i></div>
+                    <div fxFlex="6"><i (click)="zoomToggle(false)" class="fa fa-search-minus" aria-hidden="true"></i> </div>
+                    <div fxFlex="6"><i (click)="zoomReset()" class="fa fa-refresh" aria-hidden="true"></i> </div>
                 </div>
                 <div #canvasDiv class="col-md-12">
                     <div id="panzoom" #panzoomDiv>
-                        <img #canvasBGImage height=" {{canvasHeight}}"  width=" {{canvasWidth}}" />
+                        <img id="canvasBGImage" #canvasBGImage height=" {{canvasHeight}}"  width=" {{canvasWidth}}" />
                         <canvas #canvas class=" canvas"  width="{{canvasWidth}}"  height="{{canvasHeight}}"></canvas>
                         <canvas #canvasupper class="canvas"  width="{{canvasWidth}}"  height="{{canvasHeight}}"
                             (mousemove)="mousemove($event)"></canvas>
