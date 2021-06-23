@@ -29,7 +29,7 @@ export class OtpVerificationComponent implements OnInit {
   sendOTP() {
     this.forgotPasswordService.sendOTP(this.userId).subscribe((res: any) => {
       console.log("this.data" + this.data);
-      this.router.navigateByUrl("otp-verification");
+      this.router.navigate(["otp-verification"], { queryParams: { userId: this.userId } });
     },
       (error) => {
         console.log(error.error);

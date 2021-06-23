@@ -1,0 +1,12 @@
+<div class="container">
+    <h1 style="background-color:rgb(43,95,143);" mat-dialog-title>{{data.header}}</h1>
+    <mat-dialog-content>
+        Are you sure ? You want to change Alert status to {{status}}
+
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-raised-button (click)="changeStatus()">Ok</button>
+        <button mat-raised-button (click)="closeMe()">Cancel</button>
+    </mat-dialog-actions>
+
+</div>

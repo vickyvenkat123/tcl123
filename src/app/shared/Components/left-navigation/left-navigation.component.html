@@ -5,7 +5,7 @@
                 <img src="assets/svg/Group.svg" alt="Group">
                 Dashboards</a>
         </li>
-        <li><a routerLink="/login" routerLinkActive="active">
+        <li (click)="showHideNavigation('alerts')"><a routerLink="/notification" routerLinkActive="active">
                 <img src="assets/svg/bell.svg" alt="Bell" class="bell">Alerts</a></li>
 
         <li (click)="showHideNavigation('tracking')"><a routerLink="/track-employee" routerLinkActive="active">
@@ -15,7 +15,8 @@
         <li><a href="#"><img src="assets/svg/Safepass.svg" alt="Safepass">Safe Pass Management</a></li>
         <li><a href="#"><img src="assets/svg/Beacon.svg" alt="Beacon">Beacon Management</a></li>
         <li><a href="#"><img src="assets/svg/inventory.svg" alt="inventory">Inventery Operations</a></li>
-        <li><a href="#"><img src="assets/svg/Tracking.svg" alt="Tracking">Customer Configurations</a>
+        <li (click)="showHideNavigation('customerConfig')"><a routerLink="/alertrule" routerLinkActive="active">
+            <img src="assets/svg/bell.svg" alt="Bell" class="bell">Customer Configurations</a>
         </li>
         <li><a href="#"><img src="assets/svg/ngm.svg" alt="ngm">Nework Gateway Management</a>
         </li>
@@ -39,6 +40,15 @@
     </ul>
 </div>
 
+<div class="NavShowHide" *ngIf="showAlerts">
+    <div><i (click)="showHideNavigation('alerts')" class="fa fa-times" aria-hidden="true"></i></div>
+    <div class="dashHeading">Alerts</div>
+    <ul>
+        <li *ngxPermissionsOnly="['ROLE_NOTIFICATION_VIEW','ROLE_NOTIFICATION_ACTION']">
+            <a href="notification">Notifications</a>
+    </li>
+    </ul>
+</div>
 <div class="NavShowHide" *ngIf="showTracking">
     <div><i (click)="showHideNavigation('tracking')" class="fa fa-times" aria-hidden="true"></i></div>
     <div class="dashHeading">Tracking</div>
@@ -51,6 +61,18 @@
     </li>
         <li *ngxPermissionsOnly="['ROLE_BEACON_LAST_COMMUNICATION_VIEW']"><a href="beacon-last-communication">Beacon
                 Last Communocation</a>
+        </li>
+        <li *ngxPermissionsOnly="['ROLE_USER_LOGS_VIEW']"><a href="user-tracking">User Logs</a>
+    </li>
+    </ul>
+</div>
+
+<div class="NavShowHide" *ngIf="showCustomrConfig">
+    <div><i (click)="showHideNavigation('customerConfig')" class="fa fa-times" aria-hidden="true"></i></div>
+    <div class="dashHeading">Customer Configurations</div>
+    <ul>
+        <li *ngxPermissionsOnly="['ROLE_USER_ALERT_RULE_CONFIGURATION']">
+            <a href="alertrule">Alert Rules</a>
         </li>
     </ul>
 </div>

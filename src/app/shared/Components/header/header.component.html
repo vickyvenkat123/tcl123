@@ -1,36 +1,47 @@
 <header class="headerContainer" fxLayout="row" fxLayoutAlign="space-between center" fxLayout.lt-sm="column">
-    <div class="logo" fxFlex="17">
-            <a href="#"><img src="assets/svg/Dlogo.svg" alt="logo"></a>
-    </div>
-    <div class="container-inner" fxFlex="">
-            <span class="sideHeading">CONNECTED WORKERS</span>
-    </div>
     <div fxLayout="row" class="" fxLayoutAlign="space-between center">
-        <div fxFlex="" class="loggedInUser">{{loggedInUser}}</div>
-        <div class="rightMenu">
-            <a href=""><img src="assets/svg/bell2.svg" alt=""></a>
-            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-                <mat-icon>more_vert</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu">
-                <button mat-menu-item>
-                    <mat-icon>dialpad </mat-icon>
-                    <span (click)="openChangePassword()">Change Password</span>
-                </button>
-                <button mat-menu-item>
-                    <mat-icon>add_alert</mat-icon>
-                    <span> Alert Configuration</span>
-                </button>
-                <button mat-menu-item>
-                    <mat-icon>add_alert</mat-icon>
-                    <span>Alert Rules</span>
-                </button>
-                <button mat-menu-item>
-                    <mat-icon>error_outline </mat-icon>
-                    <span (click)="logout()">Logout</span>
-                </button>
-            </mat-menu>
-
+        <div class="logo" fxFlex="60">
+            <a href="#"><img src="assets/svg/Dlogo.svg" alt="logo"></a>
         </div>
+        <div fxFlex="50">
+            <span class="sideHeading">CONNECTED WORKERS</span>
+        </div>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="space-between center" class="headerUser">
+        <div fxFlex="" class="">
+            <img src="assets/svg/bell2.svg" alt="" (click)="openNotification()">
+            <span
+                *ngIf="notificationDto">{{notificationDto.totalCount==0?"":notificationDto.totalCount.toString()}}</span>
+        </div>
+
+        <span class="loggedInUser">{{loggedInUser}}</span>
+        <div fxFlex="" class="">
+            <div class="rightMenu">
+                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item>
+                        <mat-icon>dialpad </mat-icon>
+                        <span (click)="openChangePassword()">Change Password</span>
+                    </button>
+                    <button mat-menu-item>
+                        <mat-icon>add_alert</mat-icon>
+                        <span> Alert Configuration</span>
+                    </button>
+                    <button mat-menu-item>
+                        <mat-icon>add_alert</mat-icon>
+                        <span>Alert Rules</span>
+                    </button>
+                    <button mat-menu-item (click)="logout()">
+                        <mat-icon>error_outline </mat-icon>
+                        <span>Logout</span>
+                    </button>
+                </mat-menu>
+
+            </div>
+        </div>
+
     </div>
 </header>

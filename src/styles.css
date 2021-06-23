@@ -86,19 +86,92 @@ table.mat-table {
 }
 .operationalHeading .mat-form-field-appearance-fill .mat-form-field-flex {
     border-radius: 4px !important;
-    padding: 10px 15px  !important;
-    background-color:rgb(255,255,255) !important;
-    margin-top: 15px;
+    padding: 12px 15px !important;
+    background-color: rgb(245 249 250) !important;
+    margin-top: 13px;
     width: 250px !important;
 }
 .mat-select-arrow {
 
     margin-top: 11px !important;
 }
-
-.mat-form-field-appearance-fill .mat-form-field-underline::before {
-    width: 0 !important;
+.dataTabal.opD .ag-theme-alpine .ag-filter-toolpanel-header, .ag-theme-alpine .ag-filter-toolpanel-search, .ag-theme-alpine .ag-status-bar, .ag-theme-alpine .ag-header-row, .ag-theme-alpine .ag-panel-title-bar-title, .ag-theme-alpine .ag-multi-filter-group-title-bar
+.mat-form-field-appearance-fill {
+    font-weight: 700;
+    color: rgb(43,95,143);
+    color: var(--ag-header-foreground-color, var(--ag-secondary-foreground-color, var(--ag-foreground-color, #181d1f)));
+    background: rgb(220,230,245);
+    position: sticky !important;
+    top: 0;
 }
+.dataTabal.opD tr.mat-header-row{
+    background-color: rgb(220,230,245);
+}
+.dataTabal.opD tr.mat-row, tr.mat-footer-row{
+    background-color: rgb(245,247,250);
+}
+.dataTabal.opD .ag-header-cell:nth-child(6){
+    background-color: #fff;
+    border-right: solid 5px rgb(220,230,245);
+}
+.dataTabal.opD .ag-header-cell:nth-child(7){
+    background-color: #fff;
+    margin-right: 2px;
+    border-right: solid 5px rgb(220,230,245);
+}
+.dataTabal.opD .ag-header-cell:nth-child(8){
+    background-color: #fff;;
+}
+.dataTabal.opD .mat-sort-header-content {
+    color: rgb(43,95,143);
+    font-size: 12px;
+    font-weight: bold;
+}
+.dataTabal.opD .mat-sort-header-arrow{
+    color: rgb(43,95,143);
+    opacity: 1;
+  }
+  .dataTabal.opD .mat-elevation-z8{
+      box-shadow: none;
+  } 
+.dataTabal.opD .ag-theme-alpine .ag-ltr .ag-cell{
+    background-color: rgb(245,247,250);
+}
+.dataTabal.opD .ag-theme-alpine .ag-ltr .ag-cell:nth-child(6){
+    background-color: rgb(255, 255, 255);
+    border-right: solid 5px rgb(220,230,245);
+}
+.dataTabal.opD .ag-theme-alpine .ag-ltr .ag-cell:nth-child(7){
+    background-color: rgb(255, 255, 255);
+    border-right: solid 5px rgb(220,230,245);
+}
+.dataTabal.opD .ag-theme-alpine .ag-ltr .ag-cell:nth-child(8){
+    background-color: rgb(255, 255, 255);
+    border-right: solid 5px rgb(220,230,245);
+}
+.dataTabal.opD .showPagination button{
+    background-color: transparent;
+    color: #f3f3f3;
+}
+.dataTabal.opD .btn-info:not(:disabled):not(.disabled).active, .btn-info:not(:disabled):not(.disabled):active, .show>.btn-info.dropdown-toggle{
+    color: #fff;
+}
+.dataTabal.opD .ag-header-cell-text{
+    color: rgb(43,95,143);
+    font-size: 12px;
+    font-weight: bold;
+}
+.dataTabal.opD .mat-header-cell:nth-child(4){
+    background-color: rgb(255, 255, 255);
+}
+.dataTabal.opD .mat-column-Hot-Zone{
+    background-color: rgb(255, 255, 255);
+    padding: 0 0 0 27px;
+    width: 112px;
+}
+/* .dataTabal.opD .ag-theme-alpine .ag-row{
+    margin: 0 10px;
+} */
 .cdk-overlay-container{ z-index: 1200 !important; }
 .tZone .mat-form-field-appearance-fill .mat-form-field-flex {
     background-color: #fff !important;
@@ -218,6 +291,12 @@ table.mat-table {
 .cardDate .mat-form-field-underline{
     width: 0;
 }
+.mat-form-field-underline {
+    width: 0 !important;
+}
+.operationalHeading.executiveDashboardMain .mat-form-field-underline{
+    width: 0 !important;
+}
 .cardDate .cdk-text-field-autofill-monitored:not(:-webkit-autofill) {
     animation: cdk-text-field-autofill-end 0s 1ms;
     position: relative;
@@ -280,11 +359,13 @@ span.mat-select-min-line{
     font-size: 12px;
 }
 .stickyGateTbl .mat-sort-header-content{
-    color: #fff;
+    color: rgb(43,95,143);
     font-weight: normal;
+    font-size: 14px;
+    font-weight: 600;
 }
 .stickyGateTbl .mat-sort-header-arrow{
-    color: #fff;
+    color: rgb(43,95,143);
     opacity: 1 !important;
 }
 .executiveDashboard.beacon .mat-form-field-appearance-fill .mat-form-field-flex {
@@ -293,9 +374,18 @@ span.mat-select-min-line{
     margin-top: 5px;
     width: 340px !important;
 }
-.dashrow-one .mat-form-field-prefix, .mat-form-field-suffix{
-    top:14px !important;
+.fa-caret-left::before{
+    content: "\f100" !important;
 }
+.fa-caret-right:before {
+    content: "\f101" !important;
+}
+.fa-caret-right.ng-star-inserted{
+    color: #fff;
+}
+/* .dashrow-one .mat-form-field-prefix, .mat-form-field-suffix{
+    top:14px !important;
+} */
 .dashrow-one .mat-button-ripple.mat-ripple, .mat-button-focus-overlay{
 position:  relative !important;
 }

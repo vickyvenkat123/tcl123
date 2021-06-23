@@ -24,6 +24,7 @@ body {
 }
 .dataTblHeadings .toTalRecords{
   padding-right: 10px;
+  line-height: 32px;
 }
 .executiveDashboard {
     padding: 10px 0 5px 22px;
@@ -34,14 +35,19 @@ body {
   display: inline-block;
   position: relative;
   padding-left: 40px;
+  background-color: rgb(29,80,126);
+  color: rgb(61,133,198);
+}
+.input-wrapper .form-control::placeholder{
+  color: rgb(61,133,198);
 }
 .dataTblHeadings .input-wrapper::before{
   font-family: 'FontAwesome';
   content: '\f002';
   position: absolute;
-  left:  30px;
-  color: rgb(43,95,143);
-  top: 4px;
+  left: 24px;
+  color: rgb(61,133,198);
+  top: 19px;
   z-index: 111;
 }
 .executiveDashRowView{
@@ -71,6 +77,11 @@ body {
 }
 .exeHeadingBtns{
   margin-top: 35px;
+  position: relative;
+  top: 11px;
+}
+.noBg button{
+  background-color: transparent !important;
 }
 .executiveDashboard .exeHeadingBtns .exeClear{
     background-color: rgb(245,247,250);
@@ -216,6 +227,7 @@ body {
   width: 120px;
   margin-right: 20px;
   margin-left: 20px;
+  height: 40px;
 }
 .dataTblHeadings .form-control{
 	border: none;
@@ -242,10 +254,10 @@ body {
 
 }
 .stickyGateTbl .tabaleMat{
-  background-color: rgb(43,95,143);
-  color :#fff;
+  background-color:rgb(220,230,245);
+  color :rgb(43,95,143);
   position: sticky;
-  top: 72px;
+  top: 63px;
 }
 .stickyGateTbl .mat-sort-header-content{
   color: #fff;
@@ -260,22 +272,18 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell{
     display: inline-block;
     position: relative;
     padding-left: 40px;
+    height: 44px;
 }
-.dataTblHeadings .input-wrapper::before{
-    font-family: 'FontAwesome';
-    content: '\f002';
-    position: absolute;
-    left:  30px;
-    color: rgb(43,95,143);
-    top: 4px;
-    z-index: 111;
+.Gap {
+  margin-right: 20px;
 }
  .utilSticky{
   /* border-bottom: solid 1px rgb(43,95,143); */
   position: sticky;
   top: 0;
-  background-color: rgb(245,247,250);
-  padding: 5px 34px 10px 10px;
+  background-color: rgb(43,95,143);
+  padding: 0px 0 0px 5px;
+  color: #fff
 }
 .stickyData{
   border-bottom: solid 1px rgb(43,95,143);

@@ -19,7 +19,7 @@ export class AuthGuard implements CanActivate {
 
   checkUserLogin(route: ActivatedRouteSnapshot): boolean {
     if (this.loginService.isLoggedIn()) {
-      var userDetails = JSON.parse(localStorage.getItem("login_detail") || '{}');
+      var userDetails = JSON.parse(sessionStorage.getItem("userDetails") || '{}');
       if (userDetails && userDetails.userId) {
 
         this.permissionService.flushPermissions();
@@ -36,12 +36,12 @@ export class AuthGuard implements CanActivate {
       }
       if (authorities.indexOf(route.routeConfig?.data?.Permissions.Only) != -1) {
         return true;
-        
+
       }
-      else if (authorities.indexOf(route.routeConfig?.data?.Permissions.Only[0])!= -1){
+      else if (authorities.indexOf(route.routeConfig?.data?.Permissions.Only[0]) != -1) {
         return true;
       }
-      else{
+      else {
         console.log(route.routeConfig?.data?.Permissions.Only);
         this.router.navigate(['/login']);
         return false;
@@ -53,9 +53,8 @@ export class AuthGuard implements CanActivate {
 
   addAuthorities() {
     if (this.loginService.isLoggedIn()) {
-      var userDetails = JSON.parse(localStorage.getItem("login_detail") || '{}');
+      var userDetails = JSON.parse(sessionStorage.getItem("userDetails") || '{}');
       if (userDetails && userDetails.userId) {
-
         this.permissionService.flushPermissions();
         var authorities = userDetails.authorities.map(function (item: any) {
           return item.authority;

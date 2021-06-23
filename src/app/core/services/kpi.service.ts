@@ -10,6 +10,7 @@ export class KpiService {
   getkpiSOS: any;
   
   url: string = environment.url;
+ 
 
  
  
@@ -17,6 +18,13 @@ export class KpiService {
   constructor(private http :HttpClient) { }
 
  
+  getkpiDashboard(){
+    let header = new HttpHeaders().set(
+      "Authorization", sessionStorage.getItem("token")
+       
+    );
+return this.http.get('https://emptracker.iot.tatacommunications.com/api/v1/dashboardservice/dashboard/kpi/management?username=cust.admin.east@tcl.com&customerId=600ea145d938ae00016fd456',{headers:header});
+  }
   
   getkpicalender() {
     
@@ -26,23 +34,14 @@ export class KpiService {
 );
   return this.http.get('https://emptracker.iot.tatacommunications.com/api/v1/userservice/customers/5d026850fbf97000016896cc', {headers:header});
   }
-  // getkpiBell(){
-  //   let header = new HttpHeaders().set(
-  //     "Authorization", sessionStorage.getItem("token")
-       
-  //   );
-  //   return this.http.get(');
-  // }
+
+  //KPI Data loass
+//https://emptracker.iot.tatacommunications.com/api/v1/reportservice/badge/kpi/management/pl/scheduled/export?customerId=600ea145d938ae00016fd456
+//https://emptracker.iot.tatacommunications.com/api/v1/reportservice/badge/kpi/management/pl/hazardous/export?customerId=600ea145d938ae00016fd456
+ 
+//scheduled EXPORT
   
-  getkpiExportData(){
-    // let header = new HttpHeaders().set(
-    //   "Authorization", sessionStorage.getItem('token')
-    //   );
-    // return this.http.get('https://emptracker.iot.tatacommunications.com/api/v1/dashboardservice/dashboard/kpi/management?username=demouser@tcl.com&customerId=5d026850fbf97000016896cc', {headers:header});
-    // }
-
-
-
+getkpiExportData(){
     var token = sessionStorage.getItem("token") || "";
     const headers = new HttpHeaders().set('Authorization', token);
     sessionStorage.getItem("customerId")
@@ -50,22 +49,39 @@ export class KpiService {
     return this.http.get(this.url + '/reportservice/badge/kpi/management/pl/scheduled/export?customerId='+ sessionStorage.getItem("customerId"),
       { responseType: 'blob', observe: 'response', headers: headers });
   }
-  
 
   
-  // getkpiBattery(){
-  //   return this.http.get('');
-  // }
+  
  
-  // requestDataFromMultipleSources(): Observable<any[]> {
-  //   const response1 = this.getkpiBell(),
-  //     response2 = this.getkpiSOS(),
-  //     response3 = this.getkpiBattery();
-  //   // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
-  //   return forkJoin([response1, response2, response3]);
-  // }
+
+  //KPI Data DELAY
+  getkpiDelayExportData(type){
+    var token = sessionStorage.getItem("token") || "";
+    const headers = new HttpHeaders().set('Authorization', token);
+    sessionStorage.getItem("customerId")
+    headers.append("Content-Type", "application/json");
+    return this.http.get(this.url + '/reportservice/badge/kpi/management/pl/scheduled/export?customerId='+ sessionStorage.getItem("customerId")+'&type='+type,
+      { responseType: 'blob', observe: 'response', headers: headers });
+  }
+  
+//KPI HealthIndex
+
+getHealthIndexDataCW(){
+     
+ let header = new HttpHeaders().set(
+  "Authorization", sessionStorage.getItem("token")
+   
+);
+  return this.http.get('https://demo.emptracker.iot.tatacommunications.com/api/v1/uptimeservice/uptime?appName=CW', {headers:header});
 }
-function https(https: any) {
-  throw new Error('Function not implemented.');
-}
+
+getHealthIndexDataDASS(){
+     
+  let header = new HttpHeaders().set(
+   "Authorization", sessionStorage.getItem("token")
+    
+ );
+   return this.http.get('https://demo.emptracker.iot.tatacommunications.com/api/v1/uptimeservice/uptime?appName=DASS', {headers:header});
+ }
+} 
 

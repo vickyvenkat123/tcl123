@@ -1,0 +1,737 @@
+<app-header></app-header>
+<app-left-navigation></app-left-navigation>
+<div class="executiveDashboard">
+    <div fxLayout="row" fxlayoutAlign="space-between center" fxLayout.lt-sm="column" class="operationalHeading executiveDashboardMain">
+        <div fxLayout="row">
+            <div fxFlex="">
+                <h1>Alert Rule</h1>
+            </div>
+        </div>
+    </div>
+    <div fxLayout="row" class="newRule">
+        <h6>Create new Rule</h6>
+    </div>
+    <div *ngIf="showSearch && loggedInUserType ==='SUPERADMIN'">
+        <div class="input-wrapper">
+            Username <span style="color:red">*</span>
+            <div class="row"><input type="text" class="col-sm-3 form-control d-inline" [(ngModel)]="userName">
+                <button type="button" class="ml-2 d-inline btn btn-info" (click)="search()">Search</button>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="showSearchResult && loggedInUserType ==='SUPERADMIN'" class="cutomerAdmin">
+        <div fxLayout="row">
+            <div fxLayout="column">
+                <div fxFlex="">UserName<span style="color:red">*</span></div>
+                <div fxFlex=""><input type="text" class="form-control d-inline" [(ngModel)]="userName" disabled></div>
+            </div>
+            <div fxLayout="column">
+                <div fxFlex="">Alert Name<span style="color:red">*</span></div>
+                <div fxFlex=""><input type="text" class="form-control d-inline" [(ngModel)]="alertName"></div>
+            </div>
+            <div fxLayout="column">
+                <div fxFlex="">Hierarchy Level<span style="color:red">*</span></div>
+                <div fxFlex="" *ngIf="selectedHierarchy">
+                    <mat-form-field appearance="fill">
+                        <mat-select (selectionChange)="hierarchyChanged()" [(ngModel)]="selectedHierarchy">
+                            <mat-option *ngFor="let hierarchy of hierarchyList" [value]="hierarchy.id">
+                                {{hierarchy.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxLayout="column">
+                <div fxFlex="">Alert Type<span style="color:red">*</span></div>
+                <div fxFlex="">
+                    <form [formGroup]="alertForm">
+                        <mat-form-field placeholder="All" floatPlaceholder="always" appearance="fill">
+                            <mat-select multiple formControlName="alertDropdown">
+                                <mat-option #allSelected (click)="toggleAllSelection()" value="All" selected>All
+                                </mat-option>
+                                <mat-option *ngFor="let alert of alertTypeList" (click)="tosslePerOne()"
+                                    [value]="alert.alertId">{{alert.alertName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <div fxLayout="row" class="">
+            <div fxLayout="column" class="">
+                <div fxFlex="">Notification Type<span style="color:red">*</span></div>
+                <div fxFlex="">
+                    <form [formGroup]="notifyForm">
+                        <mat-form-field placeholder="All" floatPlaceholder="always" appearance="fill">
+                            <mat-select multiple formControlName="selectedNotification">
+                                <mat-option #allNotificationSelected (click)="toggleAllNotificationSelection()"
+                                    value="All" selected>All
+                                </mat-option>
+                                <mat-option *ngFor="let notification of notificationTypeList"
+                                    (click)="tossleNotificationPerOne()" [value]="notification.id">{{notification.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </form>
+                </div>
+            </div>
+            <div fxLayout="column" class="">
+                <div fxFlex="">Customer<span style="color:red">*</span></div>
+                <div fxFlex="">
+                    <mat-form-field>
+                        <mat-select [(ngModel)]="selectedCustomer" disabled>
+                            <mat-option [value]="customerName" selected>{{customerName}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxLayout="column" class="col-sm-3" *ngIf="showMultiCityList">
+                <div fxFlex="">City<span style="color:red">*</span></div>
+                <div fxFlex="">
+                    <form [formGroup]="cityForm">
+                        <mat-form-field placeholder="All" floatPlaceholder="always" appearance="fill">
+                            <mat-select multiple formControlName="selectedCity">
+                                <mat-option #allCitySelected (click)="toggleAllCitySelection()" value="All" selected>All
+                                </mat-option>
+                                <mat-option *ngFor="let city of cities" (click)="tossleCityPerOne()"
+                                    [value]="city.cityId">{{city.cityName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </form>
+                </div>
+            </div>
+            <div fxLayout="column" class="" *ngIf="showSingleCityList">
+                <div fxFlex="">City<span style="color:red">*</span></div>
+                <div fxFlex="">
+                    <div>
+                        <mat-form-field appearance="fill">
+                            <mat-select (selectionChange)="cityChanged()" [(ngModel)]="selectedCity">
+                                <mat-option value="All" selected>Select
+                                </mat-option>
+                                <mat-option *ngFor="let city of cities" [value]="city.cityId">{{city.cityName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="column" *ngIf="showPlantList">
+                <div fxFlex="">Plant<span style="color:red">*</span></div>
+                <div fxFlex="" >
+                    <mat-form-field placeholder="All" floatPlaceholder="always" appearance="fill">
+                        <mat-select (selectionChange)="plantChanged()" [(ngModel)]="selectedPlant">
+                            <mat-option value="All" selected>Select
+                            </mat-option>
+                            <mat-option *ngFor="let plant of plants" [value]="plant.plantId">{{plant.plantName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxLayout="column" *ngIf="showMultiPlantList">
+                <div fxFlex="">Plant<span style="color:red">*</span></div>
+                <div fxFlex="">
+                    <form [formGroup]="plantForm">
+                        <mat-form-field placeholder="All" floatPlaceholder="always" appearance="fill">
+                            <mat-select multiple formControlName="selectedPlant">
+                                <mat-option #allPlantSelected (click)="toggleAllPlantSelection()" value="All" selected>
+                                    All
+                                </mat-option>
+                                <mat-option *ngFor="let plant of plants" (click)="tosslePlantPerOne()"
+                                    [value]="plant.plantId">{{plant.plantName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </form>
+                </div>
+            </div>
+            <div fxLayout="column" *ngIf="showSiteList">
+                <div fxFlex="">Site<span style="color:red">*</span></div>
+                <div fxFlex="">
+                    <form [formGroup]="siteForm">
+                        <mat-form-field placeholder="Select" floatPlaceholder="always" appearance="fill">
+                            <mat-select multiple formControlName="selectedSite">
+                                <mat-option #s value="All" selected>Select
+                                </mat-option>
+                                <!-- <mat-option *ngFor="let site of sites"
+                                    [value]="site.siteId">{{site.siteName}}</mat-option> -->
+                            </mat-select>
+                        </mat-form-field>
+                    </form>
+                </div>
+            </div>
+
+            <div fxLayout="column"  class="" *ngIf="showMultiSiteList">
+                <div fxFlex="" >Site<span style="color:red">*</span></div>
+                <div fxFlex="">
+                    <form [formGroup]="siteForm">
+                        <mat-form-field placeholder="All" floatPlaceholder="always" appearance="fill">
+                            <mat-select multiple formControlName="selectedSite">
+                                <mat-option #allSiteSelected (click)="toggleAllSiteSelection()" value="All" selected>All
+                                </mat-option>
+                                <mat-option *ngFor="let site of sites" (click)="tossleSitePerOne()"
+                                    [value]="site.siteId">{{site.siteName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </form>
+                </div>
+            </div>
+
+            <div fxLayout="column" class="" *ngIf="showSingleSiteSelectList">
+                <div fxFlex="">Site<span style="color:red">*</span></div>
+                <div fxFlex="">
+                    <mat-form-field placeholder="All" floatPlaceholder="always" appearance="fill">
+                        <mat-select (selectionChange)="siteChanged()" [(ngModel)]="selectedSite">
+                            <mat-option value="All" selected>Select
+                            </mat-option>
+                            <mat-option *ngFor="let site of sites" [value]="site.siteId">{{site.siteName}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxLayout="column" class="" *ngIf="showMultiEmployeeList">
+                <div fxFlex="">Employee<span style="color:red">*</span></div>
+                <div fxFlex="" >
+                    <form [formGroup]="employeeForm">
+                        <mat-form-field placeholder="Select" floatPlaceholder="always" appearance="fill">
+                            <mat-select multiple formControlName="selectedEmployee">
+                                <mat-option *ngIf="!showAllEmployees" value="All" selected>Select
+                                </mat-option>
+                                <mat-option #allEmployeeSelected *ngIf="showAllEmployees" value="All"
+                                    (click)="toggleAllEmployeeSelection()" selected>All
+                                </mat-option>
+                                <mat-option *ngFor="let employee of employees" (click)="tossleEmployeePerOne()"
+                                    [value]="employee.employeeId">{{employee.employeeId || employee.fullName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between center" *ngIf="showSearchResult && loggedInUserType === 'CUSTOMERADMIN'" class="cutomerAdmin">
+            <div fxLayout="column" class="alertTp">
+                <div fxFlex="">Alert Name<span style="color:red">*</span></div>
+                <div fxFlex=""><input type="text" class="form-control" [(ngModel)]="alertName"></div>
+            </div>
+            <div fxLayout="column" class="">
+                <div fxFlex="">Hierarchy Level<span style="color:red">*</span></div>
+                <div fxFlex="" *ngIf="selectedHierarchy">
+                    <mat-form-field appearance="fill">
+                        <mat-select (selectionChange)="hierarchyChanged()" [(ngModel)]="selectedHierarchy">
+                            <mat-option *ngFor="let hierarchy of hierarchyList" [value]="hierarchy.id">
+                                {{hierarchy.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxLayout="column" class="">
+                <div fxFlex="" class="">Alert Type<span style="color:red">*</span></div>
+                <div fxFlex="">
+                    <form [formGroup]="alertForm">
+                        <mat-form-field placeholder="All" floatPlaceholder="always" appearance="fill">
+                            <mat-select multiple formControlName="alertDropdown">
+                                <mat-option #allSelected (click)="toggleAllSelection()" value="All" selected>All
+                                </mat-option>
+                                <mat-option *ngFor="let alert of alertTypeList" (click)="tosslePerOne()"
+                                    [value]="alert.alertId">{{alert.alertName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </form>
+                </div>
+            </div>
+            <div fxLayout="column" class="">
+                <div fxFlex="">Notification Type<span style="color:red">*</span></div>
+                <div fxFlex="">
+                    <form [formGroup]="notifyForm">
+                        <mat-form-field placeholder="All" floatPlaceholder="always" appearance="fill">
+                            <mat-select multiple formControlName="selectedNotification">
+                                <mat-option #allNotificationSelected (click)="toggleAllNotificationSelection()"
+                                    value="All" selected>All
+                                </mat-option>
+                                <mat-option *ngFor="let notification of notificationTypeList"
+                                    (click)="tossleNotificationPerOne()" [value]="notification.id">{{notification.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </form>
+                </div>
+            </div>
+        <div fxLayout="row" class="">
+            <div fxLayout="column" class="">
+                <div fxFlex="">Customer<span style="color:red">*</span></div>
+                <div fxFlex="">
+                    <div *ngIf="customerName">
+                        <mat-form-field appearance="fill">
+                            <mat-select [(ngModel)]="selectedCustomer" disabled>
+                                <mat-option [value]="customerName" selected>{{customerName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+    <div fxLayout="row" class="alertGp" fxLayoutGap="30px">
+        <div fxLayout="column" class="" *ngIf="showMultiCityList">
+            <div fxFlex="">City<span style="color:red">*</span></div>
+            <div fxFlex="">
+                <form [formGroup]="cityForm">
+                    <mat-form-field placeholder="All" floatPlaceholder="always" appearance="fill">
+                        <mat-select multiple formControlName="selectedCity">
+                            <mat-option #allCitySelected (click)="toggleAllCitySelection()" value="All" selected>All
+                            </mat-option>
+                            <mat-option *ngFor="let city of cities" (click)="tossleCityPerOne()"
+                                [value]="city.cityId">{{city.cityName}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
+            </div>
+        </div>
+        <div fxLayout="column" *ngIf="showSingleCityList">
+            <div fxFlex="">City<span style="color:red">*</span></div>
+            <div fxFlex="">
+                <div>
+                    <mat-form-field appearance="fill">
+                        <mat-select (selectionChange)="cityChanged()" [(ngModel)]="selectedCity">
+                            <mat-option value="All" selected>Select
+                            </mat-option>
+                            <mat-option *ngFor="let city of cities" [value]="city.cityId">{{city.cityName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <div fxLayout="column" *ngIf="showPlantList">
+            <div fxFlex="">Plant<span style="color:red">*</span></div>
+            <div fxFlex="">
+                <mat-form-field placeholder="All" floatPlaceholder="always" appearance="fill">
+                    <mat-select (selectionChange)="plantChanged()" [(ngModel)]="selectedPlant">
+                        <mat-option value="All" selected>Select
+                        </mat-option>
+                        <mat-option *ngFor="let plant of plants" [value]="plant.plantId">{{plant.plantName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxLayout="column" *ngIf="showMultiPlantList">
+            <div fxFlex="">Plant<span style="color:red">*</span></div>
+            <div fxFlex="">
+                <form [formGroup]="plantForm">
+                    <mat-form-field placeholder="All" floatPlaceholder="always" appearance="fill">
+                        <mat-select multiple formControlName="selectedPlant">
+                            <mat-option #allPlantSelected (click)="toggleAllPlantSelection()" value="All" selected>
+                                All
+                            </mat-option>
+                            <mat-option *ngFor="let plant of plants" (click)="tosslePlantPerOne()"
+                                [value]="plant.plantId">{{plant.plantName}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
+            </div>
+        </div>
+        <div fxLayout="column" *ngIf="showSiteList">
+            <div fxFlex="">Site<span style="color:red">*</span></div>
+            <div fxFlex="">
+                <form [formGroup]="siteForm">
+                    <mat-form-field placeholder="Select" floatPlaceholder="always" appearance="fill">
+                        <mat-select multiple formControlName="selectedSite">
+                            <mat-option #s value="All" selected>Select
+                            </mat-option>
+                            <!-- <mat-option *ngFor="let site of sites"
+                                [value]="site.siteId">{{site.siteName}}</mat-option> -->
+                        </mat-select>
+                    </mat-form-field>
+                </form>
+            </div>
+        </div>
+
+        <div fxLayout="column" *ngIf="showMultiSiteList">
+            <div fxFlex="">Site<span style="color:red">*</span></div>
+            <div fxFlex="">
+                <form [formGroup]="siteForm">
+                    <mat-form-field placeholder="All" floatPlaceholder="always" appearance="fill">
+                        <mat-select multiple formControlName="selectedSite">
+                            <mat-option #allSiteSelected (click)="toggleAllSiteSelection()" value="All" selected>All
+                            </mat-option>
+                            <mat-option *ngFor="let site of sites" (click)="tossleSitePerOne()"
+                                [value]="site.siteId">{{site.siteName}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
+            </div>
+        </div>
+
+        <div fxLayout="column" *ngIf="showSingleSiteSelectList">
+            <div fxFlex="">Site<span style="color:red">*</span></div>
+            <div fxFlex="">
+                <mat-form-field placeholder="All" floatPlaceholder="always" appearance="fill">
+                    <mat-select (selectionChange)="siteChanged()" [(ngModel)]="selectedSite">
+                        <mat-option value="All" selected>Select
+                        </mat-option>
+                        <mat-option *ngFor="let site of sites" [value]="site.siteId">{{site.siteName}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    
+    <div fxLayout="row">
+        <div fxLayout="column" *ngIf="showMultiEmployeeList">
+            <div fxFlex="">Employee<span style="color:red">*</span></div>
+            <div fxFlex="">
+                <form [formGroup]="employeeForm">
+                    <mat-form-field placeholder="Select" floatPlaceholder="always" >
+                        <mat-select multiple formControlName="selectedEmployee">
+                            <mat-option *ngIf="!showAllEmployees" value="All" selected>Select
+                            </mat-option>
+                            <mat-option #allEmployeeSelected *ngIf="showAllEmployees" value="All"
+                                (click)="toggleAllEmployeeSelection()" selected>All
+                            </mat-option>
+                            <mat-option *ngFor="let employee of employees" (click)="tossleEmployeePerOne()"
+                                [value]="employee.employeeId">{{employee.employeeId || employee.fullName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>            
+    
+    <div *ngIf="showSearchResult && loggedInUserType === 'CCB'">
+        <div fxLayout="row" class="">
+            <div fxLayout="column" class="">
+                <div fxFlex="" class="row">Alert Name<span style="color:red">*</span></div>
+                <div fxFlex=""><input type="text" class="form-control d-inline" [(ngModel)]="alertName"></div>
+            </div>
+            <div fxLayout="column">
+                <div fxFlex="">Hierarchy Level<span style="color:red">*</span></div>
+                <div fxFlex="" *ngIf="selectedHierarchy">
+                    <mat-form-field appearance="fill">
+                        <mat-select (selectionChange)="hierarchyChanged()" [(ngModel)]="selectedHierarchy">
+                            <mat-option *ngFor="let hierarchy of hierarchyList" [value]="hierarchy.id">
+                                {{hierarchy.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxLayout="column">
+                <div fxFlex="">Alert Type<span style="color:red">*</span></div>
+                <div fxFlex="">
+                    <form [formGroup]="alertForm">
+                        <mat-form-field placeholder="All" floatPlaceholder="always">
+                            <mat-select multiple formControlName="alertDropdown">
+                                <mat-option #allSelected (click)="toggleAllSelection()" value="All" selected>All
+                                </mat-option>
+                                <mat-option *ngFor="let alert of alertTypeList" (click)="tosslePerOne()"
+                                    [value]="alert.alertId">{{alert.alertName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </form>
+                </div>
+            </div>
+            <div fxLayout="column">
+                <div fxFlex="">Notification Type<span style="color:red">*</span></div>
+                <div fxFlex="">
+                    <form [formGroup]="notifyForm">
+                        <mat-form-field placeholder="All" floatPlaceholder="always">
+                            <mat-select multiple formControlName="selectedNotification">
+                                <mat-option #allNotificationSelected (click)="toggleAllNotificationSelection()"
+                                    value="All" selected>All
+                                </mat-option>
+                                <mat-option *ngFor="let notification of notificationTypeList"
+                                    (click)="tossleNotificationPerOne()" [value]="notification.id">{{notification.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div fxLayout="row" class="">
+            <div fxLayout="column">
+                <div fxFlex="">Customer<span style="color:red">*</span></div>
+                <div fxFlex="">
+                    <div *ngIf="customerName">
+                        <mat-form-field>
+                            <mat-select [(ngModel)]="selectedCustomer" disabled>
+                                <mat-option [value]="customerName" selected>{{customerName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="column" *ngIf="showDisabledCity">
+                <div fxFlex="">City<span style="color:red">*</span></div>
+                <div fxFlex="">
+                    <mat-form-field placeholder="All" floatPlaceholder="always">
+                        <mat-select [(ngModel)]="selectedCity" disabled>
+                            <mat-option [value]="selectedCity" selected>{{selectedCity}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div fxLayout="column" *ngIf="showPlantList">
+                <div fxFlex="">Plant<span style="color:red">*</span></div>
+                <div fxFlex="">
+                    <mat-form-field placeholder="All" floatPlaceholder="always">
+                        <mat-select (selectionChange)="plantChanged()" [(ngModel)]="selectedPlant">
+                            <mat-option value="Select" selected>Select
+                            </mat-option>
+                            <mat-option *ngFor="let plant of plants" [value]="plant.plantId">{{plant.plantName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxLayout="column" *ngIf="showMultiPlantList">
+                <div fxFlex="">Plant<span style="color:red">*</span></div>
+                <div fxFlex="">
+                    <form [formGroup]="plantForm">
+                        <mat-form-field placeholder="All" floatPlaceholder="always">
+                            <mat-select multiple formControlName="selectedPlant">
+                                <mat-option #allPlantSelected (click)="toggleAllPlantSelection()" value="All" selected>
+                                    All
+                                </mat-option>
+                                <mat-option *ngFor="let plant of plants" (click)="tosslePlantPerOne()"
+                                    [value]="plant.plantId">{{plant.plantName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </form>
+                </div>
+            </div>
+            <div fxLayout="column" *ngIf="showSiteList">
+                <div fxFlex="">Site<span style="color:red">*</span></div>
+                <div fxFlex="">
+                    <form [formGroup]="siteForm">
+                        <mat-form-field placeholder="Select" floatPlaceholder="always">
+                            <mat-select multiple formControlName="selectedSite">
+                                <mat-option #s value="All" selected>Select
+                                </mat-option>
+                                <!-- <mat-option *ngFor="let site of sites"
+                                    [value]="site.siteId">{{site.siteName}}</mat-option> -->
+                            </mat-select>
+                        </mat-form-field>
+                    </form>
+                </div>
+            </div>
+
+            <div fxLayout="column" *ngIf="showMultiSiteList">
+                <div fxFlex="">Site<span style="color:red">*</span></div>
+                <div fxFlex="">
+                    <form [formGroup]="siteForm">
+                        <mat-form-field placeholder="All" floatPlaceholder="always">
+                            <mat-select multiple formControlName="selectedSite">
+                                <mat-option #allSiteSelected (click)="toggleAllSiteSelection()" value="All" selected>All
+                                </mat-option>
+                                <mat-option *ngFor="let site of sites" (click)="tossleSitePerOne()"
+                                    [value]="site.siteId">{{site.siteName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </form>
+                </div>
+            </div>
+
+            <div fxLayout="column" *ngIf="showSingleSiteSelectList">
+                <div fxFlex="">Site<span style="color:red">*</span></div>
+                <div fxFlex="">
+                    <mat-form-field placeholder="All" floatPlaceholder="always">
+                        <mat-select (selectionChange)="siteChanged()" [(ngModel)]="selectedSite">
+                            <mat-option value="All" selected>Select
+                            </mat-option>
+                            <mat-option *ngFor="let site of sites" [value]="site.siteId">{{site.siteName}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <div fxLayout="row" class="">
+            <div class="column" *ngIf="showMultiEmployeeList">
+                <div fxFlex="">Employee<span style="color:red">*</span></div>
+                <div fxFlex="">
+                    <form [formGroup]="employeeForm">
+                        <mat-form-field placeholder="Select" floatPlaceholder="always">
+                            <mat-select multiple formControlName="selectedEmployee">
+                                <mat-option *ngIf="!showAllEmployees" value="All" selected>Select
+                                </mat-option>
+                                <mat-option #allEmployeeSelected *ngIf="showAllEmployees" value="All"
+                                    (click)="toggleAllEmployeeSelection()" selected>All
+                                </mat-option>
+                                <mat-option *ngFor="let employee of employees" (click)="tossleEmployeePerOne()"
+                                    [value]="employee.employeeId">{{employee.employeeId || employee.fullName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between right"  class="exeHeadingBtns" *ngIf="showSearchResult">
+            <div fxFlex="">
+                <button type="button" class="exesearch btn btn-info" (click)="save()">Save</button>
+                <button type="button" class="exeClear btn btn-info" (click)="clear()">Clear</button>
+            </div>
+           
+    </div>
+</div>
+<div fxLayout="" class="" *ngIf="loggedInUserType ==='SUPERADMIN'">
+    <div class="float-right">
+        <input type="text" class="form-control " [(ngModel)]="searchUserName" placeholder="Search"
+            (keyup.enter)="onEnter()">
+    </div>
+</div>
+
+<div class="mt-5 utilTblData">
+    <div class="stickyGateTbl">
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayout.lt-sm="column" class="utilSticky">
+            <div fxFlex="" class="dataTblHeadings">
+            </div>
+            <div fxFlex="" class="dataTblHeadings">
+                <div class="" *ngIf="showPagination">
+                    <span *ngIf="enableFirstPager"><i style="cursor:pointer;" (click)="pagerClicked('first')"
+                            class="fa fa-step-backward" aria-hidden="true"></i></span>
+                    <span *ngIf="!enableFirstPager"><i style="pointer-events:none;color: grey;"
+                            class="fa fa-step-backward" aria-hidden="true"></i></span>
+                    <span><i *ngIf="enablePreviousPager" style="cursor:pointer;" (click)="pagerClicked('previous')"
+                            class="ml-3 fa fa-caret-left" aria-hidden="true"></i></span>
+                    <span><i *ngIf="!enablePreviousPager" style="pointer-events:none;color: grey;"
+                            class="ml-3 fa fa-caret-left" aria-hidden="true"></i></span>
+                    <span *ngIf="showFirstPager"><button type="button"
+                            [ngStyle]="{'background-color': selectedPageValue == firstPager? 'black': '#17a2b8'}"
+                            class="ml-3 d-inline btn btn-info"
+                            (click)="pagerNumClicked(firstPager, 1)">{{firstPager}}</button></span>
+                    <span *ngIf="showSecondPager"><button type="button"
+                            [ngStyle]="{'background-color': selectedPageValue == secondPager? 'black': '#17a2b8'}"
+                            class="ml-3 d-inline btn btn-info"
+                            (click)="pagerNumClicked(secondPager, 2)">{{secondPager}}</button></span>
+                    <span *ngIf="showThirdPager"><button type="button"
+                            [ngStyle]="{'background-color': selectedPageValue == thirdPager? 'black': '#17a2b8'}"
+                            class="ml-3 d-inline btn btn-info"
+                            (click)="pagerNumClicked(thirdPager, 3)">{{thirdPager}}</button></span>
+                    <span *ngIf="showFourthPager"><button type="button"
+                            [ngStyle]="{'background-color': selectedPageValue == fourthPager? 'black': '#17a2b8'}"
+                            class="ml-3 d-inline btn btn-info"
+                            (click)="pagerNumClicked(fourthPager, 4)">{{fourthPager}}</button></span>
+                    <span *ngIf="showFifthPager"><button type="button"
+                            [ngStyle]="{'background-color': selectedPageValue == fifthPager? 'black': '#17a2b8'}"
+                            class="ml-3 d-inline btn btn-info"
+                            (click)="pagerNumClicked(fifthPager, 5)">{{fifthPager}}</button></span>
+                    <span><i *ngIf="enableNextPager" style="cursor:pointer;" (click)="pagerClicked('next')"
+                            class="ml-3 fa fa-caret-right" aria-hidden="true"></i></span>
+                    <span><i *ngIf="!enableNextPager" style="pointer-events:none;color: grey;"
+                            class="ml-3 fa fa-caret-right" aria-hidden="true"></i></span>
+                    <span><i *ngIf="enableLastPager" style="cursor:pointer;" (click)="pagerClicked('last')"
+                            class="ml-3 fa fa-step-forward" aria-hidden="true"></i></span>
+                    <span><i *ngIf="!enableLastPager" style="pointer-events:none;color: grey;"
+                            class="ml-3 fa fa-step-forward" aria-hidden="true"></i></span>
+
+                </div>
+            </div>
+            <div fxFlex="" class="one dataTblHeadings">
+                <div>
+                    <div fxFlex="50">
+
+                    </div>
+                    <div fxFlex="80">
+
+                    </div>
+                    <div fxFlex="">
+                        <span class="">Show</span>
+                    </div>
+                    <div fxFlex="">
+                    </div>
+
+                    <div fxFlex="">
+                        <select class="form-control" [(ngModel)]="size" (change)="onSizeChange($event)">
+                            <option [value]="10">10</option>
+                            <option [value]="25">25</option>
+                            <option [value]="50">50</option>
+                            <option [value]="100">100</option>
+                        </select>
+                    </div>
+                    <div fxFlex="50">
+                        <span class="toTalRecords">{{totalRecords}}</span>
+                        <span class="">Total</span>
+                    </div>
+                    <div fxFlex="">
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between center" class="">
+            <table mat-table [dataSource]="dataSourceForRules" matSort (matSortChange)="sortData($event)"
+                class="mat-elevation-z8" class="tblBg">
+                <ng-container matColumnDef="Alert Name" class="stickyData">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="alertRuleName">Alert Name</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.alertRuleName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Customer">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="customerName">Customer</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.customer.customerName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="User Name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="userId">User Name
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.user.userId}} </td>
+                </ng-container>
+                <ng-container matColumnDef="User Type">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="userType">User Type
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{element.user.userType}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Hierarchy Level">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="hierarchyType">Hierarchy Level
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{element.hierarchyType}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Created Date">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="createdDate">Created Date
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{element.createdDate}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Email">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="emailAllowed">Email
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{element.emailAllowed}} </td>
+                </ng-container>
+                <ng-container matColumnDef="SMS">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="smsAllowed">SMS
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{element.smsAllowed}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Status">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="active">Status
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{element.active?"Active":"InActive"}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Actions">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="">Actions
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <i class="d-class-inline fa fa-edit" (click)="editOrViewRule('edit', element)"></i>
+                        <i class="ml-3 d-class-inline fa fa-eye" (click)="editOrViewRule('view', element)"></i>
+                        <i class="ml-3 d-class-inline fa fa-check" (click)="changeRuleStatus(element)"></i>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsForBeaconList" class="tabaleMat"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsForBeaconList;"></tr>
+            </table>
+        </div>
+    </div>
+</div>

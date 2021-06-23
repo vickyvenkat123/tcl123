@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { DashboardService } from 'src/app/core/services/dashboard.service';
 import { LoginService } from 'src/app/core/services/login.service';
 import { ChangePasswordComponent } from 'src/app/Modules/Components/change-password/change-password.component';
+import { NotificationDto } from '../../models/notification-dto.model';
+import { ISubscription, Subscription } from "rxjs/Subscription";
+import { interval } from 'rxjs';
+
 
 @Component({
   selector: 'app-header',
@@ -11,12 +16,22 @@ import { ChangePasswordComponent } from 'src/app/Modules/Components/change-passw
 })
 export class HeaderComponent implements OnInit {
   loggedInUser: any;
-
-  constructor(private router: Router, private dialog: MatDialog, private loginService: LoginService) { }
+  notificationDto:NotificationDto = new   NotificationDto();
+  subscription: Subscription;
+  constructor(private router: Router, private dialog: MatDialog, private loginService: LoginService, private dashboardService: DashboardService) { 
+    this.subscription = interval(10000).subscribe((val) => { 
+      this.dashboardService.getAlertsCount().subscribe((res: any) => {
+        this.notificationDto = res.data;
+    })
+    });
+  }
 
   ngOnInit(): void {
+    if(sessionStorage.getItem("userId")==="")
+    this.router.navigate(["/login"]);
     const userDetails = JSON.parse(sessionStorage.getItem("userDetails") || '{}');
-    this.loggedInUser = userDetails.firstName + ' ' +  userDetails.lastName;
+    this.loggedInUser = userDetails.firstName + ' ' + userDetails.lastName;
+    
   }
 
   openOD() {
@@ -35,7 +50,12 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.loginService.logout().subscribe((res: any) => {
-        this.router.navigateByUrl("login");
+      sessionStorage.clear();
+      this.router.navigateByUrl("login");
     })
+  }
+
+  openNotification() {
+    this.router.navigateByUrl("notification");
   }
 }

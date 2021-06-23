@@ -10,28 +10,38 @@ export class LeftNavigationComponent implements OnInit {
   showDashboard: boolean = false;
   showTracking: boolean = false;
   showAlerts: boolean = false;
+  showCustomrConfig: boolean = false;
   check: boolean = false;
-  
+
   constructor(private _permissionService: NgxPermissionsService) { }
 
   ngOnInit(): void {
   }
-  
-  showHideNavigation(type:string) {
-    if(type === "dashboard"){
+
+  showHideNavigation(type: string) {
+    if (type === "dashboard") {
       this.showTracking = false;
-      this.showDashboard = !this.showDashboard; 
-      
+      this.showCustomrConfig = false;
+      this.showAlerts = false;
+      this.showDashboard = !this.showDashboard;
     }
-    if(type === "tracking"){
+    else if (type === "tracking") {
       this.showDashboard = false;
-      this.showTracking = !this.showTracking; 
+      this.showCustomrConfig = false;
+      this.showAlerts = false;
+      this.showTracking = !this.showTracking;
     }
-    // this.isShownNav = !this.isShownNav;
-    // if (this.check == false) {
-    //   this.check = true;
-    // } else {
-    //   this.check = false;
-    // }
+    else if (type === "customerConfig") {
+      this.showDashboard = false;
+      this.showTracking = false;
+      this.showAlerts = false;
+      this.showCustomrConfig = !this.showCustomrConfig;
+    }
+    else if (type === "alerts") {
+      this.showDashboard = false;
+      this.showTracking = false;
+      this.showCustomrConfig = false;
+      this.showAlerts = !this.showAlerts;
+    }
   }
 }

@@ -1,7 +1,7 @@
 import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild, HostListener, AfterViewInit } from '@angular/core';
 import { CustomerConfigService } from 'src/app/core/services/customer-config.service';
 import { DashboardService } from 'src/app/core/services/dashboard.service';
-import { AlertDashboardDto } from 'src/app/shared/models/alert-dashboard-dto.model';
+import { AlertDashboardDto, BatteryStatusDto, SafetyAlertsDayCount } from 'src/app/shared/models/alert-dashboard-dto.model';
 import { Site } from 'src/app/shared/models/customer-details.model';
 import { EmployeeDashboardDto, EmployeeDeviceStatus } from 'src/app/shared/models/employee-dashboard-dto.model';
 import { ChartType } from 'chart.js';
@@ -24,7 +24,9 @@ import { Router } from '@angular/router';
 import * as $ from 'jquery';
 import Panzoom from '@panzoom/panzoom';
 import { PinchZoomComponent } from 'src/app/shared/Components/pinch-zoom/pinch-zoom.component';
-
+import * as pluginDataLabels from 'chartjs-plugin-datalabels';
+import { PluginServiceGlobalRegistration } from 'chart.js';
+import { Legend } from '@amcharts/amcharts4/charts';
 
 @Component({
   selector: 'app-operational-dashboard',
@@ -33,7 +35,7 @@ import { PinchZoomComponent } from 'src/app/shared/Components/pinch-zoom/pinch-z
 })
 export class OperationalDashboardComponent implements OnInit, AfterViewInit {
   pageOfItems: Array<any> = new Array<any>();
-  chartType: ChartType = 'pie';
+  chartType: ChartType = 'doughnut';
   lineChartType: ChartType = 'line';
   chartLabels: Array<string> = new Array<string>();
   chartData: Array<number> = new Array<number>();
@@ -47,18 +49,18 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
   removable = true;
   searchEmployeeId: string = "";
   chartOptions: any = {
-    legend: {
-      display: true,
-      labels: {
-        fontColor: 'black'
-      },
-      position: 'bottom'
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: {
+      datalabels: {
+        color: 'white',
+      }
     },
-    pieceLabel: {
-      fontStyle: 'bold',
-      fontColor: 'black',
+    legend: {
+      position: 'left'
     }
   }
+
   pieChartColors: Array<any> = new Array<any>();
 
   gridApi: any;
@@ -87,6 +89,9 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['Zone Name', 'Count', 'Beacon Count'];
   @ViewChild(MatSort) sort: MatSort | undefined;
   totalNoOfEmployeesOfZone: number = 0;
+  showImage: any;
+  scale: any;
+  scaleMultiplier: any;
 
   constructor(private customerConfigService: CustomerConfigService, private dashboardService: DashboardService, private hierarchyService: HierarchyService, private dialog: MatDialog, private router: Router) {
     this.columnDefs = [
@@ -176,6 +181,9 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
   myImage: any;
   isProcessingOrNotForMap: boolean = false;
   panzoom: HTMLElement | undefined;
+  batteryStatusDto: BatteryStatusDto = new BatteryStatusDto();
+  safetyAlertsDayCounts: SafetyAlertsDayCount[] = new Array<SafetyAlertsDayCount>();
+
   ngOnInit(): void {
     this.myImage = new Image(32, 32);
     this.myImage.src = './assets/images/Beacon-black.png';
@@ -189,6 +197,8 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
         this.filteredSites = this.sites;
         this.getEmployeesOfSiteByPageAndSize(this.pageNo, this.size);
         this.getAlertCounts(this.pageNo, this.size);
+        this.getBatteryStatus();
+        this.getSafetyAlertCount();
         //this.onGridReady(this.params);
         // this.filteredSites = this.sites;
       }
@@ -220,7 +230,29 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
 
   }
 
+  getBatteryStatus() {
+    this.dashboardService.getBatteryStatus(sessionStorage.getItem("userId") || "", this.selectedSiteId).subscribe((res: any) => {
+      this.batteryStatusDto = res.data;
+      this.sum = this.batteryStatusDto.low + this.batteryStatusDto.normal + this.batteryStatusDto.high;
+      this.demodoughnutChartData = [this.batteryStatusDto.low, this.batteryStatusDto.normal, this.batteryStatusDto.high];
+    })
+  }
 
+  getSafetyAlertCount() {
+    this.dashboardService.getSafetyAlertCount(sessionStorage.getItem("userId") || "", this.selectedSiteId).subscribe((res: any) => {
+      this.safetyAlertsDayCounts = res.data;
+      var hzCountArray = this.safetyAlertsDayCounts.map(hz => hz.hzCount);
+      var sosCountArray = this.safetyAlertsDayCounts.map(sos => sos.sosCount);
+      var reportDatesArray = this.safetyAlertsDayCounts.map(rd => this.datePipe.transform(rd.reportDate, 'yyyy-MM-dd')?.toString() || '');
+      this.lineChartData = [
+        { data: hzCountArray, label: 'Hazardous' },
+        { data: sosCountArray, label: 'SOS' }
+      ];
+      this.lineChartLabels = reportDatesArray;
+      //this.sum = this.batteryStatusDto.low + this.batteryStatusDto.normal + this.batteryStatusDto.high;
+      //this.demodoughnutChartData = [this.batteryStatusDto.low, this.batteryStatusDto.normal, this.batteryStatusDto.high];
+    })
+  }
 
   zoomIn() {
     const element = document.querySelector('#zoomIn');
@@ -233,9 +265,12 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
   }
 
   zoomOut() {
-    const panzoom = Panzoom(document.getElementById('panzoom') as HTMLElement, {});
-    (document.getElementById("zoomOut") as HTMLElement).addEventListener('click', panzoom.zoomOut);
+     const panzoom = Panzoom(document.getElementById('panzoom') as HTMLElement, {});
+     (document.getElementById("zoomOut") as HTMLElement).addEventListener('click', panzoom.zoomOut);
+    
+ 
   }
+  
 
   reset() {
     const panzoom = Panzoom(document.getElementById('panzoom') as HTMLElement, {});
@@ -344,12 +379,12 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
   }
 
   // events
-  public chartClicked(e: any): void {
-    console.log(e);
+  chartClicked(e: any): void {
+    //console.log(e);
   }
 
-  public chartHovered(e: any): void {
-    console.log(e);
+  chartHovered(e: any): void {
+    // console.log(e);
   }
 
   // onSiteChange(data: any) {
@@ -402,7 +437,7 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
         this.ctx = this.chessCanvas.nativeElement.getContext("2d");
       }
       if (this.ctx)
-      this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+        this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
       if (this.canvasupper) {
         this.ctxUpper = this.canvasupper.nativeElement.getContext("2d");
       }
@@ -485,16 +520,16 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
 
   compare(a: number | string, b: number | string, isAsc: boolean) {
     if ((a < b) && isAsc) {
-      return -1;
+      return 1;
     }
     else if ((a > b) && isAsc) {
-      return 1;
+      return -1;
     }
     else if ((a < b) && !isAsc) {
-      return 1;
+      return -1;
     }
     else
-      return -1;
+      return 1;
 
     // (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
@@ -861,13 +896,10 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
     this.getEmployeesOfSiteByPageAndSize(this.pageNo, this.size);
   }
 
-  lineChartData: ChartDataSets[] = [
-    { data: [1, 3, 27, 8, 12, 5], label: 'Hazardous' },
-    { data: [0, 13, 10, 16, 6, 2], label: 'SOS' }
-  ];
+  lineChartData: ChartDataSets[];
 
   //Labels shown on the x-axis
-  lineChartLabels: Label[] = ['23-04-2021', '22-04-2021', '21-04-2021', '20-04-2021', '19-04-2021', '18-04-2021'];
+  lineChartLabels: Label[];
 
   // Define chart options
   lineChartOptions: ChartOptions = {
@@ -895,22 +927,51 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
 
   // events
   lineChartClicked(event: any) {
-    console.log(event);
+    //console.log(event);
   }
 
   lineChartHovered(event: any) {
-    console.log(event);
+    // console.log(event);
   }
 
-  public pieChartOptions: ChartOptions = {
+  doughnutOptions: ChartOptions = {
     responsive: true,
+    //cutoutPercentage: 65,
+    maintainAspectRatio: true,
+    plugins: {
+      datalabels: {
+        color: 'white',
+        formatter: (value, ctx) => {
+          var perc = ((value * 100) / this.sum).toFixed(2) + "%";
+          return perc;
+        },
+      }
+      // labels: {
+      //   render: 'Percentage',
+      //   fontColor: ['black', 'white', 'green'],
+      //   fontSize:20,
+      //   precision: 2
+      // }
+    },
+    // title: {
+    //   display: true,
+    //   fontFamily: "quicksand-medium",
+    //   fontSize: 16,
+    //   fontColor: "#747d8c"
+    // },
+    legend: {
+      display: true,
+      position: 'left'
+    },
   };
-  public pieChartLabels: Label[] = [['Risk'], ['50%'], '100%'];
-  public pieChartData: SingleDataSet = [60, 30, 10];
-  public pieChartType: ChartType = 'pie';
-  public pieChartLegend = true;
-  batteryPieChartColors = [{
-    backgroundColor: ['#3D85C6', '#2B5F8F', '#BC1D19'],
+  sum: number = 0;
+  demodoughnutChartData: SingleDataSet = [];
+  doughnutChartLabels: Label[] = ['Low', 'Normal', 'High'];
+  doughnutChartType: ChartType = 'doughnut';
+  doughnutChartPlugins = [<PluginServiceGlobalRegistration>pluginDataLabels];
+  pieChartLegend = true;
+  chartColors = [{
+    backgroundColor: ['#BC1D19', '#3D85C6', '#2B5F8F'],
   }];
 
   showBeaconList(zoneId: string) {
@@ -1160,7 +1221,7 @@ export class OperationalDashboardComponent implements OnInit, AfterViewInit {
       var coordinates = this.getPolygonCentroid(Object.assign([], line));
       if (countIndex) {
         if (data[i].zoneId == this.zones[countIndex].zoneId) {
-          console.log("zoneName", data[i].zoneName, this.zones[countIndex].zoneId, data[i].zoneId);
+          //console.log("zoneName", data[i].zoneName, this.zones[countIndex].zoneId, data[i].zoneId);
           // DrawingZoneBeacon.drawImage(coordinates.x - 7, coordinates.y, ctx, employeeImage, 16, 12);
           this.drawImage(coordinates.x, coordinates.y, ctx, 16, 12);
         }

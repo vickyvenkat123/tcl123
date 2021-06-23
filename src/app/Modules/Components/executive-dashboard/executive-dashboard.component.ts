@@ -17,7 +17,7 @@ export class ExecutiveDashboardComponent implements OnInit {
 
   constructor(private customerConfigService: CustomerConfigService, private dashboardService: DashboardService) { }
   public options: any = {
-    'locale': { 'format': 'DD-MM-YYYY', 'separator': ' to ' },
+    'locale': { 'format': 'YYYY-MM-DD', 'separator': ' to ' },
     fromDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 1),
     toDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 1),
     'maxDate': new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 1),
@@ -164,12 +164,12 @@ export class ExecutiveDashboardComponent implements OnInit {
   getExecutiveAlerts() {
     this.dashboardService.getExecutiveAlerts(this.customerId, this.fromDate, this.toDate, this.cityId, this.plantId, this.siteId).subscribe((res: any) => {
       this.responsDto = res.data;
-      // this.barChartData = [
-      //   {data: [this.responsDto.sosAvg,this.responsDto.hzAvg,this.responsDto.batteryHz]},
-      // ]; 
       this.barChartData = [
-        {data: [3,5,8]},
+        {data: [this.responsDto.sosAvg,this.responsDto.hzAvg,this.responsDto.batteryAvg]},
       ]; 
+      // this.barChartData = [
+      //   {data: [3,5,8]},
+      // ]; 
     })
 
   }

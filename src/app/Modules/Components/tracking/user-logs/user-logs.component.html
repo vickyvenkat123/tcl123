@@ -1,0 +1,7 @@
+<app-header></app-header>
+<app-left-navigation></app-left-navigation>
+<div class="row">User Logs</div>
+<div class="row float-right">
+        <input type="text" class="form-control" [(ngModel)]="searchLog" placeholder="Search"
+            (keyup.enter)="filterLogData()">
+</div>

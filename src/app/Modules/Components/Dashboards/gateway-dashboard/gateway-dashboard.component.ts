@@ -42,7 +42,7 @@ export class GatewayDashboardComponent implements OnInit {
   });
   cityNames: string[] = new Array<string>();
 
-  constructor(private router: Router, private gatewayService: GatewayService, private formBuilder: FormBuilder, private datePipe: DatePipe, private customerConfigService: CustomerConfigService, private dialog: MatDialog) { }
+  constructor(private router: Router, private gatewayService: GatewayService, private formBuilder: FormBuilder, private customerConfigService: CustomerConfigService, private dialog: MatDialog) { }
   networkStatusData: GatewaysCountDo = new GatewaysCountDo();
   totalInstalledGatewaysData: GatewaysCountDo = new GatewaysCountDo();
   workingGatewaysData: GatewaysCountDo = new GatewaysCountDo();
@@ -56,8 +56,10 @@ export class GatewayDashboardComponent implements OnInit {
     'locale': { 'format': 'DD-MM-YYYY', 'separator': ' to ' },
     fromDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 1),
     toDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 1),
-    'maxDate': new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 1),
+    maxDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
   };
+  datePipe: DatePipe = new DatePipe('en-US');
+  currentTime: any = new Date();
 
   ngOnInit(): void {
     this.networkStatus();
@@ -251,5 +253,17 @@ export class GatewayDashboardComponent implements OnInit {
     }
     else
       this.disableDatesAndCity = false;
+  }
+
+  fromDateEntered() {
+    if (this.checkoutForm.value.fromDate == null) {
+      this.checkoutForm.patchValue({ fromDate: (moment(new Date()).format('YYYY-MM-DD')) });
+    }
+  }
+
+  toDateEntered() {
+    if (this.checkoutForm.value.toDate == null) {
+      this.checkoutForm.patchValue({ toDate: (moment(new Date()).format('YYYY-MM-DD')) });
+    }
   }
 }

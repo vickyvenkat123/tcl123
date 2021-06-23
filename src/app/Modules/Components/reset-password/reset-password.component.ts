@@ -73,14 +73,14 @@ export class ResetPasswordComponent implements OnInit {
 
 
   validate() {
-    //Entered character length should be greater than 6
+    //Entered character length should be greater than 8
 
-    if (this.resetPassword.value.newPassword.length <= 6) {
+    if (this.resetPassword.value.newPassword.length <= 8) {
       this.showNewPasswordMessage = true;
       if (this.resetPassword.value.newPassword.length == 0)
         this.newPasswordError = "This field is required";
       else
-        this.newPasswordError = "Entered character length should be greater than 6";
+        this.newPasswordError = "Entered character length should be at least 8";
     }
 
     else if (!(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,15}$/.test(this.resetPassword.value.newPassword))) {
@@ -90,12 +90,12 @@ export class ResetPasswordComponent implements OnInit {
     else {
       this.showNewPasswordMessage = false;
     }
-    if (this.resetPassword.value.confirmPassword.length <= 6) {
+    if (this.resetPassword.value.confirmPassword.length <= 8) {
       this.showConfirmPasswordMessage = true;
       if (this.resetPassword.value.confirmPassword.length == 0)
         this.confirmPasswordError = "This field is required";
       else
-        this.confirmPasswordError = "Entered character length should be greater than 6";
+        this.confirmPasswordError = "Entered character length should be at least 8";
     }
     else if (!(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,15}$/.test(this.resetPassword.value.confirmPassword))) {
       this.showConfirmPasswordMessage = true;

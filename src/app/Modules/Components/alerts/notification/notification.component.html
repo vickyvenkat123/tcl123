@@ -1,0 +1,77 @@
+<app-header></app-header>
+<app-left-navigation></app-left-navigation>
+<div class="row">Notification</div>
+<div class="container">
+    <div class="row">
+        <div fxLayout="column">
+            <div fxFlex="">
+                <span>City</span>
+            </div>
+            <div fxFlex="">
+                <mat-form-field *ngIf="cityNames" appearance="fill">
+                    <mat-select (selectionChange)="cityChanged($event)" [(ngModel)]="selectedCity">
+                        <mat-option *ngFor="let city of cityNames" [value]="city">
+                            {{city}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxLayout="column">
+            <div fxFlex="">
+                <span>Plant</span>
+            </div>
+            <div fxFlex="">
+                <mat-form-field *ngIf="plantNames" appearance="fill">
+                    <mat-select (selectionChange)="plantChanged($event)" [(ngModel)]="selectedPlant">
+                        <mat-option *ngFor="let plant of plantNames" [value]="plant">
+                            {{plant}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxLayout="column">
+            <div fxFlex="">
+                <span> Site </span>
+            </div>
+            <div fxFlex="">
+                <mat-form-field *ngIf="siteNames" appearance="fill">
+                    <mat-select (selectionChange)="siteChanged($event)" [(ngModel)]="selectedSite" class="form-contrl">
+                        <mat-option *ngFor="let site of siteNames" [value]="site">
+                            {{site}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxLayout="column">
+            <div fxFlex="">
+                <span> Alert Type</span>
+            </div>
+            <div fxFlex="">
+                <form [formGroup]="alertForm">
+                    <mat-form-field placeholder="All" floatPlaceholder="always">
+                        <mat-select multiple formControlName="alertDropdown">
+                            <mat-option #allSelected (click)="toggleAllSelection()" value="All" selected>All
+                            </mat-option>
+                            <mat-option *ngFor="let alert of alertTypeList" (click)="tosslePerOne()"
+                                [value]="alert.alertId">{{alert.alertName}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
+            </div>
+        </div>
+
+        <div fxLayout="column">
+            <div fxFlex="">
+                <span>Report Date</span>
+            </div>
+            <div fxFlex="" style="width: 230px;">
+                    <input class="form-control exeDaptePicker" [value]="dateTextInput" placeholder="Select a date"
+                daterangepicker name="daterangeInput" (selected)="selectedDate($event)" [options]="options"
+                (cancelDaterangepicker)="calendarCanceled($event)" (applyDaterangepicker)="calendarApplied($event)" />
+            </div>
+        </div>
+    </div>
+</div>

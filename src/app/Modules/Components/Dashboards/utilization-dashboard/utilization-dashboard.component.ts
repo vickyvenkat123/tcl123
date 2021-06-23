@@ -3,14 +3,16 @@ import { CustomerConfigService } from 'src/app/core/services/customer-config.ser
 import { DashboardService } from 'src/app/core/services/dashboard.service';
 import { City, Customer, Plant } from 'src/app/shared/models/customer-details.model';
 import { CardStatusDto, CardUtilizationResponse, UtilizationDashboardDto } from 'src/app/shared/models/utilization-dashboard-dto.model';
-import { ChartType } from 'chart.js';
+import { ChartDataSets, ChartOptions, ChartType, PluginServiceGlobalRegistration } from 'chart.js';
 import { FormBuilder } from '@angular/forms';
 import * as fs from 'file-saver';
 import { DatePipe } from '@angular/common';
-import { ErrorModalComponent } from '../error-modal/error-modal.component';
+import { ErrorModalComponent } from '../../error-modal/error-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import * as am4core from '@amcharts/amcharts4/core';
 import * as am4charts from '@amcharts/amcharts4/charts';
+import * as pluginDataLabels from 'chartjs-plugin-datalabels';
+import { Color, Label } from 'ng2-charts';
 
 @Component({
   selector: 'app-utilization-dashboard',
@@ -44,8 +46,28 @@ export class UtilizationDashboardComponent implements OnInit {
   chartOptions: any;
   datePipe: DatePipe = new DatePipe('en-US');
   chartColors: any;
-  doughnutChartLabels: string[] = ['Distributed Cards', 'Live Cards'];
+  chartColorsForDistributed :any= [{
+    backgroundColor: ['#3D85C6','#BC1D19'],
+  }];
+  doughnutChartLabels: string[] = ['Distributed Cards', 'Non Distributed Cards'];
+  doughnutChartLabelsForDistributed: string[] = ['Cards Detected', 'Cards Not Detected'];
   demodoughnutChartData: number[] = new Array<number>();
+  demodoughnutChartDataForDistributed: number[] = new Array<number>();
+  doughnutChartPlugins = [<PluginServiceGlobalRegistration>pluginDataLabels];
+  doughnutOptions: ChartOptions = {
+    responsive: true,
+    //cutoutPercentage: 65,
+    maintainAspectRatio: true,
+    plugins: {
+      datalabels: {
+        color: 'white',
+      }
+    },
+    legend: {
+      display: true,
+      position: 'left'
+    },
+  };
   doughnutChartType: ChartType = 'doughnut';
   Amcharts: any;
   exportForm = this.formBuilder.group({
@@ -58,8 +80,40 @@ export class UtilizationDashboardComponent implements OnInit {
     city: "All"
   });
   exportDate: string = "";
+  lineChartLegend = true;
+  lineChartType: ChartType = 'line';
+  lineChartColors: Color[] = [
+    { 
+      backgroundColor: 'white',
+      borderColor: '#2B5F8F',
+    },
+    { 
+      backgroundColor: 'white',
+      borderColor: '#3D85C6',
+    },
+    {
+      backgroundColor:'white',
+      borderColor:'#BC1D19'
+    }
+
+  ];
+
+  // Define type of chart
+
+  lineChartPlugins = [];
 
   chart: any;
+  lineChartData: ChartDataSets[];
+
+  //Labels shown on the x-axis
+  lineChartLabels: Label[];
+
+  // Define chart options
+  lineChartOptions: ChartOptions = {
+    responsive: true
+  };
+  safteyDataReceived:boolean = false;
+
   ngOnInit(): void {
     this.getCustomerList();
     this.getUtilizationCount();
@@ -93,7 +147,9 @@ export class UtilizationDashboardComponent implements OnInit {
       this.utilizationDashboardDto = res.data;
       this.countDataFetched = true;
       this.demodoughnutChartData.push(this.utilizationDashboardDto.distributed);
-      this.demodoughnutChartData.push(this.utilizationDashboardDto.workingBadges);
+      this.demodoughnutChartData.push(this.utilizationDashboardDto.badges- this.utilizationDashboardDto.distributed);
+      this.demodoughnutChartDataForDistributed.push(this.utilizationDashboardDto.workingBadges)
+      this.demodoughnutChartDataForDistributed.push(this.utilizationDashboardDto.nonCommunicatingBadges)
     }
     )
   }
@@ -111,77 +167,89 @@ export class UtilizationDashboardComponent implements OnInit {
 
   getCardUtilizationTrends() {
     this.dashboardService.getCardUtilizationTrends(this.customerId, this.cityId, this.plantId).subscribe((res: any) => {
-      this.cardStatusDto = res.data;
-       var chart = am4core.create("chartdiv", am4charts.XYChart);
+       this.cardStatusDto = res.data;
+       var cardDetecedArray = this.cardStatusDto.map(distributed => distributed.cardDeteced);
+      var cardNotDetecedArray = this.cardStatusDto.map(distributed => distributed.cardNotDetected);
+      var cardsNotOnNetworkArray = this.cardStatusDto.map(distributed => distributed.inActiveCards);
+      var reportDatesArray = this.cardStatusDto.map(rd => this.datePipe.transform(rd.reportDate, 'yyyy-MM-dd')?.toString() || '');
+      this.lineChartData = [
+        { data: cardDetecedArray, label: 'Cards Detected' },
+        { data: cardNotDetecedArray, label: 'Cards Not Detected' },
+        { data: cardsNotOnNetworkArray, label: 'Cards Not On Network' }
+      ];
+      this.lineChartLabels = reportDatesArray;
+      this.safteyDataReceived = true;
+      
+      //  var chart = am4core.create("chartdiv", am4charts.XYChart);
 
-      chart.data = this.cardStatusDto;
+      // chart.data = this.cardStatusDto;
 
-      /* Create axes */
-      var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+      // /* Create axes */
+      // var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
 
-      /* Create value axis */
-      var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+      // /* Create value axis */
+      // var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
 
-      /* Create series */
-      var series1 = chart.series.push(new am4charts.LineSeries());
-      series1.dataFields.valueY = "cardDeteced";
-      series1.dataFields.dateX = "reportDate";
-      series1.name = "Cards Detected";
-      series1.stroke = am4core.color("#FCD202");
-      series1.strokeWidth = 1;
-      let bullet = series1.bullets.push(new am4charts.Bullet());
+      // /* Create series */
+      // var series1 = chart.series.push(new am4charts.LineSeries());
+      // series1.dataFields.valueY = "cardDeteced";
+      // series1.dataFields.dateX = "reportDate";
+      // series1.name = "Cards Detected";
+      // series1.stroke = am4core.color("#FCD202");
+      // series1.strokeWidth = 1;
+      // let bullet = series1.bullets.push(new am4charts.Bullet());
 
-      var square = bullet.createChild(am4core.Rectangle);
-      square.width = 8;
-      square.height = 8;
+      // var square = bullet.createChild(am4core.Rectangle);
+      // square.width = 8;
+      // square.height = 8;
 
-      // Add outline to the square bullet
-      square.fill = am4core.color("#FCD202");
+      // // Add outline to the square bullet
+      // square.fill = am4core.color("#FCD202");
 
-      var series2 = chart.series.push(new am4charts.LineSeries());
-      series2.dataFields.valueY = "inActiveCards";
-      series2.dataFields.dateX = "reportDate";
-      series2.name = "Inactive Cards";
-      series2.stroke = am4core.color("#B0DE09");
-      series2.strokeWidth = 1;
-      bullet = series2.bullets.push(new am4charts.Bullet());
+      // var series2 = chart.series.push(new am4charts.LineSeries());
+      // series2.dataFields.valueY = "inActiveCards";
+      // series2.dataFields.dateX = "reportDate";
+      // series2.name = "Inactive Cards";
+      // series2.stroke = am4core.color("#B0DE09");
+      // series2.strokeWidth = 1;
+      // bullet = series2.bullets.push(new am4charts.Bullet());
 
-      var arrow = bullet.createChild(am4core.Triangle);
-      arrow.horizontalCenter = "middle";
-      arrow.verticalCenter = "middle";
-      arrow.fill = am4core.color("#B0DE09");
-      arrow.direction = "top";
-      arrow.width = 8;
-      arrow.height = 8;
+      // var arrow = bullet.createChild(am4core.Triangle);
+      // arrow.horizontalCenter = "middle";
+      // arrow.verticalCenter = "middle";
+      // arrow.fill = am4core.color("#B0DE09");
+      // arrow.direction = "top";
+      // arrow.width = 8;
+      // arrow.height = 8;
 
-      var series3 = chart.series.push(new am4charts.LineSeries());
-      series3.dataFields.valueY = "cardNotDetected";
-      series3.dataFields.dateX = "reportDate";
-      series3.name = "Cards Not Detected";
-      series3.stroke = am4core.color("#ff4d4d");
-      series3.strokeWidth = 1;
-      bullet = series3.bullets.push(new am4charts.Bullet());
+      // var series3 = chart.series.push(new am4charts.LineSeries());
+      // series3.dataFields.valueY = "cardNotDetected";
+      // series3.dataFields.dateX = "reportDate";
+      // series3.name = "Cards Not Detected";
+      // series3.stroke = am4core.color("#ff4d4d");
+      // series3.strokeWidth = 1;
+      // bullet = series3.bullets.push(new am4charts.Bullet());
 
-      var arrow = bullet.createChild(am4core.Triangle);
-      arrow.horizontalCenter = "middle";
-      arrow.verticalCenter = "middle";
-      arrow.fill = am4core.color("#ff4d4d");
-      arrow.direction = "top";
-      arrow.width = 8;
-      arrow.height = 8;
+      // var arrow = bullet.createChild(am4core.Triangle);
+      // arrow.horizontalCenter = "middle";
+      // arrow.verticalCenter = "middle";
+      // arrow.fill = am4core.color("#ff4d4d");
+      // arrow.direction = "top";
+      // arrow.width = 8;
+      // arrow.height = 8;
 
-      series3.tooltipText = `
-       Detected  : {cardDeteced}
-       Not On Network: {inActiveCards}
-       Not Detected : {cardNotDetected}`;
-      series3.tooltip.pointerOrientation = "vertical";
-      series3.tooltip.autoTextColor = true;
+      // series3.tooltipText = `
+      //  Detected  : {cardDeteced}
+      //  Not On Network: {inActiveCards}
+      //  Not Detected : {cardNotDetected}`;
+      // series3.tooltip.pointerOrientation = "vertical";
+      // series3.tooltip.autoTextColor = true;
 
-      /* Add legend */
-      chart.legend = new am4charts.Legend();
+      // /* Add legend */
+      // chart.legend = new am4charts.Legend();
 
-      /* Create a cursor */
-      chart.cursor = new am4charts.XYCursor();
+      // /* Create a cursor */
+      // chart.cursor = new am4charts.XYCursor();
     });
   }
 
@@ -322,5 +390,13 @@ export class UtilizationDashboardComponent implements OnInit {
       }
     }
     )
+  }
+
+  lineChartClicked(event: any) {
+    //console.log(event);
+  }
+
+  lineChartHovered(event: any) {
+    // console.log(event);
   }
 }

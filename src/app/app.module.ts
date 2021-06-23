@@ -46,7 +46,7 @@ import { LeftNavigationComponent } from './shared/Components/left-navigation/lef
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { EmployeeTrackingComponent } from './Modules/Components/Dashboards/employee-tracking/employee-tracking.component';
-import { UtilizationDashboardComponent } from './Modules/Components/utilization-dashboard/utilization-dashboard.component';
+import { UtilizationDashboardComponent } from './Modules/Components/Dashboards/utilization-dashboard/utilization-dashboard.component';
 import { ExecutiveDashboardComponent } from './Modules/Components/executive-dashboard/executive-dashboard.component';
 import { Daterangepicker } from 'ng2-daterangepicker';
 import { DateRangeComponent } from './shared/Components/date-range/date-range.component';
@@ -58,6 +58,11 @@ import { PinchZoomComponent } from './shared/Components/pinch-zoom/pinch-zoom.co
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { BeaconLastCommunicationComponent } from './Modules/Components/tracking/beacon-last-communication/beacon-last-communication.component';
 import { ZoneViolationComponent } from './Modules/Components/tracking/zone-violation/zone-violation.component';
+import { AlertRuleComponent } from './Modules/Components/customer-config/alert-rule/alert-rule.component';
+import { ViewAlertRuleComponent } from './Modules/Components/customer-config/alert-rule/view-alert-rule/view-alert-rule.component';
+import { ChangeRuleStatusComponent } from './Modules/Components/customer-config/alert-rule/change-rule-status/change-rule-status.component';
+import { UserLogsComponent } from './Modules/Components/tracking/user-logs/user-logs.component';
+import { NotificationComponent } from './Modules/Components/alerts/notification/notification.component';
 
 @NgModule({
   declarations: [
@@ -87,7 +92,12 @@ import { ZoneViolationComponent } from './Modules/Components/tracking/zone-viola
     KpiComponent,
     PinchZoomComponent,
     BeaconLastCommunicationComponent,
-    ZoneViolationComponent
+    ZoneViolationComponent,
+    AlertRuleComponent,
+    ViewAlertRuleComponent,
+    ChangeRuleStatusComponent,
+    UserLogsComponent,
+    NotificationComponent
   ],
   imports: [
     BrowserModule,

@@ -7,7 +7,7 @@ import { ZoneDashboardComponent } from './Modules/Components/Dashboards/zone-das
 import { ForgotPasswordComponent } from './Modules/Components/forgot-password/forgot-password.component';
 import { LoginComponent } from './Modules/Components/login/login.component';
 import { ResetPasswordComponent } from './Modules/Components/reset-password/reset-password.component';
-import { UtilizationDashboardComponent } from './Modules/Components/utilization-dashboard/utilization-dashboard.component';
+import { UtilizationDashboardComponent } from './Modules/Components/Dashboards/utilization-dashboard/utilization-dashboard.component';
 import { EmployeeTrackingComponent } from './Modules/Components/Dashboards/employee-tracking/employee-tracking.component';
 import { ExecutiveDashboardComponent } from './Modules/Components/executive-dashboard/executive-dashboard.component';
 import { OtpVerificationComponent } from './shared/Components/otp-verification/otp-verification.component';
@@ -15,6 +15,9 @@ import { KpiComponent } from './Modules/Components/Dashboards/kpi/kpi.component'
 import { AuthGuard } from './core/auth.guard';
 import { BeaconLastCommunicationComponent } from './Modules/Components/tracking/beacon-last-communication/beacon-last-communication.component';
 import { ZoneViolationComponent } from './Modules/Components/tracking/zone-violation/zone-violation.component';
+import { AlertRuleComponent } from './Modules/Components/customer-config/alert-rule/alert-rule.component';
+import { UserLogsComponent } from './Modules/Components/tracking/user-logs/user-logs.component';
+import { NotificationComponent } from './Modules/Components/alerts/notification/notification.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -105,6 +108,33 @@ const routes: Routes = [
         Only: 'ROLE_ZONE_VIOLATION',
       }
     }, component: ZoneViolationComponent
+  },
+  {
+    path: 'alertrule',
+    canActivate: [AuthGuard],
+    data: {
+      Permissions: {
+        Only: 'ROLE_USER_ALERT_RULE_CONFIGURATION',
+      }
+    }, component: AlertRuleComponent
+  },
+  {
+    path: 'user-tracking',
+    canActivate: [AuthGuard],
+    data: {
+      Permissions: {
+        Only: 'ROLE_USER_LOGS_VIEW',
+      }
+    }, component: UserLogsComponent
+  },
+  {
+    path: 'notification',
+    canActivate: [AuthGuard],
+    data: {
+      Permissions: {
+        Only: ['ROLE_NOTIFICATION_VIEW','ROLE_NOTIFICATION_ACTION']
+      }
+    }, component: NotificationComponent
   }
 ];
 

@@ -36,7 +36,7 @@ export class CustomerConfigComponent implements OnInit {
   customerName: string = "";
   newCity: boolean = false;
   editCityFlag: boolean = false;
-  editCustomerFlag : boolean = false;
+  editCustomerFlag: boolean = false;
   ngOnInit(): void {
     // this.customerConfigService.getLoggedInUser().subscribe(
     //   (res: any) => {
@@ -58,7 +58,8 @@ export class CustomerConfigComponent implements OnInit {
     this.customerConfigService.getCustomerData(sessionStorage.getItem("customerId") || "").subscribe(
       (res: any) => {
         this.customerDetails = res.data;
-        console.log(res);
+        sessionStorage.setItem("email", String(res.customerConfig.mailNotificationAllowed));
+        sessionStorage.setItem("sms", String(res.customerConfig.smsnotificationAllowed));
       }
     )
 
@@ -130,7 +131,7 @@ export class CustomerConfigComponent implements OnInit {
     }
   }
 
-  editCustomer(customer:Customer){
+  editCustomer(customer: Customer) {
     this.editCustomerFlag = true;
   }
 

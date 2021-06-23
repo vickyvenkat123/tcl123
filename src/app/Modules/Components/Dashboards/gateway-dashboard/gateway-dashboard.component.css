@@ -24,6 +24,10 @@ body {
 	color: #000;
 	font-size: 12px;
 }
+.cardDate .mat-focus-indicator{
+    position :relative;
+    top : 10px;
+}
  .operationalHeading h1{
     margin: 0;
     font-size: 1.5rem;
@@ -182,7 +186,7 @@ body {
     border :none !important;
     outline: none !important;
     background-color: rgb(218,218,218);
-    color: #000;
+    color: rgb(43,95,143);
   }
   .btn-secondary:not(:disabled):not(.disabled).active, .btn-secondary:not(:disabled):not(.disabled):active, .show>.btn-secondary.dropdown-toggle{
     background-color: rgb(218,218,218);

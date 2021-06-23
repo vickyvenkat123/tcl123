@@ -222,4 +222,24 @@ export class DashboardService {
     return this.http.get(this.url + '/dashboardservice/zone/violations/zone/export?customerId=' + customerId + '&fromDate=' + fromDate + '&toDate=' + toDate + '&cityId=' + cityId + '&plantId=' + plantId + '&siteId=' + siteId + '&zoneId=' + zoneId,
       { responseType: 'blob', observe: 'response', headers: headers });
   }
+
+  getBatteryStatus(userId: string, siteId: string) {
+    var token = sessionStorage.getItem("token") || "";
+    const headers = new HttpHeaders().set('Authorization', token);
+    headers.append("Content-Type", "application/json");
+    return this.http.get(this.url + '/dashboardservice/operational/dashboard/battery/status?&userId=' + userId + '&siteId=' + siteId, { headers: headers });
+  }
+
+  getSafetyAlertCount(userId: string, siteId: string) {
+    var token = sessionStorage.getItem("token") || "";
+    const headers = new HttpHeaders().set('Authorization', token);
+    headers.append("Content-Type", "application/json");
+    return this.http.get(this.url + '/dashboardservice/operational/dashboard/safety/alert/count?&userId=' + userId + '&siteId=' + siteId, { headers: headers });
+  }
+  getAlertsCount(){
+    var token = sessionStorage.getItem("token") || "";
+    const headers = new HttpHeaders().set('Authorization', token);
+    headers.append("Content-Type", "application/json");
+    return this.http.get(this.url + '/dashboardservice/alerts/count?&date=' +new Date().getTime(), { headers: headers });
+  }
 }

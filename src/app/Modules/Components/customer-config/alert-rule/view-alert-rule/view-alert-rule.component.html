@@ -1,0 +1,415 @@
+<div class="container">
+    <h1 style="background-color:rgb(43,95,143);" mat-dialog-title>Edit Alert Rule</h1>
+    <mat-dialog-content>
+        <div class="container" *ngIf="editMode">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row">Alert Name<span style="color:red">*</span></div>
+                    <div class="row"><input type="text" class="form-control d-inline" [(ngModel)]="alertName"></div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row">Hierarchy Level<span style="color:red">*</span></div>
+                    <div class="row"><input type="text" class="form-control d-inline" [(ngModel)]="selectedHierarchy"
+                            disabled></div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row">Alert Type<span style="color:red">*</span></div>
+                    <div>
+                        <form [formGroup]="alertForm">
+                            <mat-form-field placeholder="All" floatPlaceholder="always">
+                                <mat-select multiple formControlName="alertDropdown">
+                                    <mat-option #allSelected (click)="toggleAllSelection()" value="All" selected>All
+                                    </mat-option>
+                                    <mat-option *ngFor="let alert of alertTypeList" (click)="tosslePerOne()"
+                                        [value]="alert.alertId">{{alert.alertName}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row">Notification Type<span style="color:red">*</span></div>
+                    <div class="row">
+                        <form [formGroup]="notifyForm">
+                            <mat-form-field placeholder="All" floatPlaceholder="always">
+                                <mat-select multiple formControlName="selectedNotification">
+                                    <mat-option #allNotificationSelected (click)="toggleAllNotificationSelection()"
+                                        value="All" selected>All
+                                    </mat-option>
+                                    <mat-option *ngFor="let notification of notificationTypeList"
+                                        (click)="tossleNotificationPerOne()" [value]="notification.id">
+                                        {{notification.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row">Customer<span style="color:red">*</span></div>
+                    <div class="row">
+                        <div>
+                            <mat-form-field>
+                                <mat-select [(ngModel)]="selectedCustomer" disabled>
+                                    <mat-option [value]="customerName" selected>{{customerName}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6" *ngIf="showMultiCityList">
+                    <div class="row">City<span style="color:red">*</span></div>
+                    <div class="row">
+                        <form [formGroup]="cityForm">
+                            <mat-form-field placeholder="All" floatPlaceholder="always">
+                                <mat-select multiple formControlName="selectedCity">
+                                    <mat-option #allCitySelected (click)="toggleAllCitySelection()" value="All"
+                                        selected>All
+                                    </mat-option>
+                                    <mat-option *ngFor="let city of cities" (click)="tossleCityPerOne()"
+                                        [value]="city.cityId">{{city.cityName}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-sm-6" *ngIf="showSingleCityList">
+                    <div class="row">City<span style="color:red">*</span></div>
+                    <div class="row">
+                        <div>
+                            <mat-form-field>
+                                <mat-select (selectionChange)="cityChanged()" [(ngModel)]="selectedCity">
+                                    <mat-option value="All" selected>Select
+                                    </mat-option>
+                                    <mat-option *ngFor="let city of cities" [value]="city.cityId">{{city.cityName}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6" *ngIf="showDisabledCity">
+                    <div class="row">City<span style="color:red">*</span></div>
+                    <div class="row">
+                        <mat-form-field placeholder="All" floatPlaceholder="always">
+                            <mat-select [(ngModel)]="selectedCity" disabled>
+                                <mat-option [value]="selectedCity" selected>{{selectedCity}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6" *ngIf="showPlantList">
+                    <div class="row">Plant<span style="color:red">*</span></div>
+                    <div class="row">
+                        <mat-form-field placeholder="All" floatPlaceholder="always">
+                            <mat-select (selectionChange)="plantChanged()" [(ngModel)]="selectedPlant">
+                                <mat-option value="Select" selected>Select
+                                </mat-option>
+                                <mat-option *ngFor="let plant of plants" [value]="plant.plantId">{{plant.plantName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-sm-6" *ngIf="showMultiPlantList">
+                    <div class="row">Plant<span style="color:red">*</span></div>
+                    <div class="row">
+                        <form [formGroup]="plantForm">
+                            <mat-form-field placeholder="All" floatPlaceholder="always">
+                                <mat-select multiple formControlName="selectedPlant">
+                                    <mat-option #allPlantSelected (click)="toggleAllPlantSelection()" value="All"
+                                        selected>All
+                                    </mat-option>
+                                    <mat-option *ngFor="let plant of plants" (click)="tosslePlantPerOne()"
+                                        [value]="plant.plantId">{{plant.plantName}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-sm-6" *ngIf="showSiteList">
+                    <div class="row">Site<span style="color:red">*</span></div>
+                    <div class="row">
+                        <form [formGroup]="siteForm">
+                            <mat-form-field placeholder="Select" floatPlaceholder="always">
+                                <mat-select multiple formControlName="selectedSite">
+                                    <mat-option #s value="All" selected>Select
+                                    </mat-option>
+                                    <!-- <mat-option *ngFor="let site of sites"
+                                    [value]="site.siteId">{{site.siteName}}</mat-option> -->
+                                </mat-select>
+                            </mat-form-field>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-sm-6" *ngIf="showMultiSiteList">
+                    <div class="row">Site<span style="color:red">*</span></div>
+                    <div class="row">
+                        <form [formGroup]="siteForm">
+                            <mat-form-field placeholder="All" floatPlaceholder="always">
+                                <mat-select multiple formControlName="selectedSite">
+                                    <mat-option #allSiteSelected (click)="toggleAllSiteSelection()" value="All"
+                                        selected>All
+                                    </mat-option>
+                                    <mat-option *ngFor="let site of sites" (click)="tossleSitePerOne()"
+                                        [value]="site.siteId">{{site.siteName}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-sm-6" *ngIf="showSingleSiteSelectList">
+                    <div class="row">Site<span style="color:red">*</span></div>
+                    <div class="row">
+                        <mat-form-field placeholder="All" floatPlaceholder="always">
+                            <mat-select (selectionChange)="siteChanged()" [(ngModel)]="selectedSite">
+                                <mat-option value="Select" selected>Select
+                                </mat-option>
+                                <mat-option *ngFor="let site of sites" [value]="site.siteId">{{site.siteName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6" *ngIf="showMultiEmployeeList">
+                    <div class="row">Employee<span style="color:red">*</span></div>
+                    <div class="row">
+                        <form [formGroup]="employeeForm">
+                            <mat-form-field placeholder="Select" floatPlaceholder="always">
+                                <mat-select multiple formControlName="selectedEmployee">
+                                    <mat-option *ngIf="!showAllEmployees" value="All" selected>Select
+                                    </mat-option>
+                                    <mat-option #allEmployeeSelected *ngIf="showAllEmployees" value="All"
+                                        (click)="toggleAllEmployeeSelection()" selected>All
+                                    </mat-option>
+                                    <mat-option *ngFor="let employee of employees" (click)="tossleEmployeePerOne()"
+                                        [value]="employee.employeeId">{{employee.employeeId}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container" *ngIf="viewMode">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row">Alert Name<span style="color:red">*</span></div>
+                    <div class="row"><input type="text" class="form-control d-inline" [(ngModel)]="alertName" disabled>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row">Hierarchy Level<span style="color:red">*</span></div>
+                    <div class="row"><input type="text" class="form-control d-inline" [(ngModel)]="selectedHierarchy"
+                            disabled></div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row">Alert Type<span style="color:red">*</span></div>
+                    <div>
+                        <form [formGroup]="alertForm">
+                            <mat-form-field placeholder="All" floatPlaceholder="always">
+                                <mat-select multiple formControlName="alertDropdown" [disabled]="true">
+                                    <mat-option #allSelected (click)="toggleAllSelection()" value="All" selected>All
+                                    </mat-option>
+                                    <mat-option *ngFor="let alert of alertTypeList" (click)="tosslePerOne()"
+                                        [value]="alert.alertId">{{alert.alertName}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row">Notification Type<span style="color:red">*</span></div>
+                    <div class="row">
+                        <form [formGroup]="notifyForm">
+                            <mat-form-field placeholder="All" floatPlaceholder="always">
+                                <mat-select multiple formControlName="selectedNotification" [disabled]=true>
+                                    <mat-option #allNotificationSelected (click)="toggleAllNotificationSelection()"
+                                        value="All" selected>All
+                                    </mat-option>
+                                    <mat-option *ngFor="let notification of notificationTypeList"
+                                        (click)="tossleNotificationPerOne()" [value]="notification.id">
+                                        {{notification.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row">Customer<span style="color:red">*</span></div>
+                    <div class="row">
+                        <div>
+                            <mat-form-field>
+                                <mat-select [(ngModel)]="selectedCustomer" disabled>
+                                    <mat-option [value]="customerName" selected>{{customerName}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6" *ngIf="showMultiCityList">
+                    <div class="row">City<span style="color:red">*</span></div>
+                    <div class="row">
+                        <form [formGroup]="cityForm">
+                            <mat-form-field placeholder="All" floatPlaceholder="always">
+                                <mat-select multiple formControlName="selectedCity" [disabled]=true>
+                                    <mat-option #allCitySelected (click)="toggleAllCitySelection()" value="All"
+                                        selected>All
+                                    </mat-option>
+                                    <mat-option *ngFor="let city of cities" (click)="tossleCityPerOne()"
+                                        [value]="city.cityId">{{city.cityName}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-sm-6" *ngIf="showSingleCityList">
+                    <div class="row">City<span style="color:red">*</span></div>
+                    <div class="row">
+                        <div>
+                            <mat-form-field>
+                                <mat-select (selectionChange)="cityChanged()" [(ngModel)]="selectedCity">
+                                    <mat-option value="All" selected disabled>Select
+                                    </mat-option>
+                                    <mat-option *ngFor="let city of cities" [value]="city.cityId">{{city.cityName}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6" *ngIf="showDisabledCity">
+                    <div class="row">City<span style="color:red">*</span></div>
+                    <div class="row">
+                        <mat-form-field placeholder="All" floatPlaceholder="always">
+                            <mat-select [(ngModel)]="selectedCity" disabled>
+                                <mat-option [value]="selectedCity" selected>{{selectedCity}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6" *ngIf="showPlantList">
+                    <div class="row">Plant<span style="color:red">*</span></div>
+                    <div class="row">
+                        <mat-form-field placeholder="All" floatPlaceholder="always">
+                            <mat-select (selectionChange)="plantChanged()" [(ngModel)]="selectedPlant" disabled>
+                                <mat-option value="Select" selected>Select
+                                </mat-option>
+                                <mat-option *ngFor="let plant of plants" [value]="plant.plantId">{{plant.plantName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-sm-6" *ngIf="showMultiPlantList">
+                    <div class="row">Plant<span style="color:red">*</span></div>
+                    <div class="row">
+                        <form [formGroup]="plantForm">
+                            <mat-form-field placeholder="All" floatPlaceholder="always">
+                                <mat-select multiple formControlName="selectedPlant" [disabled]=true>
+                                    <mat-option #allPlantSelected (click)="toggleAllPlantSelection()" value="All"
+                                        selected>All
+                                    </mat-option>
+                                    <mat-option *ngFor="let plant of plants" (click)="tosslePlantPerOne()"
+                                        [value]="plant.plantId">{{plant.plantName}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-sm-6" *ngIf="showSiteList">
+                    <div class="row">Site<span style="color:red">*</span></div>
+                    <div class="row">
+                        <form [formGroup]="siteForm">
+                            <mat-form-field placeholder="Select" floatPlaceholder="always">
+                                <mat-select multiple formControlName="selectedSite" [disabled]=true>
+                                    <mat-option #s value="All" selected>Select
+                                    </mat-option>
+                                    <!-- <mat-option *ngFor="let site of sites"
+                                     [value]="site.siteId">{{site.siteName}}</mat-option> -->
+                                </mat-select>
+                            </mat-form-field>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-sm-6" *ngIf="showMultiSiteList">
+                    <div class="row">Site<span style="color:red">*</span></div>
+                    <div class="row">
+                        <form [formGroup]="siteForm">
+                            <mat-form-field placeholder="All" floatPlaceholder="always">
+                                <mat-select multiple formControlName="selectedSite" [disabled]=true>
+                                    <mat-option #allSiteSelected (click)="toggleAllSiteSelection()" value="All"
+                                        selected>All
+                                    </mat-option>
+                                    <mat-option *ngFor="let site of sites" (click)="tossleSitePerOne()"
+                                        [value]="site.siteId">{{site.siteName}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-sm-6" *ngIf="showSingleSiteSelectList">
+                    <div class="row">Site<span style="color:red">*</span></div>
+                    <div class="row">
+                        <mat-form-field placeholder="All" floatPlaceholder="always">
+                            <mat-select (selectionChange)="siteChanged()" [(ngModel)]="selectedSite" [disabled]=true>
+                                <mat-option value="Select" selected>Select
+                                </mat-option>
+                                <mat-option *ngFor="let site of sites" [value]="site.siteId">{{site.siteName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6" *ngIf="showMultiEmployeeList">
+                    <div class="row">Employee<span style="color:red">*</span></div>
+                    <div class="row">
+                        <form [formGroup]="employeeForm">
+                            <mat-form-field placeholder="Select" floatPlaceholder="always">
+                                <mat-select multiple formControlName="selectedEmployee" [disabled]=true>
+                                    <mat-option *ngIf="!showAllEmployees" value="All" selected>Select
+                                    </mat-option>
+                                    <mat-option #allEmployeeSelected *ngIf="showAllEmployees" value="All"
+                                        (click)="toggleAllEmployeeSelection()" selected>All
+                                    </mat-option>
+                                    <mat-option *ngFor="let employee of employees" (click)="tossleEmployeePerOne()"
+                                        [value]="employee.employeeId">{{employee.employeeId}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button *ngIf="editMode" mat-raised-button (click)="save()">Save</button>
+        <button mat-raised-button (click)="closeMe()">Cancel</button>
+    </mat-dialog-actions>
+
+</div>

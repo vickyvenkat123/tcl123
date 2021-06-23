@@ -52,8 +52,10 @@ export class KpiComponent implements OnInit {
   kpicalender: any;
   kpiExportData: any;
   getKPIExportData: any;
+  kpiHIDASS: any;
+  kpiHICW: any;
 
-  constructor(private kpi: KpiService, private gatewayService: GatewayService, private datePipe: DatePipe,) { }
+  constructor(private kpiSVC: KpiService, private gatewayService: GatewayService, private datePipe: DatePipe,) { }
  
 
   ngOnInit(): void {
@@ -78,12 +80,22 @@ export class KpiComponent implements OnInit {
     this.Date = new Date();
     // this.getKPISOS();
     //this.getKPIBattery();
-    //this.getKPIAlerts()
-      ;
-      this.getKPIExportData();
+    //this.getKPIAlerts();
+    //this.getKPIExportData();
+    this.getKpiHealthIndexCW();
+    this.getkpiHealthIndexDASS();
+    this.getkpiDashboard();
+  }
+  //KPI management
+
+  getkpiDashboard(){
+    this.kpiSVC.getkpiDashboard().subscribe((res:any)=>{
+      this.getkpiDashboard= res;
+    console.log(res)
+    })
   }
   getKPIcalender() {
-    this.kpi.getkpicalender().subscribe((res: any) => {
+    this.kpiSVC.getkpicalender().subscribe((res: any) => {
       this.getKPIcalender = res;
       console.log(res);
     })
@@ -146,50 +158,24 @@ export class KpiComponent implements OnInit {
     console.log(event);
   }
   public barChartLabels: Label[] = [
-    '2006',
-    '2007',
-    '2008',
-    '2009',
-    '2010',
-    '2011',
-    '2012',
+    '23 may',
+    '22 may',
+    '21 may',
+    '20 may',
+    '19 may',
+    '18 may',
+    '17 may',
   ];
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
   public barChartPlugins = [];
 
   public barChartData: ChartDataSets[] = [
-    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Live mobile' },
-    { data: [28, 48, 40, 19, 86, 27, 90], label: 'Total mobile' },
+    { data: [0, 80, 0, 0, 70] },
+    { data: [0,0 , 0, 50,0, 150]  },
   ];
 
-  //SOS
-  // getKPISOS() {
-  //   this.kpi.getkpiSOS().subscribe(res => {
-  //     this.kpiSOSData = res;
-  //     console.log(res);
-  //   });
-  // }
-
-
-  // //Battery
-  // getKPIBattery() {
-  //   this.kpi.getkpiBattery().subscribe(res => {
-  //     this.kpiBatteData = res;
-  //     console.log(res);
-  //   })
-  // }
-
-
-
-  //Alerts
-  // getKPIAlerts() {
-  //   this.kpi.getkpiBell().subscribe((res) => {
-  //     this.kpiAlertData = res;
-  //     console.log(res);
-  //   });
-    
-  // }
+  
 
   networkStatus() {
     this.gatewayService.getNetworkStatus(sessionStorage.getItem("customerId") || "").subscribe(
@@ -202,15 +188,38 @@ export class KpiComponent implements OnInit {
       })
   }
   exportData(){
-    this.kpi.getkpiExportData().subscribe((data:any)=>{
+    this.kpiSVC.getkpiExportData().subscribe((data:any)=>{
       this.kpiExportData=data;  
       var headers = data.headers.get('Content-disposition').toString();
       var fileName = headers.substring((headers.indexOf('=') + 1), headers.length)
       let blob = new Blob([data], { type: 'application/vnd.ms-excel' });
       fs.saveAs(blob, fileName);
       //fs.saveAs(blob,"nameFile"+".xlsx")
+    })
+  }
 
+  //KPI DELAY
+  kpiDELAY(type){
+    this.kpiSVC.getkpiDelayExportData(type).subscribe((data:any)=>{
+      this.kpiExportData=data;  
+      var headers = data.headers.get('Content-disposition').toString();
+      var fileName = headers.substring((headers.indexOf('=') + 1), headers.length)
+      let blob = new Blob([data], { type: 'application/vnd.ms-excel' });
+      fs.saveAs(blob, fileName);
+    })
+  }
 
+  //KPI HealthIndex
+  getKpiHealthIndexCW(){
+    this.kpiSVC.getHealthIndexDataCW().subscribe((res:any)=>{
+      console.log(res.data);
+      this.kpiHICW = Math.round(res.data);
+    })
+  }
+  getkpiHealthIndexDASS(){
+    this.kpiSVC.getHealthIndexDataDASS().subscribe((res:any)=>{
+      console.log(res.data);
+      this.kpiHIDASS = Math.round(res.data);
     })
   }
 }

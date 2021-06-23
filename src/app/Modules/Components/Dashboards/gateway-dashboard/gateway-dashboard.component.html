@@ -8,7 +8,7 @@
     </div>
     <div fxLayout="row">
         <div fxFlex="100">
-            <span>Dashboard last updated on 10-May-2021 18:03 </span>
+            <span>Dashboard last updated on {{datePipe.transform(currentTime, 'dd-MMM-yyyy HH:mm')}} </span>
         </div>
         <div fxFlex="">
             <button type="button" class=" btn-info exportBtn" data-toggle="modal"
@@ -180,7 +180,7 @@
                                 <span>Start Date</span>
                                 <mat-form-field appearance="fill" class="cardDate">
                                     <input matInput [matDatepicker]="picker1" formControlName="fromDate" id="fromDate"
-                                        placeholder="">
+                                        [max]="options.maxDate" (keyup)="fromDateEntered()" placeholder="">
                                     <mat-datepicker-toggle matSuffix [for]="picker1">
                                     </mat-datepicker-toggle>
                                     <mat-datepicker #picker1 md-datepicker>
@@ -191,7 +191,8 @@
                             <div class="col-md-6">
                                 <span>End Date</span>
                                 <mat-form-field appearance="fill" class="cardDate">
-                                    <input matInput [matDatepicker]="picker2" formControlName="toDate" id="toDate">
+                                    <input matInput [matDatepicker]="picker2" formControlName="toDate" id="toDate"
+                                        [max]="options.maxDate" (keyup)="toDateEntered()">
                                     <mat-datepicker-toggle matSuffix [for]="picker2">
                                     </mat-datepicker-toggle>
                                     <mat-datepicker #picker2 md-datepicker>

@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { Sort } from '@angular/material/sort';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { CustomerConfigService } from 'src/app/core/services/customer-config.service';
 import { DeviceService } from 'src/app/core/services/device.service';
 import { Beacon } from 'src/app/shared/models/beacon.model';
 import { City, Plant, Site } from 'src/app/shared/models/customer-details.model';
 import * as fs from 'file-saver';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-beacon-last-communication',
@@ -19,6 +20,11 @@ export class BeaconLastCommunicationComponent implements OnInit {
   ngOnInit(): void {
     this.getCities();
     this.getBeaconByPageAndSize();
+    this.sort = new MatSort();
+    const sortState: Sort = { active: 'name', direction: 'desc' };
+    this.sort.active = sortState.active;
+    this.sort.direction = sortState.direction;
+    this.sort.sortChange.emit(sortState);
   }
   customerId: string = sessionStorage.getItem("customerId") || "";
   cities: City[] = new Array<City>();
@@ -51,9 +57,12 @@ export class BeaconLastCommunicationComponent implements OnInit {
   fifthPager: number = 0;
   showPagination: boolean = false;
   searchBeaconId: string = "";
-  displayedColumnsForBeaconList: string[] = ['Beacon ID', 'Beacon Type', 'Serial Number', 'Zone Name', 'Plant Name', 'Site Name', 'Last Communication'];
+  displayedColumnsForBeaconList: string[] = ['Beacon ID', 'Beacon Type', 'Serial Number', 'zone.zoneName', 'plant.plantName', 'site.siteName', 'Last Communication'];
   dataSourceForBeacons: any;
   totalRecords: number = 0;
+  @ViewChild(MatSort) sort: MatSort;
+  datePipe: DatePipe = new DatePipe('en-US');
+
   getCities() {
     this.customerConfigService.getCities(this.customerId).subscribe((res: any) => {
       if (res.status == 200) {
@@ -146,6 +155,7 @@ export class BeaconLastCommunicationComponent implements OnInit {
         this.beaconList = res.data;
         this.totalRecords = res.totalRecords;
         this.dataSourceForBeacons = new MatTableDataSource(this.beaconList);
+        this.dataSourceForBeacons.sort = this.sort; //this will solve your problem
         this.pagination();
       }
     })
@@ -520,7 +530,6 @@ export class BeaconLastCommunicationComponent implements OnInit {
     this.getBeaconByPageAndSize();
   }
 
-  sortData(sort: Sort) { }
   exportBeaconData() {
     this.deviceService.exportBeaconData(this.customerId).subscribe((data: any) => {
       var headers = data.headers.get('Content-disposition').toString();
@@ -529,5 +538,102 @@ export class BeaconLastCommunicationComponent implements OnInit {
       let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
       fs.saveAs(blob, fileName);
     })
+  }
+
+  sortedData: Beacon[] = new Array<Beacon>();;
+  sortData(sort: Sort) {
+    // if (sort.direction === "") {
+    //   this.sort.disabled = true;
+    // }
+    // else {
+    //   this.sort.disableClear = true;
+    // }
+    //console.log(sort.direction);
+    //const data = this.beaconList.slice();
+    // this.sortedData = data.sort((a: any, b: any) => {
+    //   const isAsc = sort.direction === 'asc';
+    //   switch (sort.active) {
+    //     case 'beaconId': return this.compare(a.beaconId, b.beaconId, isAsc);
+    //     case 'beaconType': return this.compareToString(a.beaconType, b.beaconType, isAsc);
+    //     case 'serialNumber': return this.compareToString(a.serialNumber, b.serialNumber, isAsc);
+    //     case 'zoneName': return this.compareToString(a.zone?.zoneName, b.zone?.zoneName, isAsc);
+    //     // case 'plantName': return this.compareToString(a.plantName, b.plantName, isAsc);
+    //     // case 'siteName': return this.compareToString(a.siteName, b.siteName, isAsc);
+    //     case 'bleDetectedTime': return this.compareToString(a.bleDetectedTime, b.bleDetectedTime, isAsc);
+    //     default: return 0;
+    //   }
+    // });
+    this.dataSourceForBeacons.sortingDataAccessor = (item, property) => {
+      switch (property) {
+        case 'beaconId': {
+          return item[property];
+        }
+        case 'beaconType': {
+          return item[property];
+        }
+        case 'serialNumber': {
+          return item[property];
+        }
+        case 'zone.zoneName': {
+          return item['zone']?.zoneName;
+        }
+        case 'plant.plantName': {
+          return item['plant']?.plantName;
+        }
+        case 'site.siteName': {
+          return item['site']?.siteName;
+        }
+        case 'bleDetectedTime': {
+          return item[property];
+        }
+      }
+    }
+
+  }
+
+  compareToString(a: String, b: string, isAsc: boolean) {
+    if (!a) {
+      a = "";
+    }
+    if (!b) {
+      b = "";
+    }
+    var values = [a, b];
+    if (a == b) {
+      return 0;
+    }
+    if (isAsc) {
+      values.sort((one, two) => (one > two ? 1 : -1));
+      if (values[0] === a) {
+        return -1;
+      }
+      else
+        return 1;
+    }
+
+    else {
+      values.sort((one, two) => (one > two ? -1 : 1));
+      if (values[0] === a) {
+        return 1;
+      }
+      else
+        return -1;
+    }
+  }
+
+  compare(a: number | string, b: number | string, isAsc: boolean) {
+    if ((a < b) && isAsc) {
+      return -1;
+    }
+    else if ((a > b) && isAsc) {
+      return 1;
+    }
+    else if ((a < b) && !isAsc) {
+      return 1;
+    }
+    else
+      return -1;
+
+    // (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 }

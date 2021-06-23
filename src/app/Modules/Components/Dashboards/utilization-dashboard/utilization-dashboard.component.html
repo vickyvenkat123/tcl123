@@ -21,35 +21,77 @@
                 <h4>Suraksha Card Status <img src="assets/svg/info.svg" alt="info" /></h4>
             </div>
         </div>
-        <div fxLayout="row">
-            <div class="center" *ngIf="countDataFetched">
-                {{utilizationDashboardDto.badges}}
-                {{utilizationDashboardDto.distributed}}
-                {{utilizationDashboardDto.nonCommunicatingBadges}}
-                {{utilizationDashboardDto.workingBadges}}
-
-                <div style="width: 500px;height: 200px;" class="row">
-                    <canvas baseChart [data]="demodoughnutChartData" [options]="chartOptions"
-                        [labels]="doughnutChartLabels" [chartType]="doughnutChartType" [colors]="chartColors"
-                        (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div fxLayout="column">
-        <div fxLayout="row">
-            <div fxFlex="">
-                <!-- <h4>Suraksha Card Utilization Trend <img src="assets/svg/info.svg" alt="info" /></h4> -->
-            </div>
-        </div>
-        <div fxLayout="row">
-            <div class="row">
-                <span>Card Utilization Trend</span>
-                <div id="chartdiv" style="width: 930px; height: 200px; font-size: 12px;"></div>
-            </div>
-        </div>
+      
     </div>
 </div>
+<div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayout.lt-sm="column">
+
+</div>
+<div fxLayout="row" class="zoneRight" fxLayoutAlign="space-between center" fxLayout.lt-sm="column" >
+    <div fxLayout="column">
+        <div fxlayout="row">
+            <div fxFlex="">
+                <h4>Total Cards : <span>800</span> </h4>
+            </div>
+        </div>
+            <div fxLayout="row">
+                <div fxLayout="row" *ngIf="countDataFetched">
+                    <div fxFlex="">
+                        {{utilizationDashboardDto.badges}}
+                        {{utilizationDashboardDto.distributed}}
+                        {{utilizationDashboardDto.nonCommunicatingBadges}}
+                        {{utilizationDashboardDto.workingBadges}}
+                    </div>
+                    <div fxFlex="">
+                        <div style="height: 200px;position: relative;left: 220px; bottom: 48px;" class="row">
+                            <canvas baseChart [data]="demodoughnutChartData" [options]="chartOptions"
+                                [labels]="doughnutChartLabels" [chartType]="doughnutChartType"
+                                [colors]="chartColors" (chartHover)="chartHovered($event)"
+                                (chartClick)="chartClicked($event)"></canvas>
+                        </div>
+                    </div>
+                </div>
+         </div>
+    </div>
+<div class="rightHeight"></div>
+    <div fxLayout="column">
+        <div fxlayout="row">
+            <div fxFlex="">
+                <h4>Total Cards : <span>1000</span> </h4>
+            </div>
+        </div>
+            <div fxLayout="row">
+                <div fxLayout="row" *ngIf="countDataFetched">
+                    <div fxFlex="">
+                        {{utilizationDashboardDto.badges}}
+                        {{utilizationDashboardDto.distributed}}
+                        {{utilizationDashboardDto.nonCommunicatingBadges}}
+                        {{utilizationDashboardDto.workingBadges}}
+                    </div>
+                    <div fxFlex="">
+                        <div style="height: 200px;" class="row">
+                            <canvas baseChart [data]="demodoughnutChartData" [options]="chartOptions"
+                                [labels]="doughnutChartLabels" [chartType]="doughnutChartType"
+                                [colors]="chartColors" (chartHover)="chartHovered($event)"
+                                (chartClick)="chartClicked($event)"></canvas>
+                        </div>
+                    </div>
+                </div>
+         </div>
+    </div>
+</div>
+
+<div fxLayout="row" class="zoneGp">
+        <div fxFlex="">
+            <span>Card Utilization Trend</span>
+        </div>
+</div>
+    <div fxLayout="row">
+        <div fxFlex="">
+            <div id="chartdiv" style="width: 500px; height: 200px; font-size: 12px;"></div>
+        </div>
+    </div>
+
 <div>
     <div class="row mt-5 ml-3">
         <div class="modal fade" id="resetModal" tabindex="-1" role="dialog" aria-labelledby="resetModalTitle"
@@ -107,7 +149,6 @@
                     <div class="row">
                         <div class="col-md-6">
                             <span>Report Type</span>
-
                             <mat-form-field appearance="fill" class="">
                                 <mat-select formControlName="reportType">
                                     <mat-option value="TCL_DETECTED_CARD">Suraksha Card Detected(TCL)
@@ -169,31 +210,28 @@
             </div>
         </div>
         <div fxLayout="row" fxLayoutAlign="space-between center" class="stickyData stickyHeadData">
-            <div fxFlex="" class="">Location</div>
+            <div fxFlex="14" class="">Location</div>
             <div fxFlex="" class="">Cumilative Last {{cardUtilizationResponse.totalDays}} Days</div>
             <div fxFlex="" class="100">previous Day</div>
             <div fxFlex="" class="">Curent Day Live</div>
         </div>
-    </div>
-    <div fxLayout="row" fxLayoutAlign="space-between center" class="utilCardTblData">
-        <div fxFlex="1" class="">
-        </div>
-        <div class="SurakshaCard row">
-            <div fxFlex="" class="">Cards Detected</div>
-            <div fxFlex="40" class="">Cards Not on Network</div>
-            <div fxFlex="" class="">Suraksha Card Not Detected </div>
-        </div>
-        <div class="SurakshaCard row">
-            <div fxFlex="" class="">Cards Detected</div>
-            <div fxFlex="40" class="">Cards Not on Network</div>
-            <div fxFlex="" class="">Suraksha Card Not Detected </div>
-        </div>
-        <div class="SurakshaCard row">
-            <div fxFlex="" class="">Cards Detected</div>
-            <div fxFlex="40" class="">Cards Not on Network</div>
-            <div fxFlex="" class="">Suraksha Card Not Detected	</div>
+        <div fxLayout="row" fxLayoutAlign="space-between center" class="utilCardTblDataOne">
+            <div fxFlex="2" class="">
+            </div>
+            <div class="SurakshaCard ">
+                <div fxFlex="" class="5"><span>Cards Detected</span> <span>Cards Not on Network</span> <span> Suraksha Card Not Detected</span></div>
+            </div>
+            <div class="SurakshaCard ">
+                <div fxFlex="" class="5"><span>Cards Detected</span> <span>Cards Not on Network</span> <span> Suraksha Card Not Detected</span></div>
+
+            </div>
+            <div class="SurakshaCard ">
+                <div fxFlex="" class="5"><span>Cards Detected</span> <span>Cards Not on Network</span> <span> Suraksha Card Not Detected</span></div>
+
+            </div>
         </div>
     </div>
+
 
     <div fxLayout="row" fxLayoutAlign="space-between center" class="utilCardTblData "
         *ngFor="let listItem of cardUtilizationResponse.list">
@@ -224,7 +262,7 @@
             <div fxFlex="16">
             </div>
             <div fxFlex="35">
-                {{listItem.currentDay.cardDeteced}} 
+                {{listItem.currentDay.cardDeteced}}
             </div>
 
             <div fxFlex="35">
@@ -235,14 +273,14 @@
                 {{listItem.currentDay.cardNotDetected}}
             </div>
         </div>
-        </div>
+    </div>
     <div fxLayout="row" fxLayoutAlign="space-between center" class="utilCardTblData totalData"
         *ngFor="let listItem of cardUtilizationResponse.total">
         <div fxFlex="11" class="">Total</div>
 
         <div fxFlex="" class="">
             <div fxFlex="45">
-                {{listItem.cumulativeXDaysTotal.cardDeteced}} 
+                {{listItem.cumulativeXDaysTotal.cardDeteced}}
             </div>
             <div fxFlex="40">
                 {{listItem.cumulativeXDaysTotal.inActiveCards}}
@@ -254,10 +292,9 @@
 
         <div fxFlex="" class="">
             <div fxFlex="8">
-                
             </div>
             <div fxFlex="33">
-                {{listItem.previousDayTotal.cardDeteced}} 
+                {{listItem.previousDayTotal.cardDeteced}}
             </div>
             <div fxFlex="34">
                 {{listItem.previousDayTotal.inActiveCards}}
@@ -268,7 +305,6 @@
         </div>
         <div fxFlex="" class="">
             <div fxFlex="19">
-                
             </div>
             <div fxFlex="34">
                 {{listItem.currentDayTotal.cardDeteced}}

@@ -23,9 +23,7 @@
     width: 20px;
 }
 .headerContainer .loggedInUser{
-    vertical-align: middle;
     font-size: 12px;
-    margin-right: 20px;
     color:rgb(43,95,143);
-    font-weight: bold;
+    padding: 0 15px 0 22px;
 }

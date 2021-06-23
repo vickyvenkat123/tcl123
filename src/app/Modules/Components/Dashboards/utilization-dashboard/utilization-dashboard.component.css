@@ -2,7 +2,7 @@
   padding: 0 22px;
   margin: 0;
   height: auto;
-  border-bottom: solid 1px rgb(148, 187, 226);
+  border-bottom: solid 1px rgb(236, 234, 234);
 color: rgb(43,95,143);
 justify-content: space-between;
 }
@@ -12,6 +12,10 @@ margin: 25px 17px;
   font-weight: 600;
 color: #000;
 font-size: 12px;
+}
+.rightHeight{
+  border-right: solid 1px #e3e3e3;
+  height: 230px;
 }
 .operationalHeading h1{
   margin: 0;
@@ -52,11 +56,11 @@ font-size: 12px;
   padding: 0 0 0 10px;
 }
 .utilTblData{
-  padding: 10px 0;
+  padding: 0 0;
   background-color: rgb(245,247,250);
   border-radius: 4px;
-  box-shadow: 0 0 1 rgb(196, 196, 196);
-  box-shadow: 0px 0px 4px 2px #e4e5e6;
+  /* box-shadow: 0 0 1 rgb(196, 196, 196);
+  box-shadow: 0px 0px 4px 2px #e4e5e6; */
   margin-left: 124px;
   margin-right: 24px;
   height: 320px;
@@ -64,16 +68,15 @@ font-size: 12px;
 }
  .utilSticky{
   /* border-bottom: solid 1px rgb(43,95,143); */
-  padding:  0px 20px;
+  padding:  10px 20px;
 }
 .stickyData{
-  border-bottom: solid 1px rgb(43,95,143);
   padding: 10px 20px;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
   color: rgb(43,95,143);
-  background-color: rgb(43,95,143);
-  color: #fff;
+  background-color: rgb(220,230,245);
+  color: rgb(43,95,143);
   margin-top: 10px;
 }
 
@@ -102,6 +105,17 @@ font-size: 12px;
   font-weight: bold;
   color: rgb(43,95,143);
 }
+.utilCardTblDataOne{
+  background-color: rgb(220,230,245);
+  padding :0px 15px 10px 20px ;
+}
+.SurakshaCard span{
+  font-size: 12px;
+  color: rgb(43,95,143);
+}
+.clmLine{
+  border-right: solid 1px #e3e3e3;
+}
  .utilSticky .one{
   float: left;
   font-size: 16px;
@@ -110,8 +124,10 @@ font-size: 12px;
 .stickyGateTbl{
   position: sticky;
   top: 0;
-  background-color: rgb(245,247,250);
+  background-color: rgb(43,95,143);
   z-index: 10;
+  color: #fff;
+  border-radius: 6px;
 }
 .utilTblData .utilSticky .two{
   font-size: 16px;
@@ -123,6 +139,23 @@ font-size: 12px;
   border-bottom: solid 1px rgb(43,95,143);
   line-height: 40px;
   margin: 0 20px;
+}
+.zoneRight h4{
+  color:rgb(43,95,143);
+  font-size: 20px;
+  font-weight:bold;
+  position: relative;
+  top: 20px;
+  margin-bottom: 30px;
+}
+.zoneRight h4 span{
+  color:rgb(0, 0, 0);
+  font-size: 20px;
+  font-weight:bold;
+}
+.utilSticky strong{
+  font-size: 18px;
+  font-weight: normal;
 }
 .utilTblData .utilTblRow > div{
   display: inline-block;
@@ -168,6 +201,25 @@ font-size: 12px;
   background-color:  rgb(43,95,143);
   border :none;
   outline: none;
+}
+.zoneRight{
+  padding: 0 44px;
+  border: solid 1px #e3e3e3;
+  border-radius: 6px;
+  width: 92%;
+  margin: 0 auto;
+}
+.zoneGp{
+  padding: 15px 44px;
+}
+.zoneP {
+  padding: 15px 20px;
+}
+.ZoneParaM {
+display: flex;
+justify-content: space-between;
+padding: 6px ​24p;
+  margin: 12px 0 0 0;
 }
 .btn-secondary, .btn-secondary:focus, .btn-secondary:active, .btn-secondary:focus-visible, .btn-secondary:hover{
   box-shadow :none !important;

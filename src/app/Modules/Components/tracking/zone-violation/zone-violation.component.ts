@@ -674,6 +674,7 @@ export class ZoneViolationComponent implements OnInit {
     this.zoneViolationsArray = [];
     var startIndex = this.sizeForZVD * this.pageNoForZVD;
     var endIndex = this.sizeForZVD * this.pageNoForZVD + this.sizeForZVD - 1;
+    endIndex = endIndex < this.zoneViolationsEntireArray.length ? endIndex: (this.zoneViolationsEntireArray.length - 1) ;
     for (let index = startIndex; index <= endIndex; index++) {
       this.zoneViolationsArray.push(this.zoneViolationsEntireArray[index]);
     }

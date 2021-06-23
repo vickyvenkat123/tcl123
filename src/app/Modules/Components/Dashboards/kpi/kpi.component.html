@@ -37,7 +37,7 @@
             </div>
             <div class="dashrow-one">
                 <span> Export
-                    <img (click)="exportData();" src="assets/svg/download.svg" alt="download">
+                    <img (click)="exportData()" src="assets/svg/download.svg" alt="download">
                 </span>
             </div>
         </div>
@@ -75,7 +75,7 @@
                     <img src="assets/svg/info.svg" alt="info" />
                 </span>
             </div>
-            <div class="dashrow-one date-field">
+            <div class="dashrow-one">
                 <span>
                     <mat-form-field style="width: 45%;" appearance="legacy">
                         <mat-label>Date Range</mat-label>
@@ -94,7 +94,7 @@
             </div>
             <div class="dashrow-one">
                 <span> Export
-                    <img src="assets/svg/download.svg" alt="download">
+                    <img (click)="exportData()" src="assets/svg/download.svg" alt="download">
                 </span>
             </div>
         </div>
@@ -159,7 +159,7 @@
             </div>
             <div class="dashrow-one">
                 <span> Export
-                    <img src="assets/svg/download.svg" alt="download">
+                    <img (click)="exportData()" src="assets/svg/download.svg" alt="download">
                 </span>
             </div>
         </div>
@@ -169,18 +169,18 @@
                     <span>Scheduled Pocket Travel Time</span>
                     <span>SOS Packet Travel Time</span> -->
                 <div class="wrapper">
-                    <input type="radio" name="select" id="option-1" checked>
+                    <input type="radio" (click)="kpiDELAY('hz');"  name="select" id="option-1" checked>
 
                     <label for="option-1" class="option option-1">
                         <span>Hazardous Packet Travel Time</span>
                     </label>
                     <br>
-                    <input type="radio" name="select" id="option-2">
+                    <input type="radio"  (click)="kpiDELAY('sl');" name="select" id="option-2">
                     <label for="option-2" class="option option-2">
                         <span>Scheduled Pocket Travel Time</span>
                     </label>
                     <br>
-                    <input type="radio" name="select" id="option-3">
+                    <input type="radio"  (click)="kpiDELAY('sos');" name="select" id="option-3">
                     <label for="option-3" class="option option-3">
                         <span>SOS Packet Travel Time</span>
                     </label>
@@ -224,7 +224,7 @@
         </div>
         <div>
             <span> Export
-                <img src="assets/svg/download.svg" alt="download">
+                <img (click)="exportData()" src="assets/svg/download.svg" alt="download">
             </span>
         </div>
     </div>
@@ -282,7 +282,7 @@
             Badges
             <div class="dashrow-one" fxFlex="row" fxLayoutAlign="end start" fxLayout="10">
                 <span> Export
-                    <img src="assets/svg/download.svg" alt="download">
+                    <img (click)="exportData()" src="assets/svg/download.svg" alt="download">
                 </span>
             </div>
 
@@ -331,9 +331,10 @@
                         <div class="col-md-6 col-sm-6 aligncenter">
                             <div class="circle">
                                 <div class="circle-inner aligncenter">
-                                    <b>97.99</b>
+                                    <b>{{kpiHIDASS}}</b>
                                 </div>
                             </div>
+                            
                             <b>Application Up Time</b>
                         </div>
                     </div>
@@ -351,7 +352,7 @@
                         <div class="col-md-6 col-sm-6 aligncenter">
                             <div class="circle">
                                 <div class="circle-inner aligncenter">
-                                    <b>99.99</b>
+                                    <b>>{{kpiHIDASS}}</b>
                                 </div>
                             </div>
                             <b>Platform Uptime</b>
@@ -370,7 +371,7 @@
                         <div class="col-md-6 col-sm-6 aligncenter">
                             <div class="circle">
                                 <div class="circle-inner aligncenter">
-                                    <b>99.99</b>
+                                    <b>{{kpiHICW}}</b>
                                 </div>
                             </div>
                             <b>Network Server Uptime</b>
@@ -385,7 +386,7 @@
             Mobile
             <div class="dashrow-one" fxFlex="row" fxLayoutAlign="end start" fxLayout="10">
                 <span> Export
-                    <img src="assets/svg/download.svg" alt="download">
+                    <img (click)="exportData()"src="assets/svg/download.svg" alt="download">
                 </span>
             </div>
 
