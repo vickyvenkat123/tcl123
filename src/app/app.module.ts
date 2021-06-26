@@ -63,6 +63,7 @@ import { ViewAlertRuleComponent } from './Modules/Components/customer-config/ale
 import { ChangeRuleStatusComponent } from './Modules/Components/customer-config/alert-rule/change-rule-status/change-rule-status.component';
 import { UserLogsComponent } from './Modules/Components/tracking/user-logs/user-logs.component';
 import { NotificationComponent } from './Modules/Components/alerts/notification/notification.component';
+import { NgxImageZoomModule } from 'ngx-image-zoom';
 
 @NgModule({
   declarations: [
@@ -110,6 +111,7 @@ import { NotificationComponent } from './Modules/Components/alerts/notification/
     BrowserAnimationsModule,
     NgSelectModule,
     MatDatepickerModule,
+    NgxImageZoomModule,
     MatInputModule,
     MatSortModule,
     MatTableModule,

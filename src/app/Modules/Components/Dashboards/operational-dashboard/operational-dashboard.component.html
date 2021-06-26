@@ -234,17 +234,22 @@
                 <span class="ml-5 row totalMap">{{employeeZoneDtos.length}} Total</span>
             </div>
             <div fxFlex="">
-                <div fxLayout="row" class="zoomInOut">
-                    <div fxFlex="6"><i (click)="zoomToggle(true)" class="fa fa-search-plus" aria-hidden="true"></i></div>
-                    <div fxFlex="6"><i (click)="zoomToggle(false)" class="fa fa-search-minus" aria-hidden="true"></i> </div>
-                    <div fxFlex="6"><i (click)="zoomReset()" class="fa fa-refresh" aria-hidden="true"></i> </div>
-                </div>
+   
                 <div #canvasDiv class="col-md-12">
                     <div id="panzoom" #panzoomDiv>
-                        <img id="canvasBGImage" #canvasBGImage height=" {{canvasHeight}}"  width=" {{canvasWidth}}" />
+                        <!-- <img id="canvasBGImage" #canvasBGImage height=" {{canvasHeight}}"  width=" {{canvasWidth}}" /> -->
+                        <lib-ngx-image-zoom
+                        [thumbImage]="canvasBackgroundImage"
+                        [fullImage]="canvasBackgroundImage"
+                        [magnification]="3"
+                        [enableScrollZoom]="true"
+                        [enableLens]="true"
+                        [lensWidth]="250"
+                    >
                         <canvas #canvas class=" canvas"  width="{{canvasWidth}}"  height="{{canvasHeight}}"></canvas>
                         <canvas #canvasupper class="canvas"  width="{{canvasWidth}}"  height="{{canvasHeight}}"
                             (mousemove)="mousemove($event)"></canvas>
+                        </lib-ngx-image-zoom>
                     </div>
 
                     <!-- <canvas #canvasupper class="canvas"  width="{{canvasWidth}}"  height="{{canvasHeight}}" (mousemove)="mousemove($event)" (click)="canvasOnClick($event)"></canvas> -->
